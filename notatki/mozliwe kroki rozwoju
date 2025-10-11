@@ -1,0 +1,20 @@
+
+<unresolved_issues>
+
+❗ **Brak dokumentów źródłowych**: Nie posiadacie jeszcze dokumentów markdown o harcerstwie - wymagane do treningu AI
+
+❗ **Struktura wiedzy AI**: Brak szczegółów dotyczących struktury dokumentów markdown (tagi, kategoryzacja umiejętności harcerskich)
+
+❗ **Walidacja nieznanych tematyk lore**: Brak mechanizmu oceny czy AI ma wystarczającą wiedzę o niestandardowych tematykach
+
+❗ **Brak planu testowania**: 6-tygodniowy deadline bez zaplanowanego pilotażu z prawdziwymi użytkownikami
+
+❗ **Skalowanie kosztów AI**: Brak ograniczeń na liczbę grup/zajęć może generować nieprzewidywalne koszty API
+
+❗ **Backup i recovery**: Brak planu zabezpieczenia danych użytkowników i grup
+
+❗ **Performance optimization**: Brak strategii dla dużej liczby współbieżnych użytkowników
+
+❗ **Content moderation**: Brak mechanizmów kontroli jakości treści wprowadzanych przez użytkowników
+
+</unresolved_issues>
