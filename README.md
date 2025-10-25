@@ -158,6 +158,117 @@ Until a dedicated CONTRIBUTING file exists:
 - Use early returns & guard clauses for clarity
 - Plan for Zod schemas when introducing API endpoints
 
+### Temporary Auth Stub
+During early development the middleware injects a fixed user id (`DEFAULT_USER_ID`) via `context.locals.user`. Requests to API endpoints (e.g. `POST /api/groups`) therefore assume this user automatically without requiring login. For manual API testing in Postman:
+- Set `SUPABASE_URL` and `SUPABASE_KEY` in `.env` so the server can initialize the Supabase client.
+- No Authorization header is needed; the server uses the stubbed user id internally.
+Replace this stub with real Supabase Auth session handling once authentication is implemented.
+
+## API Endpoints (Implemented)
+
+### POST /api/groups
+Create a new programme group (camp). Requires authentication (user id currently passed via `x-user-id` header — placeholder until proper auth session injection).
+
+Request Body (JSON):
+```
+{
+	"name": "Alpha",
+	"description": "Summer camp",
+	"lore_theme": "Middle Earth",
+	"start_date": "2025-07-01",
+	"end_date": "2025-07-14",
+	"max_members": 40 // optional; if omitted DB default applies
+}
+```
+
+Validation Rules:
+- name: 1..200 chars (trimmed)
+- description: 1..2000 chars (trimmed)
+- lore_theme: 1..200 chars (trimmed)
+- start_date & end_date: format YYYY-MM-DD
+- end_date must be >= start_date
+- max_members: integer 1..500 (optional)
+
+Success Response (201):
+```
+{
+	"data": {
+		"id": "<uuid>",
+		"name": "Alpha",
+		"description": "Summer camp",
+		"lore_theme": "Middle Earth",
+		"status": "planning",
+		"start_date": "2025-07-01",
+		"end_date": "2025-07-14",
+		"invite": null,
+		"max_members": 40,
+		"created_at": "2025-05-01T10:00:00Z",
+		"updated_at": "2025-05-01T10:00:00Z",
+		"deleted_at": null
+	}
+}
+```
+
+Error Responses:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid input fields |
+| 400 | DATE_RANGE_INVALID | end_date < start_date |
+| 400 | GROUP_LIMIT_REACHED | User exceeded group creation limit |
+| 401 | UNAUTHORIZED | Missing or invalid user context |
+| 500 | INTERNAL_ERROR | Unexpected server/database failure |
+
+Notes:
+- Group membership (admin) is established immediately after creation.
+- Invite code related fields are null until rotated/generated via future endpoint.
+- Atomicity improvement (transaction/RPC) planned for later to couple group & membership inserts.
+
+### GET /api/groups
+List all non-deleted groups ordered by newest first.
+
+Request:
+```
+GET /api/groups
+```
+No query parameters yet (future: pagination & filters).
+
+Success Response (200):
+```
+{
+	"data": [
+		{
+			"id": "<uuid>",
+			"name": "Alpha",
+			"description": "Summer camp",
+			"lore_theme": "Middle Earth",
+			"status": "planning",
+			"start_date": "2025-07-01",
+			"end_date": "2025-07-14",
+			"invite": null,
+			"max_members": 40,
+			"created_at": "2025-05-01T10:00:00Z",
+			"updated_at": "2025-05-01T10:00:00Z",
+			"deleted_at": null
+		}
+	],
+	"count": 1
+}
+```
+
+Error Response (500 example):
+```
+{
+	"error": {
+		"code": "INTERNAL_ERROR",
+		"message": "Failed to list groups"
+	}
+}
+```
+
+Notes:
+- Uses temporary auth stub (DEFAULT_USER_ID) only for creation; listing does not require user-specific filtering yet.
+- Future enhancements: pagination (cursor or offset), filtering by status, search by name.
+
 ## License
 MIT License. See the LICENSE file (to be added) or include one when forking.
 
