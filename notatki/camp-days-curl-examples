@@ -1,0 +1,56 @@
+# Camp Days CURL Examples
+
+# Replace <group_id>, <camp_day_id> with actual UUIDs.
+# Using temporary DEFAULT_USER_ID auth stub injected by middleware.
+
+# Create camp day (admin only)
+curl -X POST http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/camp-days \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{"day_number":1,"date":"2025-11-01","theme":"Arrival & Setup"}'
+
+# Duplicate day_number (expect 409 DUPLICATE_DAY_NUMBER)
+curl -X POST http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/camp-days \
+  -H 'Content-Type: application/json' \
+  -d '{"day_number":1,"date":"2025-11-01","theme":"Arrival duplicate"}'
+
+# Day number out of range (expect 400 DAY_OUT_OF_RANGE)
+curl -X POST http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/camp-days \
+  -H 'Content-Type: application/json' \
+  -d '{"day_number":31,"date":"2025-11-01"}'
+
+# Date outside group range (expect 400 DATE_OUT_OF_GROUP_RANGE)
+curl -X POST http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/camp-days \
+  -H 'Content-Type: application/json' \
+  -d '{"day_number":2,"date":"2026-01-01"}'
+
+# List camp days
+curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/camp-days \
+  -H 'Accept: application/json'
+
+# Get single camp day
+curl -X GET http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6 \
+  -H 'Accept: application/json'
+
+# Patch camp day (change date within range)
+curl -X PATCH http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6 \
+  -H 'Content-Type: application/json' \
+  -d '{"date":"2025-07-02"}'
+
+# Patch with date out of range (expect 400 DATE_OUT_OF_GROUP_RANGE)
+curl -X PATCH http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6 \
+  -H 'Content-Type: application/json' \
+  -d '{"date":"2026-01-01"}'
+
+# Clear theme
+curl -X PATCH http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6 \
+  -H 'Content-Type: application/json' \
+  -d '{"theme":null}'
+
+# Delete camp day (admin only)
+curl -X DELETE http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6 \
+  -H 'Accept: application/json'
+
+# Get non-existing camp day (expect 404 NOT_FOUND)
+curl -X GET http://localhost:3000/api/camp-days/00000000-0000-0000-0000-000000000000 \
+  -H 'Accept: application/json'

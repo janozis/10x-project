@@ -398,6 +398,82 @@ Status Mapping Summary (Editors):
 | ALREADY_ASSIGNED / CONFLICT | 409 |
 | INTERNAL_ERROR | 500 |
 
+### Camp Days (New)
+
+Manage logical camp programme days within a group's date range. Each day has a sequential `day_number` (1..30), a `date` within the group's start/end range, and an optional `theme`.
+
+#### POST /api/groups/{group_id}/camp-days
+Create a new camp day (admin only).
+
+Body:
+```
+{ "day_number": 1, "date": "2025-07-01", "theme": "Arrival & Setup" }
+```
+Business Rules:
+- `day_number` 1..30 (else `DAY_OUT_OF_RANGE` 400)
+- `date` must fall within group's `start_date`..`end_date` (else `DATE_OUT_OF_GROUP_RANGE` 400)
+- `(group_id, day_number)` unique (duplicate => `DUPLICATE_DAY_NUMBER` 409)
+
+Success (201): `{ "data": { "id": "<uuid>", "group_id": "<uuid>", "day_number": 1, "date": "2025-07-01", "theme": "Arrival & Setup", "created_at": "...", "updated_at": "..." } }`
+
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Schema validation failed |
+| 400 | DAY_OUT_OF_RANGE | day_number outside 1..30 |
+| 400 | DATE_OUT_OF_GROUP_RANGE | date outside group range |
+| 401 | UNAUTHORIZED | Caller not authenticated (stub missing) |
+| 403 | FORBIDDEN_ROLE | Caller not admin |
+| 404 | NOT_FOUND | Group not found / masked |
+| 409 | DUPLICATE_DAY_NUMBER | day_number already exists |
+| 500 | INTERNAL_ERROR | Unexpected failure |
+
+#### GET /api/groups/{group_id}/camp-days
+List all camp days (any group member). Ordered by ascending `day_number`.
+
+Success (200): `{ "data": [ CampDayDTO... ], "count": <n> }`
+
+Errors (subset): `UNAUTHORIZED` 401, `NOT_FOUND` 404 (group masked), `INTERNAL_ERROR` 500.
+
+#### GET /api/camp-days/{camp_day_id}
+Fetch a single camp day (members only).
+
+Success (200): `{ "data": CampDayDTO }`
+
+Errors: `VALIDATION_ERROR` (invalid UUID), `NOT_FOUND`, `UNAUTHORIZED`, `INTERNAL_ERROR`.
+
+#### PATCH /api/camp-days/{camp_day_id}
+Update mutable fields (`date`, `theme`) (admin only). Omitting fields results in no-op.
+
+Body (example): `{ "date": "2025-07-02", "theme": null }`
+
+Success (200): Updated DTO.
+
+Errors: `DATE_OUT_OF_GROUP_RANGE` 400, `FORBIDDEN_ROLE` 403, plus standard ones.
+
+#### DELETE /api/camp-days/{camp_day_id}
+Hard delete camp day (admin only).
+
+Success (200): `{ "data": { "id": "<uuid>" } }`
+
+Errors: `FORBIDDEN_ROLE` 403, `NOT_FOUND` 404, etc.
+
+Status Mapping Summary (Camp Days):
+| Code | HTTP |
+| ---- | ---- |
+| VALIDATION_ERROR / DAY_OUT_OF_RANGE / DATE_OUT_OF_GROUP_RANGE | 400 |
+| UNAUTHORIZED | 401 |
+| FORBIDDEN_ROLE | 403 |
+| NOT_FOUND | 404 |
+| DUPLICATE_DAY_NUMBER | 409 |
+| INTERNAL_ERROR | 500 |
+
+Notes:
+- Camp days are physically deleted (no soft delete) per plan.
+- Empty PATCH body returns existing DTO unchanged.
+- `theme: null` clears the theme.
+- Range checks performed before insert/update to produce domain-specific error codes.
+
 ### AI Evaluations (New)
 
 Versioned AI feedback for activities. Evaluation requests are queued asynchronously; client polls until a new version appears.

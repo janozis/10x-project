@@ -26,6 +26,10 @@ export const errors = {
   conflict: (message = "Conflict", details?: ErrorDetails) => make("CONFLICT", message, details),
   // AI evaluations domain
   aiEvaluationCooldown: () => make("AI_EVALUATION_COOLDOWN", "AI evaluation cooldown active"),
+  // Camp days domain
+  dayOutOfRange: () => make("DAY_OUT_OF_RANGE", "day_number must be within allowed range"),
+  dateOutOfGroupRange: () => make("DATE_OUT_OF_GROUP_RANGE", "Date outside group's start/end range"),
+  duplicateDayNumber: () => make("DUPLICATE_DAY_NUMBER", "Camp day number already exists for this group"),
 };
 
 export type ErrorFactories = typeof errors;
