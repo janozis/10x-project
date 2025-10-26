@@ -1,0 +1,29 @@
+# Activity Editors CURL Examples
+
+# Replace <activity_id> and <user_id_target> with actual UUIDs.
+
+# List editors
+curl -X GET http://localhost:3000/api/activities/<activity_id>/editors \
+  -H 'Accept: application/json'
+
+# Assign editor (admin only)
+curl -X POST http://localhost:3000/api/activities/<activity_id>/editors \
+  -H 'Content-Type: application/json' \
+  -d '{"user_id":"<user_id_target>"}'
+
+# Duplicate assign (expect 409 ALREADY_ASSIGNED)
+curl -X POST http://localhost:3000/api/activities/<activity_id>/editors \
+  -H 'Content-Type: application/json' \
+  -d '{"user_id":"<user_id_target>"}'
+
+# Remove editor
+curl -X DELETE http://localhost:3000/api/activities/<activity_id>/editors/<user_id_target> \
+  -H 'Accept: application/json'
+
+# Remove non-existing assignment (expect 404 NOT_FOUND)
+curl -X DELETE http://localhost:3000/api/activities/<activity_id>/editors/<non_existing_user_id> \
+  -H 'Accept: application/json'
+
+# Invalid UUID (expect 400 VALIDATION_ERROR)
+curl -X GET http://localhost:3000/api/activities/invalid-uuid/editors \
+  -H 'Accept: application/json'

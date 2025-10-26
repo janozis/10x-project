@@ -18,6 +18,12 @@ export const errors = {
   forbiddenRole: () => make("FORBIDDEN_ROLE", "Insufficient role to perform this action"),
   lastAdminRemoval: () => make("LAST_ADMIN_REMOVAL", "Cannot remove the last admin from the group"),
   notFound: (entity = "Resource") => make("NOT_FOUND", `${entity} not found`),
+  // Activity editors domain
+  userNotInGroup: (details?: ErrorDetails) => make("USER_NOT_IN_GROUP", "User is not a member of the group", details),
+  alreadyAssigned: (details?: ErrorDetails) => make("ALREADY_ASSIGNED", "Editor already assigned", details),
+  activityNotFound: () => make("ACTIVITY_NOT_FOUND", "Activity not found"),
+  badRequest: (message = "Bad request", details?: ErrorDetails) => make("BAD_REQUEST", message, details),
+  conflict: (message = "Conflict", details?: ErrorDetails) => make("CONFLICT", message, details),
 };
 
 export type ErrorFactories = typeof errors;

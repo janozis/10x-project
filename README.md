@@ -327,6 +327,84 @@ Future Enhancements:
 - Audit trail of membership modifications
 - Replace stub auth with Supabase session handling
 
+### Activity Editors (New)
+
+Manage explicit editor assignments for an activity. Admins can grant/revoke edit rights; any group member can list editors. Editor assignments will gate future update permissions for non-admin users.
+
+#### GET /api/activities/{activity_id}/editors
+List all editor assignments.
+
+Success (200):
+```
+{ "data": [ { "activity_id": "<uuid>", "user_id": "<uuid>", "assigned_at": "2025-10-26T12:34:56Z", "assigned_by_user_id": "<uuid>" } ] }
+```
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid activity_id UUID |
+| 400 | USER_NOT_IN_GROUP | Caller not a member of activity's group |
+| 401 | UNAUTHORIZED | Missing auth (stub user absent) |
+| 404 | ACTIVITY_NOT_FOUND | Activity does not exist or is soft-deleted |
+| 500 | INTERNAL_ERROR | Database failure |
+
+#### POST /api/activities/{activity_id}/editors
+Assign a new editor (admin only).
+
+Request Body:
+```
+{ "user_id": "<uuid>" }
+```
+Success (201):
+```
+{ "data": { "activity_id": "<uuid>", "user_id": "<uuid>", "assigned_at": "2025-10-26T12:34:56Z", "assigned_by_user_id": "<uuid>" } }
+```
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Body invalid (user_id not UUID) |
+| 400 | USER_NOT_IN_GROUP | Target user not in group |
+| 401 | UNAUTHORIZED | Missing auth |
+| 403 | FORBIDDEN_ROLE | Caller not admin |
+| 404 | ACTIVITY_NOT_FOUND | Activity missing / deleted |
+| 409 | ALREADY_ASSIGNED | Duplicate assignment |
+| 409 | CONFLICT | Other insertion conflict |
+| 500 | INTERNAL_ERROR | Database failure |
+
+#### DELETE /api/activities/{activity_id}/editors/{user_id}
+Remove an existing editor assignment (admin only).
+
+Success (200):
+```
+{ "data": { "activity_id": "<uuid>", "user_id": "<uuid>" } }
+```
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid path UUID(s) |
+| 400 | USER_NOT_IN_GROUP | Caller not in group |
+| 401 | UNAUTHORIZED | Missing auth |
+| 403 | FORBIDDEN_ROLE | Caller not admin |
+| 404 | ACTIVITY_NOT_FOUND | Activity missing / deleted |
+| 404 | NOT_FOUND | Editor assignment does not exist |
+| 500 | INTERNAL_ERROR | Database failure |
+
+Status Mapping Summary (Editors):
+| Code | HTTP |
+| ---- | ---- |
+| UNAUTHORIZED | 401 |
+| FORBIDDEN_ROLE | 403 |
+| ACTIVITY_NOT_FOUND / NOT_FOUND | 404 |
+| VALIDATION_ERROR / USER_NOT_IN_GROUP / BAD_REQUEST | 400 |
+| ALREADY_ASSIGNED / CONFLICT | 409 |
+| INTERNAL_ERROR | 500 |
+
+Testing Examples (curl):
+```
+curl -X GET http://localhost:3000/api/activities/<activity_id>/editors -H 'Accept: application/json'
+curl -X POST http://localhost:3000/api/activities/<activity_id>/editors -H 'Content-Type: application/json' -d '{"user_id":"<uuid>"}'
+curl -X DELETE http://localhost:3000/api/activities/<activity_id>/editors/<user_id> -H 'Accept: application/json'
+```
+
 ## License
 MIT License. See the LICENSE file (to be added) or include one when forking.
 
