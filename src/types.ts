@@ -388,3 +388,11 @@ export interface WithMeta<T> {
 }
 
 // NOTE: No executable logic here; purely type declarations derived from DB schema & API design.
+
+/**
+ * Extended Activity DTO including editors collection.
+ * Added separately to avoid changing base ActivityDTO which mirrors direct row fields.
+ */
+export interface ActivityWithEditorsDTO extends ActivityDTO {
+  editors: ActivityEditorDTO[];
+}
