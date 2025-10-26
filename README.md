@@ -398,6 +398,100 @@ Status Mapping Summary (Editors):
 | ALREADY_ASSIGNED / CONFLICT | 409 |
 | INTERNAL_ERROR | 500 |
 
+### AI Evaluations (New)
+
+Versioned AI feedback for activities. Evaluation requests are queued asynchronously; client polls until a new version appears.
+
+#### POST /api/activities/{activity_id}/ai-evaluations
+Queue a new AI evaluation for the activity.
+
+Constraints:
+- Caller must be group member AND (admin OR assigned editor).
+- Cooldown: minimum 5 minutes between requests (429 AI_EVALUATION_COOLDOWN).
+- Body must be an empty object `{}` (any other content ⇒ VALIDATION_ERROR).
+
+Request:
+```bash
+curl -X POST \
+	http://localhost:4321/api/activities/ACTIVITY_UUID/ai-evaluations \
+	-H 'Accept: application/json' \
+	-d '{}'
+```
+
+Success (202):
+```json
+{ "data": { "queued": true, "next_poll_after_sec": 5 } }
+```
+
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid UUID / body not empty object |
+| 401 | UNAUTHORIZED | Not authenticated |
+| 403 | FORBIDDEN_ROLE | Not admin nor assigned editor |
+| 404 | ACTIVITY_NOT_FOUND | Activity missing / deleted |
+| 429 | AI_EVALUATION_COOLDOWN | Cooldown active |
+| 500 | INTERNAL_ERROR | RPC / DB failure |
+
+#### GET /api/activities/{activity_id}/ai-evaluations
+List all AI evaluation versions for the activity (newest first).
+
+```bash
+curl -X GET \
+	http://localhost:4321/api/activities/ACTIVITY_UUID/ai-evaluations \
+	-H 'Accept: application/json'
+```
+
+Success (200):
+```json
+{ "data": [ { "id": "<uuid>", "activity_id": "<uuid>", "version": 1, "lore_score": 7, "scouting_values_score": 8, "lore_feedback": "...", "scouting_feedback": "...", "tokens": 1234, "created_at": "2025-10-26T12:34:56Z", "suggestions": ["Refine objectives"] } ] }
+```
+
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid activity_id UUID |
+| 401 | UNAUTHORIZED | Not authenticated |
+| 404 | ACTIVITY_NOT_FOUND | Activity missing / deleted |
+| 500 | INTERNAL_ERROR | Database failure |
+
+#### GET /api/ai-evaluations/{evaluation_id}
+Fetch a single AI evaluation by its UUID.
+
+```bash
+curl -X GET \
+	http://localhost:4321/api/ai-evaluations/EVALUATION_UUID \
+	-H 'Accept: application/json'
+```
+
+Success (200):
+```json
+{ "data": { "id": "<uuid>", "activity_id": "<uuid>", "version": 2, "lore_score": 9, "scouting_values_score": 8, "lore_feedback": "Strong thematic consistency.", "scouting_feedback": "Excellent alignment with values.", "tokens": 1450, "created_at": "2025-10-26T12:40:00Z", "suggestions": ["Shorten intro", "Clarify materials"] } }
+```
+
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid evaluation_id UUID |
+| 401 | UNAUTHORIZED | Not authenticated |
+| 404 | NOT_FOUND | Evaluation or activity not visible to caller |
+| 500 | INTERNAL_ERROR | Database failure |
+
+Polling Strategy Example:
+```bash
+# Request evaluation
+curl -X POST http://localhost:4321/api/activities/ACTIVITY_UUID/ai-evaluations -d '{}' -H 'Accept: application/json'
+
+# Poll every 5s until a new version appears
+watch -n 5 curl -s http://localhost:4321/api/activities/ACTIVITY_UUID/ai-evaluations | jq '.data[0]'
+```
+
+Future Enhancements (planned):
+- Include request ID in POST response
+- SSE/WebSocket push when evaluation completes
+- Adjustable model parameters (temperature, model) with admin controls
+- Expose queue request statuses endpoint
+
 Testing Examples (curl):
 ```
 curl -X GET http://localhost:3000/api/activities/<activity_id>/editors -H 'Accept: application/json'

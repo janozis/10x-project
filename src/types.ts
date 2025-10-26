@@ -176,6 +176,18 @@ export interface AIEvaluationDTO
   suggestions: string[]; // Narrowed from Json (expected array of strings)
 }
 
+/** AI EVALUATION REQUEST (queue record) */
+export type AIEvaluationRequestStatus = "queued" | "processing" | "completed" | "failed";
+export interface AIEvaluationRequestDTO {
+  id: UUID;
+  activity_id: UUID;
+  status: AIEvaluationRequestStatus;
+  created_at: TimestampISO;
+  started_at: TimestampISO | null;
+  finished_at: TimestampISO | null;
+  error_code?: ApiErrorCode | null;
+}
+
 /** CAMP DAY */
 export type CampDayDTO = Pick<
   CampDayEntity,
@@ -216,9 +228,8 @@ export interface GroupPermissionsDTO
 }
 
 /** SEARCH RESULTS (MVP+1) */
-export interface SearchResultActivitySummary
-  extends Pick<ActivityEntity, "id" | "group_id" | "title" | "objective" | "status"> {}
-export interface SearchResultTaskSummary extends Pick<GroupTaskEntity, "id" | "group_id" | "title" | "status"> {}
+export type SearchResultActivitySummary = Pick<ActivityEntity, "id" | "group_id" | "title" | "objective" | "status">;
+export type SearchResultTaskSummary = Pick<GroupTaskEntity, "id" | "group_id" | "title" | "status">;
 export interface SearchResultsDTO {
   activities?: SearchResultActivitySummary[];
   tasks?: SearchResultTaskSummary[];

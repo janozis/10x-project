@@ -24,6 +24,8 @@ export const errors = {
   activityNotFound: () => make("ACTIVITY_NOT_FOUND", "Activity not found"),
   badRequest: (message = "Bad request", details?: ErrorDetails) => make("BAD_REQUEST", message, details),
   conflict: (message = "Conflict", details?: ErrorDetails) => make("CONFLICT", message, details),
+  // AI evaluations domain
+  aiEvaluationCooldown: () => make("AI_EVALUATION_COOLDOWN", "AI evaluation cooldown active"),
 };
 
 export type ErrorFactories = typeof errors;
