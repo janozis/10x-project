@@ -1,0 +1,46 @@
+# Activity Schedules CURL Examples
+
+# Replace <camp_day_id>, <activity_id>, <schedule_id> with actual UUIDs.
+
+# List schedules for a camp day
+curl -X GET http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+  -H 'Accept: application/json'
+
+# Create schedule slot (admin/editor only)
+curl -X POST http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+  -H 'Content-Type: application/json' \
+  -d '{"activity_id":"<activity_id>","start_time":"09:00","end_time":"10:15","order_in_day":1}'
+
+# Create another schedule with conflicting order_in_day (expect 400 ORDER_IN_DAY_CONFLICT)
+curl -X POST http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+  -H 'Content-Type: application/json' \
+  -d '{"activity_id":"<activity_id>","start_time":"10:30","end_time":"11:00","order_in_day":1}'
+
+# Invalid time format (expect 400 VALIDATION_ERROR)
+curl -X POST http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+  -H 'Content-Type: application/json' \
+  -d '{"activity_id":"<activity_id>","start_time":"9:00","end_time":"10:00","order_in_day":2}'
+
+# Update schedule times and order
+curl -X PATCH http://localhost:3000/api/activity-schedules/<schedule_id> \
+  -H 'Content-Type: application/json' \
+  -d '{"start_time":"09:15","end_time":"10:30","order_in_day":2}'
+
+# Update with end_time before start_time (expect 400 VALIDATION_ERROR)
+curl -X PATCH http://localhost:3000/api/activity-schedules/<schedule_id> \
+  -H 'Content-Type: application/json' \
+  -d '{"start_time":"11:30","end_time":"10:30"}'
+
+# Update with no fields (expect 400 BAD_REQUEST)
+curl -X PATCH http://localhost:3000/api/activity-schedules/<schedule_id> \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+
+# Delete schedule
+curl -X DELETE http://localhost:3000/api/activity-schedules/<schedule_id> \
+  -H 'Accept: application/json'
+
+# Fetch non-existing schedule (expect 404 NOT_FOUND)
+curl -X PATCH http://localhost:3000/api/activity-schedules/00000000-0000-0000-0000-000000000000 \
+  -H 'Content-Type: application/json' \
+  -d '{"start_time":"09:00"}'

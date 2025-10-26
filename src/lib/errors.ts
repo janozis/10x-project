@@ -30,6 +30,9 @@ export const errors = {
   dayOutOfRange: () => make("DAY_OUT_OF_RANGE", "day_number must be within allowed range"),
   dateOutOfGroupRange: () => make("DATE_OUT_OF_GROUP_RANGE", "Date outside group's start/end range"),
   duplicateDayNumber: () => make("DUPLICATE_DAY_NUMBER", "Camp day number already exists for this group"),
+  // Activity schedules domain
+  orderInDayConflict: () => make("ORDER_IN_DAY_CONFLICT", "order_in_day already exists for this camp day"),
+  overlappingTime: () => make("OVERLAPPING_TIME", "Schedule time overlaps an existing slot"), // future use
 };
 
 export type ErrorFactories = typeof errors;
