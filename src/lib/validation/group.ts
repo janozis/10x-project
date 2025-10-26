@@ -13,8 +13,7 @@ export const groupCreateSchema = z
     lore_theme: z.string().trim().min(1, "lore_theme required").max(200, "lore_theme too long"),
     start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-    // Provide a default so we never attempt to insert an explicit null. DB default can be overridden here.
-    max_members: z.number().int().min(1).max(500).optional().default(50),
+    max_members: z.number().int().min(1).max(500).optional(),
   })
   .superRefine((val, ctx) => {
     if (val.end_date < val.start_date) {

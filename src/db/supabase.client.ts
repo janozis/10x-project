@@ -8,7 +8,9 @@ export const supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKe
 
 export type SupabaseClient = typeof supabaseClient;
 
-export const DEFAULT_USER_ID = "07f87b81-32db-46e2-bed4-1fab6cfe3a7f";
+// export const DEFAULT_USER_ID = "07f87b81-32db-46e2-bed4-1fab6cfe3a7f";
+
+export const DEFAULT_USER_ID = "a7a0c17c-69e9-49a3-8b8e-5926b825a021";
 
 // Prosty ping do bazy – minimalne zapytanie weryfikujące połączenie
 export async function supabasePing() {

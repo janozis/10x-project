@@ -269,6 +269,64 @@ Notes:
 - Uses temporary auth stub (DEFAULT_USER_ID) only for creation; listing does not require user-specific filtering yet.
 - Future enhancements: pagination (cursor or offset), filtering by status, search by name.
 
+### Group Memberships & Roles
+
+Endpoints for managing group members and roles. All responses follow `{ data: ... }` or `{ error: { code, message, details? } }` envelope. Authentication uses middleware stub (`context.locals.user.id`).
+
+#### GET /api/groups/{group_id}/members
+List all members of a group. Caller must be a member; otherwise `NOT_FOUND` (existence masked).
+
+Success (200):
+```
+{ "data": [ { "user_id": "<uuid>", "role": "admin", "joined_at": "2025-05-01T10:00:00Z", "group_id": "<uuid>" } ] }
+```
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid UUID format |
+| 404 | NOT_FOUND | Caller not a member (masked) |
+| 500 | INTERNAL_ERROR | DB failure |
+
+#### PATCH /api/groups/{group_id}/members/{user_id}
+Change role of an existing member. Body:
+```
+{ "role": "admin" | "editor" | "member" }
+```
+Success (200): returns updated member DTO (or unchanged if idempotent).
+Errors:
+| Status | Code | When |
+| ------ | ---- | ---- |
+| 400 | VALIDATION_ERROR | Invalid UUIDs |
+| 400 | ROLE_INVALID | Body role outside enum |
+| 403 | FORBIDDEN_ROLE | Caller not admin |
+| 404 | NOT_FOUND | Member/group not found |
+| 409 | LAST_ADMIN_REMOVAL | Trigger prevents losing last admin |
+| 500 | INTERNAL_ERROR | Update failure |
+
+#### DELETE /api/groups/{group_id}/members/{user_id}
+Remove a member (self or admin). Success (200) returns removed member DTO.
+Errors similar to PATCH (without ROLE_INVALID unless body expected) plus LAST_ADMIN_REMOVAL when deleting last admin.
+
+#### POST /api/groups/{group_id}/members/{user_id}/promote
+Promote member to admin. Idempotent if already admin (200).
+Errors align with PATCH (excluding LAST_ADMIN_REMOVAL on promote — trigger not relevant).
+
+Status Mapping Summary:
+| Code | HTTP |
+| ---- | ---- |
+| UNAUTHORIZED | 401 |
+| FORBIDDEN_ROLE | 403 |
+| NOT_FOUND | 404 |
+| VALIDATION_ERROR / ROLE_INVALID | 400 |
+| LAST_ADMIN_REMOVAL | 409 |
+| INTERNAL_ERROR | 500 |
+
+Future Enhancements:
+- Pagination & role filtering for GET members
+- Bulk role changes
+- Audit trail of membership modifications
+- Replace stub auth with Supabase session handling
+
 ## License
 MIT License. See the LICENSE file (to be added) or include one when forking.
 
