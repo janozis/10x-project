@@ -3,23 +3,23 @@
 # Replace <camp_day_id>, <activity_id>, <schedule_id> with actual UUIDs.
 
 # List schedules for a camp day
-curl -X GET http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+curl -X GET http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6/schedules \
   -H 'Accept: application/json'
 
 # Create schedule slot (admin/editor only)
-curl -X POST http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+curl -X POST http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6/schedules \
   -H 'Content-Type: application/json' \
-  -d '{"activity_id":"<activity_id>","start_time":"09:00","end_time":"10:15","order_in_day":1}'
+  -d '{"activity_id":"5ffb7d27-2b68-4785-a1b6-c377f5efc4cf","start_time":"09:00","end_time":"10:15","order_in_day":1}'
 
 # Create another schedule with conflicting order_in_day (expect 400 ORDER_IN_DAY_CONFLICT)
-curl -X POST http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+curl -X POST http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6/schedules \
   -H 'Content-Type: application/json' \
-  -d '{"activity_id":"<activity_id>","start_time":"10:30","end_time":"11:00","order_in_day":1}'
+  -d '{"activity_id":"5ffb7d27-2b68-4785-a1b6-c377f5efc4cf","start_time":"10:30","end_time":"11:00","order_in_day":1}'
 
 # Invalid time format (expect 400 VALIDATION_ERROR)
-curl -X POST http://localhost:3000/api/camp-days/<camp_day_id>/schedules \
+curl -X POST http://localhost:3000/api/camp-days/44982a88-6881-4f96-b869-7267c8c3beb6/schedules \
   -H 'Content-Type: application/json' \
-  -d '{"activity_id":"<activity_id>","start_time":"9:00","end_time":"10:00","order_in_day":2}'
+  -d '{"activity_id":"5ffb7d27-2b68-4785-a1b6-c377f5efc4cf","start_time":"9:00","end_time":"10:00","order_in_day":2}'
 
 # Update schedule times and order
 curl -X PATCH http://localhost:3000/api/activity-schedules/<schedule_id> \

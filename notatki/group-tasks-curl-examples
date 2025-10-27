@@ -3,30 +3,30 @@
 # Replace <group_id>, <task_id>, <activity_id> with actual UUIDs.
 
 # List tasks (no filters)
-curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/tasks" \
   -H 'Accept: application/json'
 
 # List tasks filtered by status
 your_status="pending"
-curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks?status=${your_status}" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/tasks?status=${your_status}" \
   -H 'Accept: application/json'
 
 # List tasks filtered by activity_id
-curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks?activity_id=<activity_id>" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/tasks?activity_id=<activity_id>" \
   -H 'Accept: application/json'
 
 # Paginated list with limit and cursor (after you get nextCursor from previous response)
 cursor_value="<base64_cursor>"
-curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks?limit=10&cursor=${cursor_value}" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/tasks?limit=10&cursor=${cursor_value}" \
   -H 'Accept: application/json'
 
 # Create task (without activity association)
-curl -X POST "http://localhost:3000/api/groups/<group_id>/tasks" \
+curl -X POST "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/tasks" \
   -H 'Content-Type: application/json' \
-  -d '{"title":"Prepare materials","description":"Gather all needed items","due_date":"2025-11-05"}'
+  -d '{"title":"Prepare materials","description":"Gather all needed items","due_date":"2025-11-01"}'
 
 # Create task (with activity association)
-curl -X POST "http://localhost:3000/api/groups/<group_id>/tasks" \
+curl -X POST "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/tasks" \
   -H 'Content-Type: application/json' \
   -d '{"title":"Refine activity flow","description":"Improve step sequence","activity_id":"<activity_id>"}'
 

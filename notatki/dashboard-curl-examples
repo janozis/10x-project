@@ -1,0 +1,170 @@
+# Dashboard CURL Examples
+
+# Replace <group_id> with actual group UUID.
+# Example group_id: 9a8e39ca-cb69-438e-933e-645b7554f526
+
+# ============================================
+# Test 1: Successful dashboard fetch (200 OK)
+# ============================================
+curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 200 OK + JSON with dashboard stats
+# Response structure:
+# {
+#   "data": {
+#     "group_id": "uuid",
+#     "total_activities": 10,
+#     "evaluated_activities": 8,
+#     "pct_evaluated_above_7": 75.5,
+#     "tasks": { "pending": 3, "done": 7 },
+#     "recent_activity": [...]
+#   }
+# }
+
+# ============================================
+# Test 2: Invalid UUID format (400 VALIDATION_ERROR)
+# ============================================
+curl -X GET http://localhost:3001/api/groups/invalid-uuid/dashboard \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 400 BAD REQUEST
+# Response:
+# {
+#   "error": {
+#     "code": "VALIDATION_ERROR",
+#     "message": "Invalid payload",
+#     "details": { "group_id": "invalid uuid" }
+#   }
+# }
+
+# ============================================
+# Test 3: User not a member (404 NOT_FOUND)
+# ============================================
+# Note: To test this, use a group_id where current user is NOT a member
+curl -X GET http://localhost:3001/api/groups/00000000-0000-0000-0000-000000000000/dashboard \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 404 NOT FOUND
+# Response:
+# {
+#   "error": {
+#     "code": "NOT_FOUND",
+#     "message": "Group not found"
+#   }
+# }
+
+# ============================================
+# Test 4: With recent_limit parameter (200 OK)
+# ============================================
+curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=5" \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 200 OK + max 5 recent activities (x2 for create+update events)
+
+# ============================================
+# Test 5: Invalid recent_limit value (400 VALIDATION_ERROR)
+# ============================================
+# Test with value > 50 (max allowed)
+curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=100" \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 400 BAD REQUEST
+# Response:
+# {
+#   "error": {
+#     "code": "VALIDATION_ERROR",
+#     "message": "Validation failed",
+#     "details": {
+#       "recent_limit": ["recent_limit must be at most 50"]
+#     }
+#   }
+# }
+
+# Test with value < 1 (min allowed)
+curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=0" \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 400 BAD REQUEST
+# Response:
+# {
+#   "error": {
+#     "code": "VALIDATION_ERROR",
+#     "message": "Validation failed",
+#     "details": {
+#       "recent_limit": ["recent_limit must be at least 1"]
+#     }
+#   }
+# }
+
+# Test with non-numeric value
+curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=abc" \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 400 BAD REQUEST
+
+# ============================================
+# Test 6: Edge cases
+# ============================================
+
+# Group with no activities (should return zeros)
+curl -X GET http://localhost:3001/api/groups/<empty_group_id>/dashboard \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 200 OK
+# Response:
+# {
+#   "data": {
+#     "group_id": "uuid",
+#     "total_activities": 0,
+#     "evaluated_activities": 0,
+#     "pct_evaluated_above_7": 0,
+#     "tasks": { "pending": 0, "done": 0 },
+#     "recent_activity": []
+#   }
+# }
+
+# ============================================
+# Pretty JSON output (with jq)
+# ============================================
+curl -X GET http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard \
+  -H 'Accept: application/json' \
+  -s | jq .
+
+# With recent_limit
+curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=3" \
+  -H 'Accept: application/json' \
+  -s | jq .
+
+# ============================================
+# Performance testing (with time)
+# ============================================
+time curl -X GET http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard \
+  -H 'Accept: application/json' \
+  -s -o /dev/null -w "%{time_total}s\n"
+
+# Target: p95 < 500ms
+
+# ============================================
+# Quick test sequence (all at once)
+# ============================================
+echo "=== Test 1: Valid request ==="
+curl -s http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard | jq .
+
+echo "\n=== Test 2: Invalid UUID ==="
+curl -s http://localhost:3001/api/groups/invalid-uuid/dashboard | jq .
+
+echo "\n=== Test 3: With recent_limit=5 ==="
+curl -s "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=5" | jq .
+
+echo "\n=== Test 4: Invalid recent_limit (100) ==="
+curl -s "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=100" | jq .
+

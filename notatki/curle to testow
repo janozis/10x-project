@@ -1,0 +1,44 @@
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/members" -H "Accept: application/json"
+
+
+
+curl -X POST http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/activities \
+  -d '{
+    "title":"Zabawa integracyjna",
+    "objective":"Integracja uczestników",
+    "tasks":"Lista punktów",
+    "duration_minutes":45,
+    "location":"Sala główna",
+    "materials":"Markery, kartki",
+    "responsible":"Jan Kowalski",
+    "knowledge_scope":"Komunikacja",
+    "participants":"Cała grupa",
+    "flow":"1. Wstęp\n2. Ćwiczenie\n3. Podsumowanie",
+    "summary":"Uczestnicy poznali się lepiej"
+  }'
+
+
+  # Podstawowa lista
+curl http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/activities -H "Accept: application/json" 
+
+# Filter status
+curl "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/activities?status=draft" -H "Accept: application/json"
+
+# Search (proste ILIKE)
+curl "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/activities?search=integr" -H "Accept: application/json"
+
+# Assigned tylko mnie (requires editors rel)
+curl "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/activities?assigned=me" -H "Accept: application/json"
+
+# Z limitem
+curl "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/activities?limit=10" -H "Accept: application/json"
+
+curl "http://localhost:3000/api/activities/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf" -H "Accept: application/json"
+
+curl -X PATCH http://localhost:3000/api/activities/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf \
+  -H "Accept: application/json" \
+  -d '{
+    "title":"Zabawa integracyjna (zmieniona)",
+    "duration_minutes":50,
+    "status":"review"
+  }'

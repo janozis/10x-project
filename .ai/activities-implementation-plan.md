@@ -95,7 +95,7 @@ Zestaw endpointów do zarządzania zasobem "Activity" (zajęcia) w kontekście k
 ## 6. Względy bezpieczeństwa
 - Autentykacja: każdy endpoint wymaga zalogowanego użytkownika (sprawdzenie session / `auth.uid()` przez Supabase RLS). Jeśli brak -> 401.
 - Autoryzacja: tworzenie/aktualizacja/usuwanie/przywracanie limitowane rolą (`admin` lub edytor). RLS zabezpiecza SELECT/UPDATE, ale aplikacja dodatkowo może szybciej zwrócić `FORBIDDEN_ROLE` przed wykonywaniem kosztownego zapytania.
-- Path Param Trust: `group_id` i `activity_id` nigdy nie z ciała; redukcja ryzyka overpostingu.
+- Path Param Trust: `group_id` i `activity_id` nigdy nie z body; redukcja ryzyka overpostingu.
 - Walidacja intensywna: brak pustych stringów – `min(1)` w Zod; `duration_minutes` w zakresie 5..1440.
 - Ochrona przed masową edycją: w PATCH wybieramy whitelistę kolumn.
 - Wyszukiwanie: zabezpieczenie przed SQL injection – Supabase builder + parametyzacja; dla tsquery: sanitizacja (plainto_tsquery) lub fallback ILIKE.
