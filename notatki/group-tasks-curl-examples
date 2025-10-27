@@ -1,0 +1,86 @@
+# Group Tasks CURL Examples
+
+# Replace <group_id>, <task_id>, <activity_id> with actual UUIDs.
+
+# List tasks (no filters)
+curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks" \
+  -H 'Accept: application/json'
+
+# List tasks filtered by status
+your_status="pending"
+curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks?status=${your_status}" \
+  -H 'Accept: application/json'
+
+# List tasks filtered by activity_id
+curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks?activity_id=<activity_id>" \
+  -H 'Accept: application/json'
+
+# Paginated list with limit and cursor (after you get nextCursor from previous response)
+cursor_value="<base64_cursor>"
+curl -X GET "http://localhost:3000/api/groups/<group_id>/tasks?limit=10&cursor=${cursor_value}" \
+  -H 'Accept: application/json'
+
+# Create task (without activity association)
+curl -X POST "http://localhost:3000/api/groups/<group_id>/tasks" \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Prepare materials","description":"Gather all needed items","due_date":"2025-11-05"}'
+
+# Create task (with activity association)
+curl -X POST "http://localhost:3000/api/groups/<group_id>/tasks" \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Refine activity flow","description":"Improve step sequence","activity_id":"<activity_id>"}'
+
+# Get single task
+curl -X GET "http://localhost:3000/api/tasks/<task_id>" \
+  -H 'Accept: application/json'
+
+# Patch task (change status to in_progress)
+curl -X PATCH "http://localhost:3000/api/tasks/<task_id>" \
+  -H 'Content-Type: application/json' \
+  -d '{"status":"in_progress"}'
+
+# Patch task (detach activity association)
+curl -X PATCH "http://localhost:3000/api/tasks/<task_id>" \
+  -H 'Content-Type: application/json' \
+  -d '{"activity_id":null}'
+
+# Patch task (multiple fields)
+curl -X PATCH "http://localhost:3000/api/tasks/<task_id>" \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Updated title","description":"Shortened description","due_date":"2025-12-01"}'
+
+# Delete task
+curl -X DELETE "http://localhost:3000/api/tasks/<task_id>" \
+  -H 'Accept: application/json'
+
+# Edge Cases
+# Invalid group UUID for list (expect 400 VALIDATION_ERROR)
+curl -X GET "http://localhost:3000/api/groups/invalid-uuid/tasks" \
+  -H 'Accept: application/json'
+
+# Invalid task UUID for single get (expect 400 VALIDATION_ERROR)
+curl -X GET "http://localhost:3000/api/tasks/invalid-uuid" \
+  -H 'Accept: application/json'
+
+# Activity id mismatch group (expect 400 BAD_REQUEST with details.activity_id=mismatched_group)
+curl -X POST "http://localhost:3000/api/groups/<group_id>/tasks" \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Bad link","description":"Wrong activity","activity_id":"<activity_id_from_other_group>"}'
+
+# Activity id not found (expect 400 BAD_REQUEST with details.activity_id=not_found)
+curl -X POST "http://localhost:3000/api/groups/<group_id>/tasks" \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Missing activity","description":"Should fail","activity_id":"00000000-0000-0000-0000-000000000000"}'
+
+# TASK_NOT_FOUND when fetching non-existing task
+curl -X GET "http://localhost:3000/api/tasks/00000000-0000-0000-0000-000000000000" \
+  -H 'Accept: application/json'
+
+# TASK_NOT_FOUND when deleting non-existing task
+curl -X DELETE "http://localhost:3000/api/tasks/00000000-0000-0000-0000-000000000000" \
+  -H 'Accept: application/json'
+
+# VALIDATION_ERROR on empty PATCH body (no fields) -> at least one required
+curl -X PATCH "http://localhost:3000/api/tasks/<task_id>" \
+  -H 'Content-Type: application/json' \
+  -d '{}' 

@@ -22,6 +22,8 @@ export const errors = {
   userNotInGroup: (details?: ErrorDetails) => make("USER_NOT_IN_GROUP", "User is not a member of the group", details),
   alreadyAssigned: (details?: ErrorDetails) => make("ALREADY_ASSIGNED", "Editor already assigned", details),
   activityNotFound: () => make("ACTIVITY_NOT_FOUND", "Activity not found"),
+  // Group tasks domain
+  taskNotFound: () => make("TASK_NOT_FOUND", "Task not found"),
   badRequest: (message = "Bad request", details?: ErrorDetails) => make("BAD_REQUEST", message, details),
   conflict: (message = "Conflict", details?: ErrorDetails) => make("CONFLICT", message, details),
   // AI evaluations domain

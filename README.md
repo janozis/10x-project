@@ -575,6 +575,125 @@ curl -X POST http://localhost:3000/api/activities/<activity_id>/editors -H 'Cont
 curl -X DELETE http://localhost:3000/api/activities/<activity_id>/editors/<user_id> -H 'Accept: application/json'
 ```
 
+### Group Tasks (New)
+
+Lightweight task tracking within a group, optionally linked to an activity (`activity_id`). Status workflow is simple (`pending` → `in_progress` → `done` or `canceled`) without enforced transitions.
+
+#### Data Model (DTO)
+```
+GroupTaskDTO {
+	id: string;
+	group_id: string;
+	activity_id: string | null; // optional link
+	title: string; // 1..200 chars
+	description: string; // 1..4000 chars
+	due_date: YYYY-MM-DD | null;
+	status: "pending" | "in_progress" | "done" | "canceled";
+	created_at: ISO timestamp;
+	updated_at: ISO timestamp;
+}
+```
+
+#### POST /api/groups/{group_id}/tasks
+Create a new task (admin or editor role).
+
+Body example:
+```
+{ "title": "Prepare materials", "description": "Gather all needed items", "due_date": "2025-11-05" }
+```
+Optional `activity_id` may be included; it must exist and belong to the same group.
+
+Validation:
+| Field | Rules |
+|-------|-------|
+| title | trimmed, 1..200 |
+| description | trimmed, 1..4000 |
+| due_date | YYYY-MM-DD or null omitted |
+| activity_id | UUID or null |
+
+Success (201): `{ "data": GroupTaskDTO }`
+
+Errors (selection):
+| Status | Code | Notes |
+|--------|------|-------|
+| 400 | VALIDATION_ERROR | Schema/body invalid |
+| 400 | BAD_REQUEST | `activity_id` mismatched_group / not_found details |
+| 401 | UNAUTHORIZED | Caller not member |
+| 403 | FORBIDDEN_ROLE | Role not admin/editor |
+| 404 | NOT_FOUND | Group masked (if membership pattern evolves) |
+| 500 | INTERNAL_ERROR | Insert failure |
+
+#### GET /api/groups/{group_id}/tasks
+List tasks for a group (any member). Supports filters & cursor pagination.
+
+Query Params:
+| Param | Type | Description |
+|-------|------|-------------|
+| status | enum | Filter by status |
+| activity_id | UUID | Filter tasks linked to activity |
+| limit | int 1..100 | Page size (default 20) |
+| cursor | string (opaque) | From previous page `nextCursor` |
+
+Cursor Format: base64 encoding of `created_at|id`.
+
+Success (200): `{ "data": GroupTaskDTO[], "nextCursor": "..." }`
+
+#### GET /api/tasks/{task_id}
+Fetch a single task. Caller must be a group member.
+
+Success (200): `{ "data": GroupTaskDTO }`
+Errors: `VALIDATION_ERROR` (bad UUID), `TASK_NOT_FOUND`, `UNAUTHORIZED`, `INTERNAL_ERROR`.
+
+#### PATCH /api/tasks/{task_id}
+Partial update (admin/editor). Any subset of fields allowed, at least one required.
+
+Body example:
+```
+{ "status": "in_progress", "due_date": "2025-12-01" }
+```
+Special cases:
+- `activity_id: null` removes association.
+- Changing `activity_id` validates existence + same group.
+
+Success (200): Updated `GroupTaskDTO` (idempotent if values unchanged).
+Errors include `BAD_REQUEST` (activity mismatch / not_found) & standard codes.
+
+#### DELETE /api/tasks/{task_id}
+Hard delete task (admin/editor).
+
+Success (200): `{ "data": { "id": "<uuid>" } }`
+Errors: `TASK_NOT_FOUND`, `FORBIDDEN_ROLE`, `UNAUTHORIZED`, `INTERNAL_ERROR`.
+
+#### Status Mapping Summary (Group Tasks)
+| Code | HTTP |
+|------|------|
+| VALIDATION_ERROR / BAD_REQUEST | 400 |
+| UNAUTHORIZED | 401 |
+| FORBIDDEN_ROLE | 403 |
+| TASK_NOT_FOUND | 404 |
+| CONFLICT | 409 |
+| INTERNAL_ERROR | 500 |
+
+#### Example curl
+```bash
+# List tasks
+curl -X GET http://localhost:3000/api/groups/<group_id>/tasks -H 'Accept: application/json'
+
+# Create task
+curl -X POST http://localhost:3000/api/groups/<group_id>/tasks -H 'Content-Type: application/json' \\
+	-d '{"title":"Prepare materials","description":"Gather all needed items","due_date":"2025-11-05"}'
+
+# Get single task
+curl -X GET http://localhost:3000/api/tasks/<task_id> -H 'Accept: application/json'
+
+# Update status
+curl -X PATCH http://localhost:3000/api/tasks/<task_id> -H 'Content-Type: application/json' \\
+	-d '{"status":"in_progress"}'
+
+# Delete task
+curl -X DELETE http://localhost:3000/api/tasks/<task_id> -H 'Accept: application/json'
+```
+
 ## License
 MIT License. See the LICENSE file (to be added) or include one when forking.
 

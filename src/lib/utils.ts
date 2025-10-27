@@ -39,3 +39,33 @@ export function nextActivityCursorFromPage<T extends { created_at: string; id: s
   const last = rows[rows.length - 1];
   return encodeActivityCursor(last.created_at, last.id);
 }
+
+// =====================
+// Cursor Helpers for Group Tasks pagination
+// Reuse same opaque format as activities for consistency: base64("created_at|id")
+// =====================
+
+export function encodeGroupTaskCursor(created_at: string, id: string): string {
+  return Buffer.from(`${created_at}|${id}`, "utf-8").toString("base64");
+}
+
+export function parseGroupTaskCursor(cursor: string): { created_at: string; id: string } | null {
+  try {
+    const decoded = Buffer.from(cursor, "base64").toString("utf-8");
+    const [created_at, id] = decoded.split("|");
+    if (!created_at || !id) return null;
+    if (!/^\d{4}-\d{2}-\d{2}T/.test(created_at)) return null;
+    if (!/^[0-9a-fA-F-]{36}$/.test(id)) return null;
+    return { created_at, id };
+  } catch {
+    return null;
+  }
+}
+
+export function nextGroupTaskCursorFromPage<T extends { created_at: string; id: string }>(
+  rows: T[]
+): string | undefined {
+  if (!rows.length) return undefined;
+  const last = rows[rows.length - 1];
+  return encodeGroupTaskCursor(last.created_at, last.id);
+}

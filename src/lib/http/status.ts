@@ -11,6 +11,8 @@ export function statusForErrorCode(code: ApiErrorCode): number {
     case "FORBIDDEN_ROLE":
       return 403;
     case "NOT_FOUND":
+    case "TASK_NOT_FOUND":
+    case "ACTIVITY_NOT_FOUND":
       return 404;
     case "VALIDATION_ERROR":
     case "ROLE_INVALID":
