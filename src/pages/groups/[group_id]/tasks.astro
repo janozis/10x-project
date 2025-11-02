@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import TasksBoard from "@/components/groups/tasks/TasksBoard.tsx";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import type { ApiSingle, GroupDTO } from "@/types";
+
+export const prerender = false;
+
+const groupId = Astro.params.group_id!;
+const url = new URL(Astro.request.url);
+const defaultActivityId = url.searchParams.get("activity_id") || undefined;
+
+if (!groupId) {
+  Astro.response.status = 400;
+  throw new Error("group_id is required");
+}
+
+// Fetch group details for breadcrumb
+const groupUrl = new URL(`/api/groups/${groupId}`, Astro.url);
+const groupRes = await fetch(groupUrl);
+
+let groupDto: GroupDTO | null = null;
+if (groupRes.ok) {
+  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
+  groupDto = body.data;
+}
+---
+
+<Layout title="Zadania grupy">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-6xl">
+      <Breadcrumb items={[
+        { label: "Lista grup", href: "/groups" },
+        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` }
+      ]} />
+      <h1 class="mb-4 text-2xl font-semibold tracking-tight">Zadania</h1>
+      <TasksBoard client:load groupId={groupId} defaultActivityId={defaultActivityId} />
+    </div>
+  </main>
+</Layout>
+
+
+

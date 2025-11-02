@@ -1,0 +1,55 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ActivityDetailsView } from "@/components/activities/details/ActivityDetailsView";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import type { ApiSingle, ActivityDTO, GroupDTO } from "@/types";
+
+export const prerender = false;
+
+const activityId = Astro.params.activity_id!;
+
+if (!activityId) {
+  Astro.response.status = 400;
+  throw new Error("activity_id is required");
+}
+
+// Fetch activity details to get group_id
+const activityUrl = new URL(`/api/activities/${activityId}`, Astro.url);
+const activityRes = await fetch(activityUrl);
+
+let activityDto: ActivityDTO | null = null;
+let groupDto: GroupDTO | null = null;
+
+if (activityRes.ok) {
+  const body = (await activityRes.json()) as ApiSingle<ActivityDTO>;
+  activityDto = body.data;
+  
+  // Fetch group details for breadcrumb
+  if (activityDto?.group_id) {
+    const groupUrl = new URL(`/api/groups/${activityDto.group_id}`, Astro.url);
+    const groupRes = await fetch(groupUrl);
+    
+    if (groupRes.ok) {
+      const groupBody = (await groupRes.json()) as ApiSingle<GroupDTO>;
+      groupDto = groupBody.data;
+    }
+  }
+}
+---
+
+<Layout title="Szczegóły aktywności">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-5xl">
+      {activityDto?.group_id && (
+        <Breadcrumb items={[
+          { label: "Lista grup", href: "/groups" },
+          { label: groupDto?.name || "Grupa", href: `/groups/${activityDto.group_id}/dashboard` },
+          { label: "Aktywności", href: `/groups/${activityDto.group_id}/activities` }
+        ]} />
+      )}
+      <ActivityDetailsView client:load activityId={activityId} />
+    </div>
+  </main>
+</Layout>
+
+

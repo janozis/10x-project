@@ -1,11 +1,12 @@
 import type { Tables } from "../../db/database.types";
-import type { ActivityEditorDTO, ActivityWithEditorsDTO } from "../../types";
+import type { ActivityEditorDTO, ActivityWithEditorsDTO, TimestampISO } from "../../types";
 
 // Map raw DB activity row + related editor rows to ActivityWithEditorsDTO.
 // Excludes deleted_at (soft delete) from editors output logic; caller decides visibility.
 export function mapActivityRow(
   row: Tables<"activities">,
-  editors: Tables<"activity_editors">[]
+  editors: Tables<"activity_editors">[],
+  latestAIEvaluation?: { lore_score: number; scouting_values_score: number; version: number; created_at: string } | null
 ): ActivityWithEditorsDTO {
   const editorDTOs: ActivityEditorDTO[] = editors.map((e) => ({
     activity_id: e.activity_id,
@@ -34,5 +35,11 @@ export function mapActivityRow(
     created_at: row.created_at,
     updated_at: row.updated_at,
     editors: editorDTOs,
+    latest_ai_evaluation: latestAIEvaluation ? {
+      lore_score: latestAIEvaluation.lore_score,
+      scouting_values_score: latestAIEvaluation.scouting_values_score,
+      version: latestAIEvaluation.version,
+      created_at: latestAIEvaluation.created_at as TimestampISO,
+    } : null,
   };
 }

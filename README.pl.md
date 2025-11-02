@@ -90,12 +90,25 @@ npm run preview
 4. Uzupełnij dokumentację / komentarze jeśli trzeba
 5. Otwórz Pull Request
 
-### Zmienne środowiskowe (planowane)
+### Zmienne środowiskowe
+Utwórz plik `.env` w głównym katalogu projektu z następującymi zmiennymi:
+
+```bash
+# Supabase Configuration
+# Get these from: https://supabase.com/dashboard/project/_/settings/api
+PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+PUBLIC_SUPABASE_KEY=your-anon-key-here
+
+# Alternative keys for Node.js environments (workers)
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your-anon-key-here
+
+# OpenRouter API Configuration (required for AI evaluation worker)
+# Get your API key from: https://openrouter.ai/keys
+OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
-```
-Zostaną użyte przy integracji z Supabase (auth, realtime, przechowywanie danych).
+
+**Ważne:** Dodaj plik `.env` do `.gitignore` (powinien być już dodany). Nie commituj kluczy API!
 
 ## Dostępne skrypty
 | Skrypt | Cel |

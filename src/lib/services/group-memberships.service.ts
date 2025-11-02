@@ -110,7 +110,25 @@ export async function listMembers(
       listError: error.message,
     });
   }
-  const dtos = (rows ?? []).map(mapMembershipRowToDTO);
+
+  // Fetch user emails from auth.users for all members
+  const userIds = (rows ?? []).map((row) => row.user_id);
+  const { data: authUsers } = await supabase.auth.admin.listUsers();
+  const emailMap = new Map<string, string>();
+  authUsers?.users.forEach((user) => {
+    if (user.id && user.email) {
+      emailMap.set(user.id, user.email);
+    }
+  });
+
+  const dtos = (rows ?? []).map((row) => {
+    const dto = mapMembershipRowToDTO(row);
+    const email = emailMap.get(row.user_id);
+    if (email) {
+      return { ...dto, user_email: email };
+    }
+    return dto;
+  });
   return { data: dtos, count: dtos.length };
 }
 

@@ -20,6 +20,7 @@ export interface ActivitiesListFilters {
   search?: string;
   limit?: number;
   cursor?: string;
+  deleted?: "only";
 }
 
 // Whitelisted update columns for PATCH
@@ -57,13 +58,27 @@ async function fetchUserGroupPermissions(
   groupId: UUID,
   userId: UUID
 ): Promise<{ role: string | null; can_edit_all: boolean | null; can_edit_assigned_only: boolean | null }> {
+  if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.log("[fetchUserGroupPermissions] Querying:", { groupId, userId });
+  }
   const { data, error } = await supabase
     .from("user_group_permissions")
     .select("role, can_edit_all, can_edit_assigned_only")
     .eq("group_id", groupId)
     .eq("user_id", userId)
     .maybeSingle();
-  if (error) return { role: null, can_edit_all: null, can_edit_assigned_only: null };
+  if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.log("[fetchUserGroupPermissions] Result:", { data, error, hasData: !!data });
+  }
+  if (error) {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.error("[fetchUserGroupPermissions] Database error:", error);
+    }
+    return { role: null, can_edit_all: null, can_edit_assigned_only: null };
+  }
   return data ?? { role: null, can_edit_all: null, can_edit_assigned_only: null };
 }
 
@@ -90,7 +105,7 @@ export async function createActivity(
   };
   const { data, error } = await supabase.from("activities").insert(insertPayload).select("*").maybeSingle();
   if (error || !data) return internal(error?.message || "insert failed");
-  return { data: mapActivityRow(data, []) };
+  return { data: mapActivityRow(data, [], null) };
 }
 
 export async function listActivities(
@@ -100,11 +115,27 @@ export async function listActivities(
   filters: ActivitiesListFilters
 ): Promise<ApiListResponse<ActivityWithEditorsDTO>> {
   const authUserId = effectiveUserId(userId);
+  if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.log("[listActivities] Checking permissions:", { authUserId, groupId });
+  }
   const perms = await fetchUserGroupPermissions(supabase, groupId, authUserId);
-  if (!perms.role) return unauthorized();
+  if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.log("[listActivities] Permissions result:", { perms, hasRole: !!perms.role });
+  }
+  if (!perms.role) {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.warn("[listActivities] Unauthorized - user has no role in group");
+    }
+    return unauthorized();
+  }
 
   const limit = filters.limit ?? 20;
-  const base = supabase.from("activities").select("*").eq("group_id", groupId).is("deleted_at", null);
+  const base = supabase.from("activities").select("*").eq("group_id", groupId);
+  if (filters.deleted === "only") base.not("deleted_at", "is", null);
+  else base.is("deleted_at", null);
 
   if (filters.status) base.eq("status", filters.status);
 
@@ -151,12 +182,56 @@ export async function listActivities(
     });
   }
 
+  // Fetch latest AI evaluation for each activity (optimized: only fetch max version per activity)
+  interface LatestAIEvaluationRow {
+    activity_id: string;
+    lore_score: number;
+    scouting_values_score: number;
+    version: number;
+    created_at: string;
+  }
+  const aiEvaluationsMap: Record<string, LatestAIEvaluationRow> = {};
+  if (activityIds.length) {
+    // Try to use optimized RPC function first (uses DISTINCT ON at database level)
+    const { data: rpcData, error: rpcErr } = await supabase.rpc('get_latest_ai_evaluations', {
+      p_activity_ids: activityIds
+    });
+    
+    if (!rpcErr && rpcData) {
+      // RPC succeeded - use the results
+      rpcData.forEach((r: LatestAIEvaluationRow) => {
+        aiEvaluationsMap[r.activity_id] = r;
+      });
+    } else if (rpcErr?.code === '42883' || rpcErr?.message?.includes('function') || rpcErr?.message?.includes('does not exist')) {
+      // RPC function doesn't exist (old migration) - fallback to client-side deduplication
+      // This still only fetches evaluations for activities in current page (activityIds)
+      const { data: aiEvalRows, error: aiEvalErr } = await supabase
+        .from("ai_evaluations")
+        .select("activity_id, lore_score, scouting_values_score, version, created_at")
+        .in("activity_id", activityIds)
+        .order("activity_id")
+        .order("version", { ascending: false });
+      
+      if (aiEvalErr) return internal(aiEvalErr.message);
+      
+      // Keep only the first (highest version) evaluation for each activity_id
+      (aiEvalRows || []).forEach((r) => {
+        if (!aiEvaluationsMap[r.activity_id]) {
+          aiEvaluationsMap[r.activity_id] = r;
+        }
+      });
+    } else {
+      // Other error - propagate it
+      return internal(rpcErr.message);
+    }
+  }
+
   let filteredRows = rows;
   if (filters.assigned === "me") {
     filteredRows = rows.filter((r) => (editorsMap[r.id] || []).some((e) => e.user_id === authUserId));
   }
 
-  const dtos = filteredRows.map((r) => mapActivityRow(r, editorsMap[r.id] || []));
+  const dtos = filteredRows.map((r) => mapActivityRow(r, editorsMap[r.id] || [], aiEvaluationsMap[r.id] || null));
   const nextCursor = nextActivityCursorFromPage(filteredRows);
   return { data: dtos, nextCursor };
 }
@@ -183,7 +258,7 @@ export async function getActivity(
     .select("*")
     .eq("activity_id", activityId);
   if (editorsErr) return internal(editorsErr.message);
-  return { data: mapActivityRow(row, editorRows || []) };
+  return { data: mapActivityRow(row, editorRows || [], null) };
 }
 
 export async function updateActivity(
@@ -241,7 +316,7 @@ export async function updateActivity(
     .select("*")
     .eq("activity_id", activityId);
   if (editorRowsErr) return internal(editorRowsErr.message);
-  return { data: mapActivityRow(updatedRow, editorRows || []) };
+  return { data: mapActivityRow(updatedRow, editorRows || [], null) };
 }
 
 export async function softDeleteActivity(
@@ -294,5 +369,5 @@ export async function restoreActivity(
     .select("*")
     .eq("activity_id", activityId);
   if (editorsErr) return internal(editorsErr.message);
-  return { data: mapActivityRow(restoredRow, editorRows || []) };
+  return { data: mapActivityRow(restoredRow, editorRows || [], null) };
 }

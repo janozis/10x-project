@@ -1,0 +1,121 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import type { ApiError, ApiSingle, GroupDashboardDTO, GroupPermissionsDTO, GroupStatus, GroupDTO } from "@/types";
+import { ArchivedBanner } from "@/components/groups/ArchivedBanner";
+import { GroupDashboardTiles } from "@/components/groups/GroupDashboardTiles";
+import { GroupDashboardTilesClient } from "@/components/groups/GroupDashboardTilesClient";
+import type { DashboardTilesVM } from "@/lib/dashboard/types";
+import { mapDashboardToTilesVM } from "@/lib/mappers/dashboard-tiles.mapper";
+import { DashboardShortcuts } from "@/components/groups/DashboardShortcuts";
+import { QuickTaskForm } from "@/components/groups/QuickTaskForm";
+import { RecentActivityFeed } from "@/components/groups/RecentActivityFeed";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+
+export const prerender = false;
+
+const groupId = Astro.params.group_id!;
+
+if (!groupId) {
+  Astro.response.status = 400;
+  throw new Error("group_id is required");
+}
+
+// Fetch dashboard and permissions in parallel via internal API
+const dashboardUrl = new URL(`/api/groups/${groupId}/dashboard`, Astro.url);
+const permissionsUrl = new URL(`/api/groups/${groupId}/permissions`, Astro.url);
+const groupUrl = new URL(`/api/groups/${groupId}`, Astro.url);
+
+const [dashboardRes, permissionsRes, groupRes] = await Promise.all([
+  fetch(dashboardUrl),
+  fetch(permissionsUrl),
+  fetch(groupUrl),
+]);
+
+let dashboardDto: GroupDashboardDTO | null = null;
+let permissionsDto: GroupPermissionsDTO | null = null;
+let groupDto: GroupDTO | null = null;
+let errorMessage: string | null = null;
+
+if (!dashboardRes.ok) {
+  const body = (await dashboardRes.json()) as ApiError;
+  Astro.response.status = dashboardRes.status;
+  errorMessage = body.error?.message || "Nie udało się załadować danych z pulpitu.";
+} else {
+  const body = (await dashboardRes.json()) as ApiSingle<GroupDashboardDTO>;
+  dashboardDto = body.data;
+}
+
+if (permissionsRes.ok) {
+  const body = (await permissionsRes.json()) as ApiSingle<GroupPermissionsDTO>;
+  permissionsDto = body.data;
+} // permissions error is non-fatal for initial SSR tiles; controls visibility of client actions
+
+if (groupRes.ok) {
+  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
+  groupDto = body.data;
+}
+
+// Optional: fetch group status for ArchivedBanner
+let groupStatus: GroupStatus | undefined = undefined;
+try {
+  const supabase = Astro.locals.supabase;
+  if (supabase) {
+    const { data } = await supabase
+      .from("groups")
+      .select("status")
+      .eq("id", groupId)
+      .maybeSingle();
+    groupStatus = (data?.status as GroupStatus) ?? undefined;
+  }
+} catch (e) {
+  // non-fatal, ignore
+}
+
+const tilesVm: DashboardTilesVM | null = dashboardDto ? mapDashboardToTilesVM(dashboardDto, permissionsDto ?? undefined) : null;
+---
+
+<Layout title="Pulpit grupy">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-6xl">
+      <Breadcrumb items={[{ label: "Lista grup", href: "/groups" }]} />
+      <h1 class="mb-4 text-2xl font-semibold tracking-tight">{groupDto?.name || "Pulpit grupy"}</h1>
+
+      <ArchivedBanner status={groupStatus} />
+
+      {errorMessage ? (
+        <div role="alert" class="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">
+          {errorMessage}
+        </div>
+      ) : null}
+
+      {tilesVm ? (
+        <GroupDashboardTilesClient client:load groupId={groupId} initialVm={tilesVm} permissions={permissionsDto} />
+      ) : (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div class="h-28 rounded-md bg-muted animate-pulse" key={i} />
+          ))}
+        </div>
+      )}
+
+      <DashboardShortcuts groupId={groupId} permissions={permissionsDto} />
+
+      {permissionsDto ? (
+        <QuickTaskForm
+          client:load
+          groupId={groupId}
+          canCreate={permissionsDto.role === "admin" || permissionsDto.role === "editor"}
+          onCreated={() => {
+            // Realtime/refetch will be added in the next iteration
+          }}
+        />
+      ) : null}
+
+      {dashboardDto ? (
+        <RecentActivityFeed groupId={groupId} initialItems={dashboardDto.recent_activity} />
+      ) : null}
+    </div>
+  </main>
+</Layout>
+
+

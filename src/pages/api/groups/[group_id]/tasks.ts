@@ -26,20 +26,39 @@ export const GET: APIRoute = async (ctx) => {
   const supabase = ctx.locals.supabase;
   const userId = ctx.locals.user?.id || DEFAULT_USER_ID;
   const groupId = ctx.params.group_id || "";
-  if (!supabase) return new Response(JSON.stringify(errors.internal("Supabase client not available")), { status: 500 });
+  if (!supabase) {
+    return new Response(JSON.stringify(errors.internal("Supabase client not available")), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   if (!/^[0-9a-fA-F-]{36}$/.test(groupId)) {
     const err = errors.validation({ group_id: "invalid uuid" });
-    return new Response(JSON.stringify(err), { status: 400 });
+    return new Response(JSON.stringify(err), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
   const qp = Object.fromEntries(new URL(ctx.request.url).searchParams.entries());
   const parsed = listQuerySchema.safeParse(qp);
   if (!parsed.success) {
     const err = errors.validation(zodErrorToDetails(parsed.error));
-    return new Response(JSON.stringify(err), { status: 400 });
+    return new Response(JSON.stringify(err), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
   const result = await listGroupTasks(supabase, userId, groupId, parsed.data);
-  if ("error" in result) return new Response(JSON.stringify(result), { status: statusForErrorCode(result.error.code) });
-  return new Response(JSON.stringify(result), { status: 200 });
+  if ("error" in result) {
+    return new Response(JSON.stringify(result), {
+      status: statusForErrorCode(result.error.code),
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  return new Response(JSON.stringify(result), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 // POST /api/groups/[group_id]/tasks
@@ -47,23 +66,45 @@ export const POST: APIRoute = async (ctx) => {
   const supabase = ctx.locals.supabase;
   const userId = ctx.locals.user?.id || DEFAULT_USER_ID;
   const groupId = ctx.params.group_id || "";
-  if (!supabase) return new Response(JSON.stringify(errors.internal("Supabase client not available")), { status: 500 });
+  if (!supabase) {
+    return new Response(JSON.stringify(errors.internal("Supabase client not available")), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   if (!/^[0-9a-fA-F-]{36}$/.test(groupId)) {
     const err = errors.validation({ group_id: "invalid uuid" });
-    return new Response(JSON.stringify(err), { status: 400 });
+    return new Response(JSON.stringify(err), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
   let jsonBody: unknown;
   try {
     jsonBody = await ctx.request.json();
   } catch {
-    return new Response(JSON.stringify(errors.validation({ body: "Invalid or missing JSON" })), { status: 400 });
+    return new Response(JSON.stringify(errors.validation({ body: "Invalid or missing JSON" })), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
   const parsed = groupTaskCreateSchema.safeParse(jsonBody);
   if (!parsed.success) {
     const err = errors.validation(zodErrorToDetails(parsed.error));
-    return new Response(JSON.stringify(err), { status: 400 });
+    return new Response(JSON.stringify(err), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
   const result = await createGroupTask(supabase, userId, groupId, parsed.data);
-  if ("error" in result) return new Response(JSON.stringify(result), { status: statusForErrorCode(result.error.code) });
-  return new Response(JSON.stringify(result), { status: 201 });
+  if ("error" in result) {
+    return new Response(JSON.stringify(result), {
+      status: statusForErrorCode(result.error.code),
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  return new Response(JSON.stringify(result), {
+    status: 201,
+    headers: { "Content-Type": "application/json" },
+  });
 };

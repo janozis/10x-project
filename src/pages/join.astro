@@ -1,0 +1,14 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import JoinCard from "@/components/JoinCard.tsx";
+
+export const prerender = false;
+
+const initialCode = Astro.url.searchParams.get("code") || undefined;
+---
+
+<Layout title="Dołącz do grupy">
+  <main class="min-h-screen flex items-center justify-center p-4">
+    <JoinCard client:load initialCode={initialCode} />
+  </main>
+</Layout>

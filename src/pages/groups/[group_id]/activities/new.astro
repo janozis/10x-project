@@ -1,0 +1,42 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import NewActivityStepper from "@/components/activities/new/NewActivityStepper";
+import { Toaster } from "@/components/ui/sonner";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import type { ApiSingle, GroupDTO } from "@/types";
+
+export const prerender = false;
+
+const { group_id } = Astro.params;
+
+if (!group_id) {
+  Astro.response.status = 400;
+  throw new Error("Parametr group_id jest wymagany");
+}
+
+// Fetch group details for breadcrumb
+const groupUrl = new URL(`/api/groups/${group_id}`, Astro.url);
+const groupRes = await fetch(groupUrl);
+
+let groupDto: GroupDTO | null = null;
+if (groupRes.ok) {
+  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
+  groupDto = body.data;
+}
+---
+
+<Layout title="Nowa aktywność">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-4xl">
+      <Breadcrumb items={[
+        { label: "Lista grup", href: "/groups" },
+        { label: groupDto?.name || "Grupa", href: `/groups/${group_id}/dashboard` },
+        { label: "Aktywności", href: `/groups/${group_id}/activities` }
+      ]} />
+      <NewActivityStepper groupId={group_id} client:load />
+    </div>
+  </main>
+  <Toaster client:load />
+</Layout>
+
+

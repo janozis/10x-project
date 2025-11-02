@@ -128,6 +128,7 @@ export interface GroupDTO
 /** GROUP MEMBERSHIP */
 export type GroupMemberDTO = Pick<GroupMembershipEntity, "user_id" | "role" | "joined_at"> & {
   group_id: UUID; // Optional exposure (can be omitted if redundant)
+  user_email?: string; // Optional email from auth.users (for user-facing displays)
 };
 
 /** ACTIVITY */
@@ -406,4 +407,55 @@ export interface WithMeta<T> {
  */
 export interface ActivityWithEditorsDTO extends ActivityDTO {
   editors: ActivityEditorDTO[];
+  latest_ai_evaluation?: {
+    lore_score: number;
+    scouting_values_score: number;
+    version: number;
+    created_at: TimestampISO;
+  } | null;
+}
+
+/** =====================
+ *  LLM / AI Integration Types
+ *  ===================== */
+
+/** Role in LLM conversation */
+export type LlmRole = 'system' | 'user' | 'assistant' | 'tool';
+
+/** Single message in LLM conversation */
+export interface LlmMessage {
+  role: LlmRole;
+  content: string;
+}
+
+/** Result from LLM completion request */
+export interface LlmCompletionResult {
+  id: string;
+  model: string;
+  created: number;
+  content: string;
+  usage?: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+}
+
+/** LLM API error codes */
+export type LlmErrorCode =
+  | 'LLM_CONFIG_ERROR'
+  | 'LLM_AUTH_ERROR'
+  | 'LLM_RATE_LIMIT'
+  | 'LLM_UPSTREAM_ERROR'
+  | 'LLM_TIMEOUT'
+  | 'LLM_INVALID_RESPONSE'
+  | 'LLM_VALIDATION_ERROR'
+  | 'LLM_PAYLOAD_TOO_LARGE';
+
+/** LLM API error */
+export interface LlmApiError {
+  code: LlmErrorCode;
+  message: string;
+  statusCode: number;
+  details?: Record<string, unknown>;
 }

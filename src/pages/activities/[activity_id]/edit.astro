@@ -1,0 +1,86 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ActivityEditorApp } from "@/components/activities/editor/ActivityEditorApp";
+import { Toaster } from "@/components/ui/sonner";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import type { ApiSingle, ActivityDTO, GroupDTO, CampDayDTO } from "@/types";
+
+export const prerender = false;
+
+const activityId = Astro.params.activity_id!;
+
+if (!activityId) {
+  Astro.response.status = 400;
+  throw new Error("activity_id is required");
+}
+
+// Check if we're coming from a camp day view
+const urlParams = new URL(Astro.request.url).searchParams;
+const fromCampDay = urlParams.get("from") === "camp-day";
+const campDayId = urlParams.get("camp_day_id");
+
+// Fetch activity details to get group_id
+const activityUrl = new URL(`/api/activities/${activityId}`, Astro.url);
+const activityRes = await fetch(activityUrl);
+
+let activityDto: ActivityDTO | null = null;
+let groupDto: GroupDTO | null = null;
+let campDayDto: CampDayDTO | null = null;
+
+if (activityRes.ok) {
+  const body = (await activityRes.json()) as ApiSingle<ActivityDTO>;
+  activityDto = body.data;
+  
+  // Fetch group details for breadcrumb
+  if (activityDto?.group_id) {
+    const groupUrl = new URL(`/api/groups/${activityDto.group_id}`, Astro.url);
+    const groupRes = await fetch(groupUrl);
+    
+    if (groupRes.ok) {
+      const groupBody = (await groupRes.json()) as ApiSingle<GroupDTO>;
+      groupDto = groupBody.data;
+    }
+
+    // If coming from camp day, fetch camp day details
+    if (fromCampDay && campDayId) {
+      const campDayUrl = new URL(`/api/camp-days/${campDayId}`, Astro.url);
+      const campDayRes = await fetch(campDayUrl);
+      
+      if (campDayRes.ok) {
+        const campDayBody = (await campDayRes.json()) as ApiSingle<CampDayDTO>;
+        campDayDto = campDayBody.data;
+      }
+    }
+  }
+}
+
+// Build breadcrumb items dynamically
+const breadcrumbItems = activityDto?.group_id ? [
+  { label: "Lista grup", href: "/groups" },
+  { label: groupDto?.name || "Grupa", href: `/groups/${activityDto.group_id}/dashboard` },
+  ...(fromCampDay && campDayDto ? [
+    { label: "Dni obozu", href: `/groups/${activityDto.group_id}/camp-days` },
+    { 
+      label: campDayDto.theme || `Dzień ${campDayDto.day_number}`, 
+      href: `/groups/${activityDto.group_id}/camp-days/${campDayDto.id}` 
+    }
+  ] : [
+    { label: "Aktywności", href: `/groups/${activityDto.group_id}/activities` }
+  ])
+] : [];
+---
+
+<Layout title="Edytor aktywności">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-5xl">
+      {breadcrumbItems.length > 0 && (
+        <Breadcrumb items={breadcrumbItems} />
+      )}
+      <ActivityEditorApp client:load activityId={activityId} />
+    </div>
+  </main>
+  <Toaster client:load />
+  
+</Layout>
+
+

@@ -1,0 +1,39 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ActivitiesListShell from "@/components/activities/ActivitiesListShell.tsx";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import type { ApiSingle, GroupDTO } from "@/types";
+
+export const prerender = false;
+
+const { group_id } = Astro.params;
+
+if (!group_id) {
+  Astro.response.status = 400;
+  throw new Error("group_id is required");
+}
+
+// Fetch group details for breadcrumb
+const groupUrl = new URL(`/api/groups/${group_id}`, Astro.url);
+const groupRes = await fetch(groupUrl);
+
+let groupDto: GroupDTO | null = null;
+if (groupRes.ok) {
+  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
+  groupDto = body.data;
+}
+---
+
+<Layout title="Aktywności">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-6xl">
+      <Breadcrumb items={[
+        { label: "Lista grup", href: "/groups" },
+        { label: groupDto?.name || "Grupa", href: `/groups/${group_id}/dashboard` }
+      ]} />
+      <ActivitiesListShell groupId={group_id} client:load />
+    </div>
+  </main>
+</Layout>
+
+

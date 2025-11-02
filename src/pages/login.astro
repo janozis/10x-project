@@ -1,0 +1,23 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import LoginCard from "@/components/auth/LoginCard.tsx";
+
+export const prerender = false;
+
+function sanitizeRedirect(raw: string | null): string | undefined {
+  if (!raw) return undefined;
+  if (!raw.startsWith("/")) return undefined;
+  if (raw.startsWith("//")) return undefined; // protocol-relative
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw)) return undefined; // protocol present
+  return raw;
+}
+
+const redirectParam = Astro.url.searchParams.get("redirect");
+const redirectTo = sanitizeRedirect(redirectParam);
+---
+
+<Layout title="Logowanie" hideTopbar={true}>
+  <main class="min-h-screen flex items-center justify-center p-4">
+    <LoginCard client:load redirectTo={redirectTo} />
+  </main>
+</Layout>

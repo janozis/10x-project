@@ -26,7 +26,7 @@ curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f52
 # ============================================
 # Test 2: Invalid UUID format (400 VALIDATION_ERROR)
 # ============================================
-curl -X GET http://localhost:3001/api/groups/invalid-uuid/dashboard \
+curl -X GET http://localhost:3000/api/groups/invalid-uuid/dashboard \
   -H 'Accept: application/json' \
   -v
 
@@ -44,7 +44,7 @@ curl -X GET http://localhost:3001/api/groups/invalid-uuid/dashboard \
 # Test 3: User not a member (404 NOT_FOUND)
 # ============================================
 # Note: To test this, use a group_id where current user is NOT a member
-curl -X GET http://localhost:3001/api/groups/00000000-0000-0000-0000-000000000000/dashboard \
+curl -X GET http://localhost:3000/api/groups/00000000-0000-0000-0000-000000000000/dashboard \
   -H 'Accept: application/json' \
   -v
 
@@ -60,7 +60,7 @@ curl -X GET http://localhost:3001/api/groups/00000000-0000-0000-0000-00000000000
 # ============================================
 # Test 4: With recent_limit parameter (200 OK)
 # ============================================
-curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=5" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard?recent_limit=5" \
   -H 'Accept: application/json' \
   -v
 
@@ -70,7 +70,7 @@ curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4
 # Test 5: Invalid recent_limit value (400 VALIDATION_ERROR)
 # ============================================
 # Test with value > 50 (max allowed)
-curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=100" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard?recent_limit=100" \
   -H 'Accept: application/json' \
   -v
 
@@ -87,7 +87,7 @@ curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4
 # }
 
 # Test with value < 1 (min allowed)
-curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=0" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard?recent_limit=0" \
   -H 'Accept: application/json' \
   -v
 
@@ -104,7 +104,7 @@ curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4
 # }
 
 # Test with non-numeric value
-curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=abc" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard?recent_limit=abc" \
   -H 'Accept: application/json' \
   -v
 
@@ -115,7 +115,7 @@ curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4
 # ============================================
 
 # Group with no activities (should return zeros)
-curl -X GET http://localhost:3001/api/groups/<empty_group_id>/dashboard \
+curl -X GET http://localhost:3000/api/groups/<empty_group_id>/dashboard \
   -H 'Accept: application/json' \
   -v
 
@@ -135,19 +135,19 @@ curl -X GET http://localhost:3001/api/groups/<empty_group_id>/dashboard \
 # ============================================
 # Pretty JSON output (with jq)
 # ============================================
-curl -X GET http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard \
+curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard \
   -H 'Accept: application/json' \
   -s | jq .
 
 # With recent_limit
-curl -X GET "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=3" \
+curl -X GET "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard?recent_limit=3" \
   -H 'Accept: application/json' \
   -s | jq .
 
 # ============================================
 # Performance testing (with time)
 # ============================================
-time curl -X GET http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard \
+time curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard \
   -H 'Accept: application/json' \
   -s -o /dev/null -w "%{time_total}s\n"
 
@@ -157,14 +157,14 @@ time curl -X GET http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5
 # Quick test sequence (all at once)
 # ============================================
 echo "=== Test 1: Valid request ==="
-curl -s http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard | jq .
+curl -s http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard | jq .
 
 echo "\n=== Test 2: Invalid UUID ==="
-curl -s http://localhost:3001/api/groups/invalid-uuid/dashboard | jq .
+curl -s http://localhost:3000/api/groups/invalid-uuid/dashboard | jq .
 
 echo "\n=== Test 3: With recent_limit=5 ==="
-curl -s "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=5" | jq .
+curl -s "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard?recent_limit=5" | jq .
 
 echo "\n=== Test 4: Invalid recent_limit (100) ==="
-curl -s "http://localhost:3001/api/groups/5ffb7d27-2b68-4785-a1b6-c377f5efc4cf/dashboard?recent_limit=100" | jq .
+curl -s "http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/dashboard?recent_limit=100" | jq .
 

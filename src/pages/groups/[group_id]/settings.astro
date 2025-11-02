@@ -1,0 +1,40 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { GroupSettingsView } from "@/components/groups/GroupSettingsView";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import type { ApiSingle, GroupDTO } from "@/types";
+
+export const prerender = false;
+
+const groupId = Astro.params.group_id!;
+
+if (!groupId) {
+  Astro.response.status = 400;
+  throw new Error("group_id is required");
+}
+
+// Fetch group details for breadcrumb
+const groupUrl = new URL(`/api/groups/${groupId}`, Astro.url);
+const groupRes = await fetch(groupUrl);
+
+let groupDto: GroupDTO | null = null;
+if (groupRes.ok) {
+  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
+  groupDto = body.data;
+}
+---
+
+<Layout title="Ustawienia grupy">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-4xl">
+      <Breadcrumb items={[
+        { label: "Lista grup", href: "/groups" },
+        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` }
+      ]} />
+      <h1 class="mb-4 text-2xl font-semibold tracking-tight">Ustawienia grupy</h1>
+      <GroupSettingsView client:load groupId={groupId} />
+    </div>
+  </main>
+</Layout>
+
+

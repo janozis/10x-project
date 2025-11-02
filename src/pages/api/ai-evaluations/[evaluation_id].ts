@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { errors } from "../../../lib/errors";
 import { getAIEvaluation } from "../../../lib/services/ai-evaluations.service";
 import { validateUuid } from "../../../lib/validation/aiEvaluation";
+import { jsonResponse } from "../../../lib/http/response";
 
 export const prerender = false;
 
@@ -27,13 +28,13 @@ export const GET: APIRoute = async ({ params, locals }) => {
   const uuidValid = validateUuid(evaluationId, "evaluation_id");
   if (!uuidValid.valid) {
     const err = errors.validation(uuidValid.error || { evaluation_id: "Invalid UUID" });
-    return new Response(JSON.stringify(err), { status: 400 });
+    return jsonResponse(err, { status: 400 });
   }
   const supabase = locals.supabase;
   const user = locals.user;
   const result = await getAIEvaluation(supabase, user?.id, evaluationId);
   if ("error" in result) {
-    return new Response(JSON.stringify(result), { status: mapErrorToStatus(result.error.code) });
+    return jsonResponse(result, { status: mapErrorToStatus(result.error.code) });
   }
-  return new Response(JSON.stringify(result), { status: 200 });
+  return jsonResponse(result, { status: 200 });
 };

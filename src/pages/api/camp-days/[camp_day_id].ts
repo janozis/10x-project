@@ -36,30 +36,57 @@ function extractCampDayId(params: Record<string, string | undefined>) {
 
 export const GET: APIRoute = async ({ params, locals }) => {
   const parsed = extractCampDayId(params);
-  if ("error" in parsed) return new Response(JSON.stringify(parsed), { status: 400 });
+  if ("error" in parsed) {
+    return new Response(JSON.stringify(parsed), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   const { supabase } = locals as { supabase: any };
   const result = await getCampDay(supabase, (locals as any).userId, parsed.id);
-  return new Response(JSON.stringify(result), { status: statusFromResponse(result) });
+  return new Response(JSON.stringify(result), {
+    status: statusFromResponse(result),
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 export const PATCH: APIRoute = async ({ params, request, locals }) => {
   const parsed = extractCampDayId(params);
-  if ("error" in parsed) return new Response(JSON.stringify(parsed), { status: 400 });
+  if ("error" in parsed) {
+    return new Response(JSON.stringify(parsed), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return new Response(JSON.stringify(errors.badRequest("Invalid JSON body")), { status: 400 });
+    return new Response(JSON.stringify(errors.badRequest("Invalid JSON body")), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
   const { supabase } = locals as { supabase: any };
   const result = await updateCampDay(supabase, (locals as any).userId, parsed.id, body);
-  return new Response(JSON.stringify(result), { status: statusFromResponse(result) });
+  return new Response(JSON.stringify(result), {
+    status: statusFromResponse(result),
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 export const DELETE: APIRoute = async ({ params, locals }) => {
   const parsed = extractCampDayId(params);
-  if ("error" in parsed) return new Response(JSON.stringify(parsed), { status: 400 });
+  if ("error" in parsed) {
+    return new Response(JSON.stringify(parsed), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   const { supabase } = locals as { supabase: any };
   const result = await deleteCampDay(supabase, (locals as any).userId, parsed.id);
-  return new Response(JSON.stringify(result), { status: statusFromResponse(result) });
+  return new Response(JSON.stringify(result), {
+    status: statusFromResponse(result),
+    headers: { "Content-Type": "application/json" },
+  });
 };

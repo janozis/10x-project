@@ -13,8 +13,11 @@ export const GET: APIRoute = async (ctx) => {
   const userId = ctx.locals.user?.id || DEFAULT_USER_ID;
   const groupId = ctx.params.group_id || "";
   if (!supabase) {
-    const err = errors.internal("Supabase client not available");
-    return new Response(JSON.stringify(err), { status: 500 });
+    const err = errors.internal("Supabase client not available. Check server-side environment variables (SUPABASE_URL, SUPABASE_KEY) or PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY");
+    return new Response(JSON.stringify(err), { 
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
   // Parse query params
@@ -22,14 +25,35 @@ export const GET: APIRoute = async (ctx) => {
   const parseResult = activityListQuerySchema.safeParse(qp);
   if (!parseResult.success) {
     const err = errors.validation(zodErrorToDetails(parseResult.error));
-    return new Response(JSON.stringify(err), { status: 400 });
+    return new Response(JSON.stringify(err), { 
+      status: 400,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
-  const result = await listActivities(supabase, userId, groupId, parseResult.data);
-  if ("error" in result) {
-    return new Response(JSON.stringify(result), { status: statusForErrorCode(result.error.code) });
+  if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.log("[GET /api/groups/[group_id]/activities] Request:", { groupId, userId, filters: parseResult.data });
   }
-  return new Response(JSON.stringify(result), { status: 200 });
+  const result = await listActivities(supabase, userId, groupId, parseResult.data);
+  if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.log("[GET /api/groups/[group_id]/activities] Result:", { 
+      hasError: "error" in result, 
+      errorCode: "error" in result ? result.error.code : undefined,
+      dataLength: "data" in result ? result.data?.length : undefined 
+    });
+  }
+  if ("error" in result) {
+    return new Response(JSON.stringify(result), { 
+      status: statusForErrorCode(result.error.code),
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+  return new Response(JSON.stringify(result), { 
+    status: 200,
+    headers: { "Content-Type": "application/json" }
+  });
 };
 
 // POST /api/groups/[group_id]/activities
@@ -39,7 +63,10 @@ export const POST: APIRoute = async (ctx) => {
   const groupId = ctx.params.group_id || "";
   if (!supabase) {
     const err = errors.internal("Supabase client not available");
-    return new Response(JSON.stringify(err), { status: 500 });
+    return new Response(JSON.stringify(err), { 
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
   let jsonBody: unknown;
@@ -47,18 +74,30 @@ export const POST: APIRoute = async (ctx) => {
     jsonBody = await ctx.request.json();
   } catch {
     const err = errors.validation({ body: "Invalid or missing JSON" });
-    return new Response(JSON.stringify(err), { status: 400 });
+    return new Response(JSON.stringify(err), { 
+      status: 400,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
   const parsed = activityCreateSchema.safeParse(jsonBody);
   if (!parsed.success) {
     const err = errors.validation(zodErrorToDetails(parsed.error));
-    return new Response(JSON.stringify(err), { status: 400 });
+    return new Response(JSON.stringify(err), { 
+      status: 400,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
   const result = await createActivity(supabase, userId, groupId, parsed.data);
   if ("error" in result) {
-    return new Response(JSON.stringify(result), { status: statusForErrorCode(result.error.code) });
+    return new Response(JSON.stringify(result), { 
+      status: statusForErrorCode(result.error.code),
+      headers: { "Content-Type": "application/json" }
+    });
   }
-  return new Response(JSON.stringify(result), { status: 201 });
+  return new Response(JSON.stringify(result), { 
+    status: 201,
+    headers: { "Content-Type": "application/json" }
+  });
 };

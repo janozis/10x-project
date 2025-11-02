@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { errors } from "../../../../lib/errors";
 import { requestAIEvaluation, listAIEvaluations } from "../../../../lib/services/ai-evaluations.service";
 import { validateUuid, validateEmptyBody } from "../../../../lib/validation/aiEvaluation";
+import { jsonResponse } from "../../../../lib/http/response";
 
 export const prerender = false;
 
@@ -31,15 +32,15 @@ export const GET: APIRoute = async ({ params, locals }) => {
   const uuidValid = validateUuid(activityId, "activity_id");
   if (!uuidValid.valid) {
     const err = errors.validation(uuidValid.error || { activity_id: "Invalid UUID" });
-    return new Response(JSON.stringify(err), { status: 400 });
+    return jsonResponse(err, { status: 400 });
   }
   const supabase = locals.supabase;
   const user = locals.user;
   const result = await listAIEvaluations(supabase, user?.id, activityId);
   if ("error" in result) {
-    return new Response(JSON.stringify(result), { status: mapErrorToStatus(result.error.code) });
+    return jsonResponse(result, { status: mapErrorToStatus(result.error.code) });
   }
-  return new Response(JSON.stringify(result), { status: 200 });
+  return jsonResponse(result, { status: 200 });
 };
 
 export const POST: APIRoute = async ({ params, request, locals }) => {
@@ -47,7 +48,7 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
   const uuidValid = validateUuid(activityId, "activity_id");
   if (!uuidValid.valid) {
     const err = errors.validation(uuidValid.error || { activity_id: "Invalid UUID" });
-    return new Response(JSON.stringify(err), { status: 400 });
+    return jsonResponse(err, { status: 400 });
   }
   // Validate empty body semantics
   let body: unknown;
@@ -60,13 +61,13 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
   const bodyValid = validateEmptyBody(body);
   if (!bodyValid.valid) {
     const err = errors.validation(bodyValid.error || { body: "Invalid body" });
-    return new Response(JSON.stringify(err), { status: 400 });
+    return jsonResponse(err, { status: 400 });
   }
   const supabase = locals.supabase;
   const user = locals.user;
   const result = await requestAIEvaluation(supabase, user?.id, activityId);
   if ("error" in result) {
-    return new Response(JSON.stringify(result), { status: mapErrorToStatus(result.error.code) });
+    return jsonResponse(result, { status: mapErrorToStatus(result.error.code) });
   }
-  return new Response(JSON.stringify(result), { status: 202 });
+  return jsonResponse(result, { status: 202 });
 };

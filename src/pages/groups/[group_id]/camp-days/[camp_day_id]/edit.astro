@@ -1,0 +1,127 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import CampDayEditForm from "@/components/camp-days/CampDayEditForm";
+import { Toaster } from "@/components/ui/sonner";
+import type { CampDayDTO, GroupDTO, GroupPermissionsDTO } from "@/types";
+import { getCampDayResource } from "@/lib/camp-days/getCampDay";
+import { getGroupResource } from "@/lib/groups/getGroup";
+import { getGroupPermissionsResource } from "@/lib/groups/getPermissions";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+
+export const prerender = false;
+
+const groupParam = Astro.params.group_id;
+const campDayParam = Astro.params.camp_day_id;
+
+if (!groupParam || !campDayParam) {
+  Astro.response.status = 400;
+  throw new Error("Parametry group_id i camp_day_id są wymagane");
+}
+
+const groupId = groupParam;
+const campDayId = campDayParam;
+
+const baseUrl = Astro.url;
+const [campDayResult, groupResult, permissionsResult] = await Promise.all([
+  getCampDayResource(campDayId, undefined, baseUrl),
+  getGroupResource(groupId, undefined, baseUrl),
+  getGroupPermissionsResource(groupId, undefined, baseUrl),
+]);
+
+let campDayDto: CampDayDTO | undefined;
+let groupDto: GroupDTO | null = null;
+let permissionsDto: GroupPermissionsDTO | null = null;
+let etag: string | undefined;
+let errorMessage: string | null = null;
+let permissionsWarning: string | null = null;
+
+if (campDayResult.ok) {
+  campDayDto = campDayResult.data;
+  etag = campDayResult.etag;
+} else {
+  Astro.response.status = campDayResult.status;
+  errorMessage = campDayResult.error.message ?? "Nie udało się pobrać danych dnia obozowego.";
+}
+
+if (groupResult.ok) {
+  groupDto = groupResult.data;
+} else if (!errorMessage) {
+  errorMessage = groupResult.error.message ?? "Nie udało się pobrać danych grupy.";
+}
+
+if (permissionsResult.ok) {
+  permissionsDto = permissionsResult.data;
+} else if (permissionsResult.status === 404 || permissionsResult.error.code === "NOT_FOUND") {
+  Astro.response.status = 404;
+  errorMessage = permissionsResult.error.message ?? "Nie znaleziono strony lub nie masz dostępu do tej grupy.";
+  campDayDto = undefined;
+} else if (permissionsResult.status === 401 || permissionsResult.error.code === "UNAUTHORIZED") {
+  Astro.response.status = 401;
+  errorMessage = permissionsResult.error.message ?? "Musisz być zalogowany, aby edytować dzień obozowy.";
+  campDayDto = undefined;
+} else {
+  permissionsWarning = permissionsResult.error.message ?? "Nie udało się pobrać uprawnień użytkownika.";
+}
+
+const groupDateRange =
+  groupDto?.start_date && groupDto?.end_date
+    ? { startDate: groupDto.start_date, endDate: groupDto.end_date }
+    : undefined;
+---
+
+<Layout title="Edycja dnia obozowego">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-3xl space-y-6">
+      <Breadcrumb items={[
+        { label: "Lista grup", href: "/groups" },
+        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
+        { label: "Dni obozu", href: `/groups/${groupId}/camp-days` }
+      ]} />
+      <header class="space-y-1">
+        <h1 class="text-2xl font-semibold tracking-tight">Edytuj dzień obozowy</h1>
+        <p class="text-sm text-muted-foreground">
+          Zmień datę lub temat dnia. Zmiany są dostępne tylko dla administratorów.
+        </p>
+      </header>
+
+      {
+        errorMessage ? (
+          <div
+            role="alert"
+            class="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+          >
+            {errorMessage}
+          </div>
+        ) : null
+      }
+
+      {
+        permissionsWarning ? (
+          <div role="status" class="rounded-md border border-border/60 bg-muted/30 p-3 text-sm text-muted-foreground">
+            {permissionsWarning}
+          </div>
+        ) : null
+      }
+
+      {
+        campDayDto ? (
+          <CampDayEditForm
+            client:load
+            groupId={groupId}
+            campDay={campDayDto}
+            permissions={permissionsDto ?? undefined}
+            groupDateRange={groupDateRange}
+            etag={etag}
+          />
+        ) : !errorMessage ? (
+          <div class="space-y-3" aria-busy="true">
+            <div class="h-9 w-full rounded-md bg-muted animate-pulse" />
+            <div class="h-24 w-full rounded-md bg-muted animate-pulse" />
+            <div class="h-32 w-full rounded-md bg-muted animate-pulse" />
+          </div>
+        ) : null
+      }
+    </div>
+  </main>
+  <Toaster client:load />
+</Layout>

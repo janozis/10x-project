@@ -67,7 +67,13 @@ export const GET: APIRoute = async (context) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-  const result = await listGroups(supabase);
+  const url = new URL(context.request.url);
+  const deletedParam = url.searchParams.get("deleted");
+  const limitParam = url.searchParams.get("limit");
+  const cursorParam = url.searchParams.get("cursor");
+  const deleted = deletedParam === "1" || deletedParam === "true";
+  const limit = limitParam ? Math.max(1, Math.min(100, Number(limitParam))) : undefined;
+  const result = await listGroups(supabase, { deleted, limit, cursor: cursorParam ?? undefined });
   if ("error" in result) {
     const status = mapErrorCodeToHttpStatus(result.error.code);
     return new Response(JSON.stringify(result), { status, headers: { "Content-Type": "application/json" } });

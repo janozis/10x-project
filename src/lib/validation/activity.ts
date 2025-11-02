@@ -40,6 +40,7 @@ export const activityListQuerySchema = z.object({
   status: z.enum(["draft", "review", "ready", "archived"]).optional(),
   assigned: z.literal("me").optional(),
   search: z.string().trim().min(1).max(200).optional(),
+  deleted: z.literal("only").optional(),
   limit: z
     .string()
     .transform((v) => parseInt(v, 10))

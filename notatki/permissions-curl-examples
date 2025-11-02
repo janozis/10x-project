@@ -1,0 +1,153 @@
+# Group Permissions CURL Examples
+
+# Replace <group_id> with actual group UUID.
+# Example group_id: 9a8e39ca-cb69-438e-933e-645b7554f526
+
+# ============================================
+# Test 1: Successful permissions fetch - Admin role (200 OK)
+# ============================================
+# User must be an admin member of the group
+curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/permissions \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 200 OK + JSON with permissions
+# Response for admin:
+# {
+#   "data": {
+#     "group_id": "9a8e39ca-cb69-438e-933e-645b7554f526",
+#     "role": "admin",
+#     "can_edit_all": true,
+#     "can_edit_assigned_only": true
+#   }
+# }
+
+# ============================================
+# Test 2: Successful permissions fetch - Editor role (200 OK)
+# ============================================
+# User must be an editor member of the group
+curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/permissions \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 200 OK + JSON with permissions
+# Response for editor:
+# {
+#   "data": {
+#     "group_id": "9a8e39ca-cb69-438e-933e-645b7554f526",
+#     "role": "editor",
+#     "can_edit_all": false,
+#     "can_edit_assigned_only": true
+#   }
+# }
+
+# ============================================
+# Test 3: Successful permissions fetch - Member role (200 OK)
+# ============================================
+# User must be a basic member of the group
+curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/permissions \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 200 OK + JSON with permissions
+# Response for member:
+# {
+#   "data": {
+#     "group_id": "9a8e39ca-cb69-438e-933e-645b7554f526",
+#     "role": "member",
+#     "can_edit_all": false,
+#     "can_edit_assigned_only": false
+#   }
+# }
+
+# ============================================
+# Test 4: Invalid UUID format (400 VALIDATION_ERROR)
+# ============================================
+curl -X GET http://localhost:3000/api/groups/invalid-uuid/permissions \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 400 BAD REQUEST
+# Response:
+# {
+#   "error": {
+#     "code": "VALIDATION_ERROR",
+#     "message": "Invalid payload",
+#     "details": { "group_id": "invalid uuid" }
+#   }
+# }
+
+# ============================================
+# Test 5: User not a member (404 NOT_FOUND)
+# ============================================
+# Note: To test this, use a group_id where current user is NOT a member
+# Security by obscurity - doesn't reveal if group exists or not
+curl -X GET http://localhost:3000/api/groups/00000000-0000-0000-0000-000000000000/permissions \
+  -H 'Accept: application/json' \
+  -v
+
+# Expected: 404 NOT FOUND
+# Response:
+# {
+#   "error": {
+#     "code": "NOT_FOUND",
+#     "message": "Group not found"
+#   }
+# }
+
+# ============================================
+# Test 6: Missing authentication (401 UNAUTHORIZED)
+# ============================================
+# Note: This should be tested by bypassing middleware or in environment
+# where authentication is enforced. In dev mode with DEFAULT_USER_ID 
+# fallback, this might not be testable without removing the fallback.
+# This is a defensive check in the endpoint.
+
+# Response:
+# {
+#   "error": {
+#     "code": "UNAUTHORIZED",
+#     "message": "Authentication required"
+#   }
+# }
+
+# ============================================
+# Performance Test
+# ============================================
+# Test response time (should be < 100ms P95)
+time curl -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/permissions \
+  -H 'Accept: application/json' \
+  -w "\nTotal time: %{time_total}s\n"
+
+# ============================================
+# Integration Test - Use permissions before editing activity
+# ============================================
+# 1. Get permissions first
+group_id="9a8e39ca-cb69-438e-933e-645b7554f526"
+activity_id="<activity_id>"
+
+echo "1. Fetching permissions..."
+curl -X GET "http://localhost:3000/api/groups/${group_id}/permissions" \
+  -H 'Accept: application/json'
+
+echo "\n\n2. Based on permissions, try to edit activity..."
+# If can_edit_all or can_edit_assigned_only is true, proceed with edit
+curl -X PATCH "http://localhost:3000/api/activities/${activity_id}" \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Updated title after checking permissions"}'
+
+# ============================================
+# Testing with jq for parsing
+# ============================================
+# Extract specific permission flag
+curl -s -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/permissions | \
+  jq '.data.can_edit_all'
+
+# Check role
+curl -s -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/permissions | \
+  jq '.data.role'
+
+# Full pretty print
+curl -s -X GET http://localhost:3000/api/groups/9a8e39ca-cb69-438e-933e-645b7554f526/permissions | \
+  jq '.'
+

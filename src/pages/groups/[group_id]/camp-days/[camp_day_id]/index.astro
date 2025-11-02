@@ -1,0 +1,91 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import type { ApiError, ApiSingle, CampDayDTO, GroupPermissionsDTO, GroupDTO } from "@/types";
+import { CampDayView } from "@/components/camp-days/CampDayView";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+
+export const prerender = false;
+
+const groupId = Astro.params.group_id!;
+const campDayId = Astro.params.camp_day_id!;
+
+if (!groupId || !campDayId) {
+  Astro.response.status = 400;
+  throw new Error("group_id and camp_day_id are required");
+}
+
+const baseUrl = Astro.url;
+const [campDayRes, permissionsRes, groupRes] = await Promise.all([
+  fetch(new URL(`/api/camp-days/${campDayId}`, baseUrl)),
+  fetch(new URL(`/api/groups/${groupId}/permissions`, baseUrl)),
+  fetch(new URL(`/api/groups/${groupId}`, baseUrl)),
+]);
+
+let campDayDto: CampDayDTO | null = null;
+let permissionsDto: GroupPermissionsDTO | null = null;
+let groupDto: GroupDTO | null = null;
+let errorMessage: string | null = null;
+
+if (!campDayRes.ok) {
+  const body = (await campDayRes.json()) as ApiError;
+  Astro.response.status = campDayRes.status;
+  errorMessage = body.error?.message || "Nie udało się załadować danych dnia obozu.";
+} else {
+  const body = (await campDayRes.json()) as ApiSingle<CampDayDTO>;
+  campDayDto = body.data;
+}
+
+if (permissionsRes.ok) {
+  const body = (await permissionsRes.json()) as ApiSingle<GroupPermissionsDTO>;
+  permissionsDto = body.data;
+}
+
+if (groupRes.ok) {
+  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
+  groupDto = body.data;
+}
+---
+
+<Layout title="Plan dnia">
+  <main class="min-h-screen w-full p-4 md:p-8">
+    <div class="mx-auto w-full max-w-5xl">
+      <Breadcrumb items={[
+        { label: "Lista grup", href: "/groups" },
+        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
+        { label: "Dni obozu", href: `/groups/${groupId}/camp-days` }
+      ]} />
+      <h1 class="mb-4 text-2xl font-semibold tracking-tight">
+        {campDayDto ? `Dzień ${campDayDto.day_number}: ${campDayDto.theme || 'Plan dnia'}` : 'Plan dnia'}
+      </h1>
+
+      {
+        errorMessage ? (
+          <div
+            role="alert"
+            class="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm"
+          >
+            {errorMessage}
+          </div>
+        ) : null
+      }
+
+      {
+        campDayDto ? (
+          <CampDayView
+            client:load
+            groupId={groupId}
+            campDayId={campDayId}
+            initialCampDay={campDayDto}
+            permissions={permissionsDto}
+          />
+        ) : (
+          <div class="space-y-3">
+            <div class="h-9 w-full rounded-md bg-muted animate-pulse" />
+            <div class="h-24 w-full rounded-md bg-muted animate-pulse" />
+            <div class="h-32 w-full rounded-md bg-muted animate-pulse" />
+          </div>
+        )
+      }
+    </div>
+  </main>
+</Layout>

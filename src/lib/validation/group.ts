@@ -26,3 +26,26 @@ export const groupCreateSchema = z
   });
 
 export type GroupCreateInput = z.infer<typeof groupCreateSchema>;
+
+// Zod schema for updating a group (PATCH). All fields optional, same constraints as create.
+export const groupUpdateSchema = z
+  .object({
+    name: z.string().trim().min(1).max(200).optional(),
+    description: z.string().trim().min(1).max(2000).optional(),
+    lore_theme: z.string().trim().min(1).max(200).optional(),
+    start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+    end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+    max_members: z.number().int().min(1).max(500).optional(),
+    status: z.enum(["planning", "active", "archived"]).optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.start_date && val.end_date && val.end_date < val.start_date) {
+      ctx.addIssue({
+        path: ["end_date"],
+        code: z.ZodIssueCode.custom,
+        message: "end_date must be >= start_date",
+      });
+    }
+  });
+
+export type GroupUpdateInput = z.infer<typeof groupUpdateSchema>;
