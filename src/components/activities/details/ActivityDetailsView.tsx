@@ -20,6 +20,18 @@ export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
     onRefresh: refresh,
   });
 
+  // Check if we came from camp day view to preserve context
+  const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const fromCampDay = urlParams?.get("from") === "camp-day";
+  const campDayId = urlParams?.get("camp_day_id");
+  
+  // Build edit href with query params if coming from camp day
+  const editHref = vm?.activity 
+    ? fromCampDay && campDayId 
+      ? `/activities/${vm.activity.id}/edit?from=camp-day&camp_day_id=${campDayId}`
+      : `/activities/${vm.activity.id}/edit`
+    : undefined;
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {!loading && error ? (
@@ -29,7 +41,7 @@ export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
             {errorStatus === 401 ? (
               <>
                 {" "}
-                <a href="/login" className="underline">
+                <a href="/auth/login" className="underline">
                   Zaloguj się
                 </a>
                 .
@@ -95,7 +107,7 @@ export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
           canRequest={vm?.computed.canRequestEvaluation ?? false}
           cooldownRemainingSec={vm?.cooldownRemainingSec ?? 0}
           onRequestEvaluation={requestHook.request}
-          editHref={vm?.activity ? `/activities/${vm.activity.id}/edit` : undefined}
+          editHref={editHref}
         />
       </div>
     </div>

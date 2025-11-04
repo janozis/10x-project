@@ -172,7 +172,7 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
         ) : status === "error" ? (
           <ErrorState onRetry={() => { void onRetry(); }} message={errorMessage}>
             {errorStatus === 401 ? (
-              <a href="/login" className="underline">Przejdź do logowania</a>
+              <a href="/auth/login" className="underline">Przejdź do logowania</a>
             ) : errorStatus === 404 ? (
               <a href="/groups" className="underline">Wróć do listy grup</a>
             ) : null}

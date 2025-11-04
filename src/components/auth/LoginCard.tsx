@@ -1,28 +1,13 @@
-import { useEffect } from "react";
 import LoginForm from "@/components/auth/LoginForm";
-import { isSafeInternalRedirect } from "@/lib/auth/client";
-import { supabaseClient } from "@/db/supabase.client";
 
 interface LoginCardProps {
   redirectTo?: string;
 }
 
 export default function LoginCard(props: LoginCardProps) {
-  useEffect(() => {
-    let isMounted = true;
-    (async () => {
-      const { data } = await supabaseClient.auth.getSession();
-      if (!isMounted) return;
-      if (data.session) {
-        const target = isSafeInternalRedirect(props.redirectTo) ? props.redirectTo : "/";
-        window.location.replace(target);
-      }
-    })();
-    return () => {
-      isMounted = false;
-    };
-  }, [props.redirectTo]);
-
+  // Remove automatic redirect on mount - only redirect after successful login
+  // The LoginForm component will handle the redirect after authentication
+  
   return (
     <div
       data-redirect-to={props.redirectTo ?? undefined}
@@ -35,10 +20,10 @@ export default function LoginCard(props: LoginCardProps) {
       <div className="grid gap-6">
         <LoginForm redirectTo={props.redirectTo} />
         <nav aria-label="Pomocnicze linki" className="flex items-center justify-between text-sm">
-          <a className="text-primary hover:underline" href="/forgot-password">
+          <a className="text-primary hover:underline" href="/auth/forgot-password">
             Zapomniałeś hasła?
           </a>
-          <a className="text-primary hover:underline" href="/register">
+          <a className="text-primary hover:underline" href="/auth/register">
             Zarejestruj się
           </a>
         </nav>

@@ -40,9 +40,10 @@ export const SlotRow = ({ slot, disabled, onLocalChange, onServerApplied, onAnyC
 
   const handleRowClick = () => {
     if (slot.activity?.id && slot.campDayId) {
-      window.location.href = `/activities/${slot.activity.id}/edit?from=camp-day&camp_day_id=${slot.campDayId}`;
+      // Navigate to details view with context about where we came from
+      window.location.href = `/activities/${slot.activity.id}?from=camp-day&camp_day_id=${slot.campDayId}`;
     } else if (slot.activity?.id) {
-      window.location.href = `/activities/${slot.activity.id}/edit`;
+      window.location.href = `/activities/${slot.activity.id}`;
     }
   };
 
@@ -58,7 +59,7 @@ export const SlotRow = ({ slot, disabled, onLocalChange, onServerApplied, onAnyC
           handleRowClick();
         }
       }}
-      aria-label={`Edytuj aktywność: ${slot.activity?.title ?? "Aktywność"}`}
+      aria-label={`Zobacz szczegóły aktywności: ${slot.activity?.title ?? "Aktywność"}`}
     >
       <div className="flex items-center gap-3">
         <span className="text-sm text-muted-foreground w-6 text-right">{slot.orderInDay}.</span>

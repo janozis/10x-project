@@ -71,12 +71,16 @@ export async function listMembers(
   groupId: string
 ): Promise<ApiListResponse<GroupMemberDTO>> {
   const effectiveUserId = authUserId || DEFAULT_USER_ID;
-  console.log("CURRENT_USER_ID", effectiveUserId);
+  console.log("[listMembers] CURRENT_USER_ID:", effectiveUserId);
+  console.log("[listMembers] GROUP_ID:", groupId);
+  
   if (!isUUID(groupId)) {
     return errors.validation({ group_id: "invalid uuid" }) as ApiListResponse<GroupMemberDTO>;
   }
 
+  // First verify the caller is a member of the group (for better error messages)
   const { row: caller, dbError: callerErr } = await fetchCallerMembership(supabase, groupId, effectiveUserId);
+  console.log("[listMembers] Caller membership check:", { hasMembership: !!caller, error: callerErr?.message });
 
   if (!caller) {
     // Determine if group exists (for diagnostics only)
@@ -100,35 +104,47 @@ export async function listMembers(
     });
   }
 
-  const { data: rows, error } = await supabase
-    .from("group_memberships")
-    .select("*")
-    .eq("group_id", groupId)
-    .order("joined_at", { ascending: true });
+  // Use the database function to get members with emails
+  // This function already checks membership and returns emails via security definer
+  console.log("[listMembers] Calling RPC get_group_members_with_emails");
+  const { data: rows, error } = await supabase.rpc("get_group_members_with_emails", {
+    p_group_id: groupId,
+  });
+
+  console.log("[listMembers] RPC result:", { 
+    hasData: !!rows, 
+    dataLength: rows?.length, 
+    hasError: !!error,
+    errorMessage: error?.message,
+    errorCode: error?.code,
+    errorDetails: error?.details,
+    errorHint: error?.hint
+  });
+
+  // Log raw data from RPC
+  if (rows && rows.length > 0) {
+    console.log("[listMembers] Raw RPC data sample:", rows[0]);
+  }
+
   if (error) {
+    // Check if error is due to authorization (not a member)
+    if (error.message?.includes("Not authorized") || error.message?.includes("permission denied")) {
+      const notFound = errors.notFound("Group") as ApiListResponse<GroupMemberDTO>;
+      return withDiagnostics(notFound, {
+        reason: "rpc_authorization_failed",
+        rpcError: error.message,
+        rpcCode: error.code,
+      });
+    }
     return withDiagnostics(errors.internal("Failed to list members") as ApiListResponse<GroupMemberDTO>, {
       listError: error.message,
+      errorCode: error.code,
+      errorDetails: error.details,
     });
   }
 
-  // Fetch user emails from auth.users for all members
-  const userIds = (rows ?? []).map((row) => row.user_id);
-  const { data: authUsers } = await supabase.auth.admin.listUsers();
-  const emailMap = new Map<string, string>();
-  authUsers?.users.forEach((user) => {
-    if (user.id && user.email) {
-      emailMap.set(user.id, user.email);
-    }
-  });
-
-  const dtos = (rows ?? []).map((row) => {
-    const dto = mapMembershipRowToDTO(row);
-    const email = emailMap.get(row.user_id);
-    if (email) {
-      return { ...dto, user_email: email };
-    }
-    return dto;
-  });
+  const dtos = (rows ?? []).map((row) => mapMembershipRowToDTO(row as any));
+  console.log("[listMembers] Mapped DTOs:", { count: dtos.length, emails: dtos.map(d => d.user_email) });
   return { data: dtos, count: dtos.length };
 }
 

@@ -42,3 +42,8 @@ curl -X PATCH http://localhost:3000/api/activities/5ffb7d27-2b68-4785-a1b6-c377f
     "duration_minutes":50,
     "status":"review"
   }'
+
+
+  curl -X POST http://localhost:3000/api/ai/chat \
+     -H 'Content-Type: application/json' \
+     -d '{"messages":[{"role":"user","content":"Hello"}]}'

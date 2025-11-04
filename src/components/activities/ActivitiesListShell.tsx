@@ -190,6 +190,11 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
     toast.success("Aktywność została utworzona");
   }, [refresh]);
 
+  const handleViewActivity = React.useCallback((activityId: string) => {
+    // Navigate to details page
+    window.location.href = `/activities/${activityId}`;
+  }, []);
+
   const handleEditActivity = React.useCallback((activityId: string) => {
     // Navigate to edit page
     window.location.href = `/activities/${activityId}/edit`;
@@ -238,7 +243,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
               className="rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-700 p-3 text-sm"
             >
               Aby zobaczyć aktywności w grupie, zaloguj się.
-              <a href="/login" className="ml-2 underline">
+              <a href="/auth/login" className="ml-2 underline">
                 Zaloguj się
               </a>
             </div>
@@ -346,7 +351,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
             className="rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-700 p-3 text-sm"
           >
             {listError || "Brak autoryzacji."}
-            <a href="/login" className="ml-2 underline">
+            <a href="/auth/login" className="ml-2 underline">
               Zaloguj się
             </a>
           </div>
@@ -390,6 +395,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
             canEdit={canEdit && mode === "active"}
             canDelete={canDelete}
             canRestore={canRestore}
+            onRequestView={handleViewActivity}
             onRequestEdit={handleEditActivity}
             onRequestDelete={(id) => requestDelete([id])}
             onRequestRestore={(id) => requestRestore([id])}

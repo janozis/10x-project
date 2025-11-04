@@ -8,12 +8,17 @@ interface Props {
   hideTopbar?: boolean;
 }
 
-const { title = "10x Astro Starter", hideTopbar = false } = Astro.props;
+const { title = "LoreProgrammer - Planer programów HAL", hideTopbar = false } = Astro.props;
 const currentPath = Astro.url.pathname;
+
+// Get user from middleware
+const { user } = Astro.locals;
+const isAuthenticated = !!user;
+const userDisplayName = user?.displayName || user?.email || "Użytkownik";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="pl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -22,7 +27,7 @@ const currentPath = Astro.url.pathname;
     <title>{title}</title>
   </head>
   <body>
-    {!hideTopbar && <Topbar client:load currentPath={currentPath} />}
+    {!hideTopbar && isAuthenticated && <Topbar client:load currentPath={currentPath} userDisplayName={userDisplayName} />}
     <slot />
     <Toaster client:load />
   </body>

@@ -1,8 +1,16 @@
 ---
 import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
+
+// Get user from middleware
+const { user } = Astro.locals;
+
+// If user is logged in, redirect to groups page
+if (user) {
+  return Astro.redirect("/groups");
+}
 ---
 
-<Layout>
+<Layout hideTopbar={true}>
   <Welcome />
 </Layout>

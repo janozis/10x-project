@@ -31,17 +31,19 @@ function statusFromResponse<T>(resp: ApiResponse<T> | ApiListResponse<T>): numbe
 
 export const GET: APIRoute = async ({ params, locals }) => {
   const { supabase } = locals as { supabase: any };
+  const userId = locals.user?.id;
   const groupId = params.group_id;
   if (!groupId || typeof groupId !== "string") {
     const resp = errors.validation({ group_id: "required" });
     return new Response(JSON.stringify(resp), { status: 400 });
   }
-  const result = await listCampDays(supabase, locals.userId as string | undefined, groupId);
+  const result = await listCampDays(supabase, userId, groupId);
   return new Response(JSON.stringify(result), { status: statusFromResponse(result) });
 };
 
 export const POST: APIRoute = async ({ params, request, locals }) => {
   const { supabase } = locals as { supabase: any };
+  const userId = locals.user?.id;
   const groupId = params.group_id;
   if (!groupId || typeof groupId !== "string") {
     const resp = errors.validation({ group_id: "required" });
@@ -53,7 +55,7 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
   } catch {
     return new Response(JSON.stringify(errors.badRequest("Invalid JSON body")), { status: 400 });
   }
-  const result = await createCampDay(supabase, locals.userId as string | undefined, groupId, body);
+  const result = await createCampDay(supabase, userId, groupId, body);
   const status = "error" in result ? statusFromResponse(result) : 201; // 201 on successful create
   return new Response(JSON.stringify(result), { status });
 };

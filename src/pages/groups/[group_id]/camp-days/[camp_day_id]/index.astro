@@ -1,48 +1,84 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import type { ApiError, ApiSingle, CampDayDTO, GroupPermissionsDTO, GroupDTO } from "@/types";
+import type { CampDayDTO, GroupPermissionsDTO, GroupDTO } from "@/types";
 import { CampDayView } from "@/components/camp-days/CampDayView";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import { getGroupPermissions } from "@/lib/services/permissions.service";
+import { getCampDay } from "@/lib/services/camp-days.service";
 
 export const prerender = false;
 
 const groupId = Astro.params.group_id!;
 const campDayId = Astro.params.camp_day_id!;
+const supabase = Astro.locals.supabase;
+const userId = Astro.locals.user?.id;
 
 if (!groupId || !campDayId) {
   Astro.response.status = 400;
   throw new Error("group_id and camp_day_id are required");
 }
 
-const baseUrl = Astro.url;
-const [campDayRes, permissionsRes, groupRes] = await Promise.all([
-  fetch(new URL(`/api/camp-days/${campDayId}`, baseUrl)),
-  fetch(new URL(`/api/groups/${groupId}/permissions`, baseUrl)),
-  fetch(new URL(`/api/groups/${groupId}`, baseUrl)),
-]);
+if (!supabase) {
+  Astro.response.status = 500;
+  throw new Error("Supabase client not available");
+}
 
 let campDayDto: CampDayDTO | null = null;
 let permissionsDto: GroupPermissionsDTO | null = null;
 let groupDto: GroupDTO | null = null;
 let errorMessage: string | null = null;
 
-if (!campDayRes.ok) {
-  const body = (await campDayRes.json()) as ApiError;
-  Astro.response.status = campDayRes.status;
-  errorMessage = body.error?.message || "Nie udało się załadować danych dnia obozu.";
+// Call services directly instead of fetch
+const [campDayResult, permissionsResult] = await Promise.all([
+  getCampDay(supabase, userId, campDayId),
+  getGroupPermissions(supabase, groupId, userId!),
+]);
+
+// Handle camp day result
+if ("error" in campDayResult) {
+  Astro.response.status = campDayResult.error.code === "NOT_FOUND" ? 404 : 500;
+  errorMessage = campDayResult.error.message || "Nie udało się załadować danych dnia obozu.";
 } else {
-  const body = (await campDayRes.json()) as ApiSingle<CampDayDTO>;
-  campDayDto = body.data;
+  campDayDto = campDayResult.data;
 }
 
-if (permissionsRes.ok) {
-  const body = (await permissionsRes.json()) as ApiSingle<GroupPermissionsDTO>;
-  permissionsDto = body.data;
+// Handle permissions result (non-fatal)
+if ("data" in permissionsResult) {
+  permissionsDto = permissionsResult.data;
 }
 
-if (groupRes.ok) {
-  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
-  groupDto = body.data;
+// Fetch group details - verify membership
+const { data: membership } = await supabase
+  .from("group_memberships")
+  .select("user_id")
+  .eq("group_id", groupId)
+  .eq("user_id", userId!)
+  .maybeSingle();
+
+if (membership) {
+  // User is a member, fetch group
+  const { data: groupRow } = await supabase
+    .from("groups")
+    .select("*")
+    .eq("id", groupId)
+    .maybeSingle();
+  
+  if (groupRow) {
+    groupDto = {
+      id: groupRow.id,
+      name: groupRow.name,
+      description: groupRow.description,
+      lore_theme: groupRow.lore_theme,
+      start_date: groupRow.start_date,
+      end_date: groupRow.end_date,
+      status: groupRow.status,
+      invite_code: groupRow.invite_code,
+      created_by: groupRow.created_by,
+      created_at: groupRow.created_at,
+      updated_at: groupRow.updated_at,
+      deleted_at: groupRow.deleted_at,
+    } as GroupDTO;
+  }
 }
 ---
 

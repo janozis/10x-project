@@ -32,9 +32,15 @@ Brak narzędzi pozwalających na tworzenie spójnych programów obozowych, któr
 - Tytuł: Bezpieczna rejestracja użytkownika
 - Opis: Jako instruktor lub harcerz chcę się zarejestrować i zalogować do aplikacji, aby uzyskać dostęp do funkcji planowania programu.
 - Kryteria akceptacji:
+  - Logowanie i rejestracja odbywają się na dedykowanych stronach.
   - Użytkownik może zarejestrować się podając email i hasło
+  - Rejestracja wymaga podania adresu email, hasła i potwierdzenia hasła.
   - Użytkownik może się zalogować
   - Dane są przechowywane bezpiecznie
+  - Użytkownik może logować się do systemu poprzez przycisk w prawym górnym rogu.
+  - Użytkownik może się wylogować z systemu poprzez przycisk w prawym górnym rogu w głównym @Layout.astro.
+  - Nie korzystamy z zewnętrznych serwisów logowania (np. Google, GitHub).
+  - Odzyskiwanie hasła powinno być możliwe.
 
 ### US-002: Tworzenie nowej grupy HAL
 - Tytuł: Inicjacja grupy programowej

@@ -1,0 +1,14 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import AuthHeader from "@/components/navigation/AuthHeader.astro";
+import RegisterCard from "@/components/auth/RegisterCard.tsx";
+
+export const prerender = false;
+---
+
+<Layout title="Rejestracja" hideTopbar={true}>
+  <AuthHeader currentPage="register" />
+  <main class="min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4">
+    <RegisterCard client:load />
+  </main>
+</Layout>

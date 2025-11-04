@@ -15,12 +15,13 @@ interface ActivitiesTableProps {
   canEdit?: boolean;
   canDelete?: boolean;
   canRestore?: boolean;
+  onRequestView?: (id: string) => void;
   onRequestEdit?: (id: string) => void;
   onRequestDelete?: (id: string) => void;
   onRequestRestore?: (id: string) => void;
 }
 
-export function ActivitiesTable({ items, visible, selectable, selectedIds, onToggleSelect, mode = "active", canEdit = false, canDelete = false, canRestore = false, onRequestEdit, onRequestDelete, onRequestRestore }: ActivitiesTableProps): JSX.Element {
+export function ActivitiesTable({ items, visible, selectable, selectedIds, onToggleSelect, mode = "active", canEdit = false, canDelete = false, canRestore = false, onRequestView, onRequestEdit, onRequestDelete, onRequestRestore }: ActivitiesTableProps): JSX.Element {
   return (
     <div role="table" className="w-full border rounded-md overflow-hidden">
       <div role="row" className="grid grid-cols-12 bg-muted text-xs font-medium px-3 py-2">
@@ -43,9 +44,8 @@ export function ActivitiesTable({ items, visible, selectable, selectedIds, onTog
               if (target.closest('input[type="checkbox"]') || target.closest('button')) {
                 return;
               }
-              if (canEdit) {
-                onRequestEdit?.(it.id);
-              }
+              // Click on row opens details view
+              onRequestView?.(it.id);
             }}
           >
             {visible.title ? (

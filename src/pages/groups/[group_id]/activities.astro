@@ -2,25 +2,57 @@
 import Layout from "@/layouts/Layout.astro";
 import ActivitiesListShell from "@/components/activities/ActivitiesListShell.tsx";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
-import type { ApiSingle, GroupDTO } from "@/types";
+import type { GroupDTO } from "@/types";
 
 export const prerender = false;
 
 const { group_id } = Astro.params;
+const supabase = Astro.locals.supabase;
+const userId = Astro.locals.user?.id;
 
 if (!group_id) {
   Astro.response.status = 400;
   throw new Error("group_id is required");
 }
 
-// Fetch group details for breadcrumb
-const groupUrl = new URL(`/api/groups/${group_id}`, Astro.url);
-const groupRes = await fetch(groupUrl);
+if (!supabase) {
+  Astro.response.status = 500;
+  throw new Error("Supabase client not available");
+}
 
 let groupDto: GroupDTO | null = null;
-if (groupRes.ok) {
-  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
-  groupDto = body.data;
+
+// Verify membership and fetch group details
+const { data: membership } = await supabase
+  .from("group_memberships")
+  .select("user_id")
+  .eq("group_id", group_id)
+  .eq("user_id", userId!)
+  .maybeSingle();
+
+if (membership) {
+  const { data: groupRow } = await supabase
+    .from("groups")
+    .select("*")
+    .eq("id", group_id)
+    .maybeSingle();
+  
+  if (groupRow) {
+    groupDto = {
+      id: groupRow.id,
+      name: groupRow.name,
+      description: groupRow.description,
+      lore_theme: groupRow.lore_theme,
+      start_date: groupRow.start_date,
+      end_date: groupRow.end_date,
+      status: groupRow.status,
+      invite_code: groupRow.invite_code,
+      created_by: groupRow.created_by,
+      created_at: groupRow.created_at,
+      updated_at: groupRow.updated_at,
+      deleted_at: groupRow.deleted_at,
+    } as GroupDTO;
+  }
 }
 ---
 

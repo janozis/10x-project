@@ -1,6 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import type { ApiError, ApiSingle, GroupDashboardDTO, GroupPermissionsDTO, GroupStatus, GroupDTO } from "@/types";
+import type { GroupDashboardDTO, GroupPermissionsDTO, GroupStatus, GroupDTO } from "@/types";
 import { ArchivedBanner } from "@/components/groups/ArchivedBanner";
 import { GroupDashboardTiles } from "@/components/groups/GroupDashboardTiles";
 import { GroupDashboardTilesClient } from "@/components/groups/GroupDashboardTilesClient";
@@ -10,56 +10,79 @@ import { DashboardShortcuts } from "@/components/groups/DashboardShortcuts";
 import { QuickTaskForm } from "@/components/groups/QuickTaskForm";
 import { RecentActivityFeed } from "@/components/groups/RecentActivityFeed";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import { getDashboard } from "@/lib/services/dashboard.service";
+import { getGroupPermissions } from "@/lib/services/permissions.service";
+import { DashboardInviteCard } from "@/components/groups/DashboardInviteCard";
+import { mapGroupRowToDTO } from "@/lib/mappers/group.mapper";
 
 export const prerender = false;
 
 const groupId = Astro.params.group_id!;
+const supabase = Astro.locals.supabase;
+const userId = Astro.locals.user?.id;
 
 if (!groupId) {
   Astro.response.status = 400;
   throw new Error("group_id is required");
 }
 
-// Fetch dashboard and permissions in parallel via internal API
-const dashboardUrl = new URL(`/api/groups/${groupId}/dashboard`, Astro.url);
-const permissionsUrl = new URL(`/api/groups/${groupId}/permissions`, Astro.url);
-const groupUrl = new URL(`/api/groups/${groupId}`, Astro.url);
-
-const [dashboardRes, permissionsRes, groupRes] = await Promise.all([
-  fetch(dashboardUrl),
-  fetch(permissionsUrl),
-  fetch(groupUrl),
-]);
+if (!supabase) {
+  Astro.response.status = 500;
+  throw new Error("Supabase client not available");
+}
 
 let dashboardDto: GroupDashboardDTO | null = null;
 let permissionsDto: GroupPermissionsDTO | null = null;
 let groupDto: GroupDTO | null = null;
 let errorMessage: string | null = null;
 
-if (!dashboardRes.ok) {
-  const body = (await dashboardRes.json()) as ApiError;
-  Astro.response.status = dashboardRes.status;
-  errorMessage = body.error?.message || "Nie udało się załadować danych z pulpitu.";
+// Call service functions directly instead of fetch (to preserve session)
+const [dashboardResult, permissionsResult] = await Promise.all([
+  getDashboard(supabase, groupId, userId),
+  getGroupPermissions(supabase, groupId, userId!),
+]);
+
+// Handle dashboard result
+if ("error" in dashboardResult) {
+  Astro.response.status = 500;
+  errorMessage = dashboardResult.error.message || "Nie udało się załadować danych z pulpitu.";
 } else {
-  const body = (await dashboardRes.json()) as ApiSingle<GroupDashboardDTO>;
-  dashboardDto = body.data;
+  dashboardDto = dashboardResult.data;
 }
 
-if (permissionsRes.ok) {
-  const body = (await permissionsRes.json()) as ApiSingle<GroupPermissionsDTO>;
-  permissionsDto = body.data;
-} // permissions error is non-fatal for initial SSR tiles; controls visibility of client actions
+// Handle permissions result (non-fatal)
+if ("data" in permissionsResult) {
+  permissionsDto = permissionsResult.data;
+}
 
-if (groupRes.ok) {
-  const body = (await groupRes.json()) as ApiSingle<GroupDTO>;
-  groupDto = body.data;
+// Fetch group details - verify membership
+const { data: membership } = await supabase
+  .from("group_memberships")
+  .select("user_id")
+  .eq("group_id", groupId)
+  .eq("user_id", userId!)
+  .maybeSingle();
+
+if (!membership) {
+  Astro.response.status = 404;
+  errorMessage = "Group not found";
+} else {
+  // User is a member, fetch group
+  const { data: groupRow } = await supabase
+    .from("groups")
+    .select("*")
+    .eq("id", groupId)
+    .maybeSingle();
+  
+  if (groupRow) {
+    groupDto = mapGroupRowToDTO(groupRow);
+  }
 }
 
 // Optional: fetch group status for ArchivedBanner
 let groupStatus: GroupStatus | undefined = undefined;
 try {
-  const supabase = Astro.locals.supabase;
-  if (supabase) {
+  if (supabase && groupDto) {
     const { data } = await supabase
       .from("groups")
       .select("status")
@@ -99,6 +122,15 @@ const tilesVm: DashboardTilesVM | null = dashboardDto ? mapDashboardToTilesVM(da
       )}
 
       <DashboardShortcuts groupId={groupId} permissions={permissionsDto} />
+
+      {groupDto && permissionsDto ? (
+        <DashboardInviteCard
+          client:load
+          groupId={groupId}
+          group={groupDto}
+          canManage={permissionsDto.role === "admin"}
+        />
+      ) : null}
 
       {permissionsDto ? (
         <QuickTaskForm

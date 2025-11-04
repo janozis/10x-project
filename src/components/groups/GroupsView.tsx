@@ -87,7 +87,7 @@ export default function GroupsView(): JSX.Element {
           errorCode === "UNAUTHORIZED" || errorStatus === 401 ? (
             <div role="alert" className="rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-700 p-3 text-sm">
               Aby zobaczyć swoje grupy, zaloguj się.
-              <a href="/login?redirect=/groups" className="ml-2 underline">Zaloguj się</a>
+              <a href="/auth/login?redirect=/groups" className="ml-2 underline">Zaloguj się</a>
             </div>
           ) : (
             <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">

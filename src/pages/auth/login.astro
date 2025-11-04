@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import AuthHeader from "@/components/navigation/AuthHeader.astro";
 import LoginCard from "@/components/auth/LoginCard.tsx";
 
 export const prerender = false;
@@ -17,7 +18,8 @@ const redirectTo = sanitizeRedirect(redirectParam);
 ---
 
 <Layout title="Logowanie" hideTopbar={true}>
-  <main class="min-h-screen flex items-center justify-center p-4">
+  <AuthHeader currentPage="login" />
+  <main class="min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4">
     <LoginCard client:load redirectTo={redirectTo} />
   </main>
 </Layout>

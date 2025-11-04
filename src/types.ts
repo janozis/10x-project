@@ -254,7 +254,7 @@ export interface VersionDTO {
 /** GROUP CREATE */
 export type GroupCreateCommand = Pick<
   TablesInsert<"groups">,
-  "name" | "description" | "lore_theme" | "start_date" | "end_date" | "max_members" | "created_by" | "updated_by"
+  "name" | "description" | "lore_theme" | "start_date" | "end_date" | "max_members" | "invite_code" | "created_by" | "updated_by"
 >;
 
 /** GROUP UPDATE (PATCH) */

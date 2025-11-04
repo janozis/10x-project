@@ -16,10 +16,10 @@ export default function ResetPasswordCard(_props: ResetPasswordCardProps) {
       <div className="grid gap-6">
         <ResetPasswordForm />
         <nav aria-label="Pomocnicze linki" className="flex items-center justify-between text-sm">
-          <a className="text-primary hover:underline" href="/login">
+          <a className="text-primary hover:underline" href="/auth/login">
             Wróć do logowania
           </a>
-          <a className="text-primary hover:underline" href="/forgot-password">
+          <a className="text-primary hover:underline" href="/auth/forgot-password">
             Nie masz linku? Wyślij ponownie
           </a>
         </nav>

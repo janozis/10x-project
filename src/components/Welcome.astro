@@ -1,91 +1,106 @@
-<div
-  class="relative w-full mx-auto min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 p-4 sm:p-8"
->
-  <div
-    class="relative max-w-4xl mx-auto backdrop-blur-xl bg-gradient-to-b from-white/10 to-white/5 rounded-2xl shadow-2xl p-8 text-white border border-white/10"
-  >
-    <div class="space-y-8">
-      <div class="text-center">
-        <h1
-          class="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 text-transparent bg-clip-text drop-shadow-lg"
-        >
-          Witaj w 10xDevs Astro Starter!
+<div class="relative w-full mx-auto min-h-screen bg-background">
+  <div class="relative max-w-6xl mx-auto min-h-screen flex flex-col justify-center py-12 px-4 sm:px-8">
+    <!-- Hero Section -->
+    <div class="rounded-3xl shadow-lg p-8 sm:p-12 border bg-card text-card-foreground mb-8">
+      <div class="text-center space-y-6 mb-10">
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
+          LoreProgrammer
         </h1>
-        <p class="text-xl text-blue-100/90 drop-shadow-md">
-          Ten projekt został zbudowany w oparciu o nowoczesny stack technologiczny:
+        <p class="text-2xl sm:text-3xl font-semibold text-muted-foreground">
+          Stwórz niezapomniany program Harcerskiej Akcji Letniej
+        </p>
+        <p class="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          Aplikacja webowa wspierająca harcerzy i instruktorów w planowaniu programów HAL zgodnie z wybraną tematyką
+          „lore" oraz wartościami harcerskimi.
         </p>
       </div>
 
-      <div class="flex flex-col gap-6 max-w-2xl mx-auto">
-        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-          <h2
-            class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200"
-          >
-            Core
-          </h2>
-          <ul class="space-y-3">
-            <li class="flex items-center space-x-3">
-              <span class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm">Astro v5.5.5</span>
-              <span class="text-blue-100/90">- Metaframework do aplikacji webowych</span>
-            </li>
-            <li class="flex items-center space-x-3">
-              <span class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm">React v19</span>
-              <span class="text-blue-100/90">- Biblioteka UI do komponentów interaktywnych</span>
-            </li>
-            <li class="flex items-center space-x-3">
-              <span class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm">TypeScript</span>
-              <span class="text-blue-100/90">- Typowanie statyczne</span>
-            </li>
-          </ul>
-        </div>
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+        <a
+          href="/auth/register"
+          class="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg shadow hover:bg-primary/90 transition-all duration-200 text-center"
+        >
+          Rozpocznij za darmo
+        </a>
+        <a
+          href="/auth/login"
+          class="w-full sm:w-auto px-8 py-4 bg-secondary text-secondary-foreground font-semibold rounded-lg border hover:bg-secondary/80 transition-all duration-200 text-center"
+        >
+          Zaloguj się
+        </a>
+      </div>
+    </div>
 
-        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-          <h2
-            class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200"
-          >
-            Stylowanie
-          </h2>
-          <ul class="space-y-3">
-            <li class="flex items-center space-x-3">
-              <span class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >Tailwind CSS v4</span
-              >
-              <span class="text-blue-100/90">- Utility-first CSS framework</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-          <h2
-            class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200"
-          >
-            Statyczna analiza kodu
-          </h2>
-          <ul class="space-y-3">
-            <li class="flex items-center space-x-3">
-              <span class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm">ESLint v9</span>
-              <span class="text-blue-100/90">- Lintowanie kodu</span>
-            </li>
-            <li class="flex items-center space-x-3">
-              <span class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm">Prettier</span>
-              <span class="text-blue-100/90">- Formatowanie kodu</span>
-            </li>
-            <li class="flex items-center space-x-3">
-              <span class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >Husky i Lint-staged</span
-              >
-              <span class="text-blue-100/90">- Automatyczna analiza kodu przed commitowaniem</span>
-            </li>
-          </ul>
-        </div>
+    <!-- Features Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Feature 1 -->
+      <div class="rounded-lg p-6 border bg-card hover:shadow-md transition-all duration-200">
+        <div class="text-4xl mb-4">🎭</div>
+        <h3 class="text-xl font-semibold mb-3">Klimat i wartości</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Twórz zajęcia zgodne z wybranym „lore" i wartościami harcerskimi dzięki automatycznej ocenie AI.
+        </p>
       </div>
 
-      <p class="text-lg text-center text-blue-100/90 mt-8 leading-relaxed">
-        Starter zawiera wszystko, czego potrzebujesz do rozpoczęcia tworzenia <br class="hidden sm:block" />
-        <span class="font-semibold bg-gradient-to-r from-blue-200 to-purple-200 text-transparent bg-clip-text"
-          >nowoczesnych aplikacji webowych!</span
-        >
+      <!-- Feature 2 -->
+      <div class="rounded-lg p-6 border bg-card hover:shadow-md transition-all duration-200">
+        <div class="text-4xl mb-4">👥</div>
+        <h3 class="text-xl font-semibold mb-3">Współpraca zespołowa</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Zapraszaj członków kadry, przypisuj role i zadania. Pracujcie razem nad perfekcyjnym programem obozu.
+        </p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="rounded-lg p-6 border bg-card hover:shadow-md transition-all duration-200">
+        <div class="text-4xl mb-4">🤖</div>
+        <h3 class="text-xl font-semibold mb-3">Ocena AI na żądanie</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Otrzymuj dokładne oceny zgodności z lore i umiejętnościami harcerskimi wraz z pytaniami prowokującymi do
+          przemyśleń.
+        </p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="rounded-lg p-6 border bg-card hover:shadow-md transition-all duration-200">
+        <div class="text-4xl mb-4">📋</div>
+        <h3 class="text-xl font-semibold mb-3">Ustrukturyzowane planowanie</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Formularz zajęć obejmuje wszystkie kluczowe elementy: cel, zadania, materiały, przebieg i więcej.
+        </p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="rounded-lg p-6 border bg-card hover:shadow-md transition-all duration-200">
+        <div class="text-4xl mb-4">📊</div>
+        <h3 class="text-xl font-semibold mb-3">Dashboard postępu</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Monitoruj postęp grupy, śledź % zajęć z wysoką oceną, zarządzaj zadaniami i aktywnościami zespołu.
+        </p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="rounded-lg p-6 border bg-card hover:shadow-md transition-all duration-200">
+        <div class="text-4xl mb-4">⚡</div>
+        <h3 class="text-xl font-semibold mb-3">Iteracyjne doskonalenie</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Edytuj i ulepszaj zajęcia na podstawie sugestii AI, dążąc do jak najlepszej jakości programu.
+        </p>
+      </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="mt-12 text-center">
+      <p class="text-xl text-muted-foreground mb-6">
+        Gotowy, aby stworzyć niezapomniany program harcerskiej akcji letniej?
       </p>
+      <a
+        href="/auth/register"
+        class="inline-block px-10 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-lg shadow hover:bg-primary/90 transition-all duration-200"
+      >
+        Dołącz teraz
+      </a>
     </div>
   </div>
 </div>

@@ -526,6 +526,16 @@ export interface Database {
         Args: { p_group: string; p_user: string };
         Returns: string;
       };
+      get_group_members_with_emails: {
+        Args: { p_group_id: string };
+        Returns: {
+          user_id: string;
+          group_id: string;
+          role: string;
+          joined_at: string;
+          user_email: string;
+        }[];
+      };
     };
     Enums: Record<never, never>;
     CompositeTypes: Record<never, never>;

@@ -1,0 +1,21 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ProfileView from "@/components/profile/ProfileView";
+
+// Check if user is authenticated (middleware handles this)
+const { user } = Astro.locals;
+
+if (!user) {
+  return Astro.redirect("/auth/login");
+}
+---
+
+<Layout title="Profil użytkownika - 10x Project">
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="text-3xl font-bold mb-6">Mój profil</h1>
+      <ProfileView client:load userEmail={user.email} />
+    </div>
+  </div>
+</Layout>
+

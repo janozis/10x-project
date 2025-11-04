@@ -57,23 +57,34 @@ export const POST: APIRoute = async (context) => {
 
 /**
  * GET /api/groups
- * Anonimowy odczyt zależy od polityk RLS – jeśli brak public select policy, zapytanie zwróci błąd (permission denied).
+ * Returns only groups where the authenticated user is a member.
+ * Uses group_memberships table for filtering.
  */
 export const GET: APIRoute = async (context) => {
   const supabase = context.locals.supabase;
+  const userId = context.locals.user?.id;
+  
   if (!supabase) {
     return new Response(JSON.stringify(errors.internal("Supabase client not available")), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
+  
   const url = new URL(context.request.url);
   const deletedParam = url.searchParams.get("deleted");
   const limitParam = url.searchParams.get("limit");
   const cursorParam = url.searchParams.get("cursor");
   const deleted = deletedParam === "1" || deletedParam === "true";
   const limit = limitParam ? Math.max(1, Math.min(100, Number(limitParam))) : undefined;
-  const result = await listGroups(supabase, { deleted, limit, cursor: cursorParam ?? undefined });
+  
+  const result = await listGroups(supabase, { 
+    deleted, 
+    limit, 
+    cursor: cursorParam ?? undefined,
+    userId: userId || DEFAULT_USER_ID
+  });
+  
   if ("error" in result) {
     const status = mapErrorCodeToHttpStatus(result.error.code);
     return new Response(JSON.stringify(result), { status, headers: { "Content-Type": "application/json" } });

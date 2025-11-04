@@ -45,6 +45,12 @@ Core technologies (current / planned):
 - Supabase (Auth, Database, Realtime) – planned
 - Zod (input & DTO validation) – planned
 
+Testing:
+- Vitest (unit & integration tests)
+- React Testing Library (component testing)
+- Playwright (E2E tests)
+- Supertest (API integration tests)
+
 Supporting libraries present:
 - class-variance-authority, clsx, tailwind-merge (styling ergonomics)
 - lucide-react (icons)
@@ -55,6 +61,14 @@ Tooling & Quality:
 - ESLint 9 + TypeScript ESLint
 - Prettier (with `prettier-plugin-astro`)
 - Husky + lint-staged (pre-commit formatting & linting)
+
+Testing:
+- Vitest + React Testing Library (unit & integration tests)
+- Playwright (E2E tests, accessibility testing with axe-core)
+- Supertest (API integration tests)
+- k6 (performance testing)
+- Lighthouse CI (front-end performance & accessibility)
+- OWASP ZAP (security testing)
 
 Runtime:
 - Node.js 22.14.0 (see `.nvmrc`)
@@ -88,9 +102,29 @@ npm run preview
 ### Recommended Workflow
 1. Create a feature branch
 2. Implement feature with small, focused commits
-3. Run `npm run lint` and ensure no errors
-4. Optionally add or update documentation / comments
-5. Open a Pull Request
+3. Write tests for new functionality
+4. Run `npm run lint` and ensure no errors
+5. Run `npm test` to verify all tests pass
+6. Optionally add or update documentation / comments
+7. Open a Pull Request
+
+### Testing
+The project uses a comprehensive testing stack. See [TESTING.md](./TESTING.md) for detailed information.
+
+Quick start:
+```bash
+# Run unit tests
+npm test
+
+# Run unit tests in watch mode (recommended during development)
+npm run test:watch
+
+# Run E2E tests (requires Playwright browsers installed)
+npm run test:e2e
+
+# First-time E2E setup
+npx playwright install chromium --with-deps
+```
 
 ### Environment Variables (Upcoming)
 Planned future variables (not yet required):
@@ -109,6 +143,15 @@ These will support authentication, group management, real-time updates, and stor
 | `npm run lint` | Run ESLint across the project |
 | `npm run lint:fix` | Auto-fix lint issues where possible |
 | `npm run format` | Format all code & content with Prettier |
+| `npm test` | Run unit tests with Vitest |
+| `npm run test:watch` | Run unit tests in watch mode |
+| `npm run test:ui` | Run unit tests with interactive UI |
+| `npm run test:coverage` | Run unit tests with coverage report |
+| `npm run test:e2e` | Run E2E tests with Playwright |
+| `npm run test:e2e:ui` | Run E2E tests with interactive UI |
+| `npm run test:all` | Run all tests (unit + E2E) |
+
+For detailed testing documentation, see [TESTING.md](./TESTING.md).
 
 ## Project Scope
 

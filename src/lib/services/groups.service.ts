@@ -43,6 +43,7 @@ export async function createGroup(
   }
 
   // 4. Insert group
+  const inviteCode = generateInviteCode(); // Auto-generate invite code on creation
   const insertPayload = {
     name: data.name,
     description: data.description,
@@ -50,6 +51,7 @@ export async function createGroup(
     start_date: data.start_date,
     end_date: data.end_date,
     max_members: data.max_members ?? undefined,
+    invite_code: inviteCode,
   };
 
   const fullInsertRow: GroupCreateCommand = {
@@ -85,14 +87,38 @@ export async function createGroup(
   return { data: dto };
 }
 
-// List all groups (non-deleted). Future: pagination & filters.
+/**
+ * List groups where the authenticated user is a member.
+ * Uses group_memberships table to filter only groups the user belongs to.
+ */
 export async function listGroups(
   supabase: SupabaseClient,
-  options?: { deleted?: boolean; limit?: number; cursor?: string }
+  options?: { deleted?: boolean; limit?: number; cursor?: string; userId?: string }
 ): Promise<ApiListResponse<GroupDTO>> {
+  const effectiveUserId = options?.userId || DEFAULT_USER_ID;
+
+  // First, get list of group IDs where user is a member
+  const { data: memberships, error: membershipErr } = await supabase
+    .from("group_memberships")
+    .select("group_id")
+    .eq("user_id", effectiveUserId);
+
+  if (membershipErr) {
+    return errors.internal("Failed to fetch user memberships");
+  }
+
+  const groupIds = (memberships ?? []).map((m) => m.group_id);
+
+  // If user has no groups, return empty list
+  if (groupIds.length === 0) {
+    return { data: [], count: 0 };
+  }
+
+  // Query groups that user is a member of
   let query = supabase
     .from("groups")
     .select("*")
+    .in("id", groupIds)
     .order("created_at", { ascending: false })
     .order("id", { ascending: false });
 
@@ -223,7 +249,7 @@ export async function joinGroupByCode(
   if (!parsed.success) {
     return errors.validation(parsed.error.flatten().fieldErrors as Record<string, unknown>);
   }
-  const code = parsed.data.code.toUpperCase();
+  const code = parsed.data.code.toLowerCase();
   // Find group by invite code
   const { data: groups, error: findErr } = await supabase
     .from("groups")
@@ -367,14 +393,17 @@ export async function rotateGroupInvite(
     .eq("id", groupId)
     .select("*")
     .limit(1);
-  if (updErr) return errors.internal("Failed to rotate invite");
+  if (updErr) {
+    console.error("[rotateGroupInvite] Supabase error:", updErr);
+    return errors.internal(`Failed to rotate invite: ${updErr.message || JSON.stringify(updErr)}`);
+  }
   const updated = updatedRows?.[0];
   if (!updated) return errors.internal("Failed to rotate invite (empty)");
   return { data: mapGroupRowToDTO(updated) };
 }
 
 function generateInviteCode(): string {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // avoid ambiguous chars
+  const alphabet = "abcdefghjkmnpqrstuvwxyz23456789"; // avoid ambiguous chars (i, l, o, 0, 1) - lowercase to match DB constraint
   let code = "";
   for (let i = 0; i < 8; i++) {
     code += alphabet[Math.floor(Math.random() * alphabet.length)];

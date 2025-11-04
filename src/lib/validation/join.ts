@@ -1,22 +1,22 @@
 /**
  * Invite Code Validation Utilities
- * - Allowed chars exclude visually ambiguous: I, O, l, 0
+ * - Allowed chars exclude visually ambiguous: I, O, l, 0, 1
  * - Code length: exactly 8
- * - Normalization: always UPPERCASE
+ * - Normalization: always lowercase (to match DB constraint)
  */
 
-export const INVITE_CODE_PATTERN = /^[A-HJ-NP-Za-km-z1-9]{8}$/;
-export const INVITE_CODE_ALLOWED_CHAR = /[A-HJ-NP-Za-km-z1-9]/;
+export const INVITE_CODE_PATTERN = /^[a-hj-np-za-km-z2-9]{8}$/;
+export const INVITE_CODE_ALLOWED_CHAR = /[A-HJ-NP-Za-km-z2-9]/;
 
 /**
- * Sanitize user input to a canonical invite code substring (max 8, UPPERCASE, allowed set only)
+ * Sanitize user input to a canonical invite code substring (max 8, lowercase, allowed set only)
  */
 export function sanitizeInviteCodeInput(input: string): string {
   if (!input) return "";
   let out = "";
   for (const ch of input) {
     if (INVITE_CODE_ALLOWED_CHAR.test(ch)) {
-      out += ch.toUpperCase();
+      out += ch.toLowerCase();
       if (out.length === 8) break;
     }
   }

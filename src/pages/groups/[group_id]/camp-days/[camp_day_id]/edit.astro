@@ -3,30 +3,29 @@ import Layout from "@/layouts/Layout.astro";
 import CampDayEditForm from "@/components/camp-days/CampDayEditForm";
 import { Toaster } from "@/components/ui/sonner";
 import type { CampDayDTO, GroupDTO, GroupPermissionsDTO } from "@/types";
-import { getCampDayResource } from "@/lib/camp-days/getCampDay";
-import { getGroupResource } from "@/lib/groups/getGroup";
-import { getGroupPermissionsResource } from "@/lib/groups/getPermissions";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import { getCampDay } from "@/lib/services/camp-days.service";
+import { getGroupPermissions } from "@/lib/services/permissions.service";
 
 export const prerender = false;
 
 const groupParam = Astro.params.group_id;
 const campDayParam = Astro.params.camp_day_id;
+const supabase = Astro.locals.supabase;
+const userId = Astro.locals.user?.id;
 
 if (!groupParam || !campDayParam) {
   Astro.response.status = 400;
   throw new Error("Parametry group_id i camp_day_id są wymagane");
 }
 
+if (!supabase) {
+  Astro.response.status = 500;
+  throw new Error("Supabase client not available");
+}
+
 const groupId = groupParam;
 const campDayId = campDayParam;
-
-const baseUrl = Astro.url;
-const [campDayResult, groupResult, permissionsResult] = await Promise.all([
-  getCampDayResource(campDayId, undefined, baseUrl),
-  getGroupResource(groupId, undefined, baseUrl),
-  getGroupPermissionsResource(groupId, undefined, baseUrl),
-]);
 
 let campDayDto: CampDayDTO | undefined;
 let groupDto: GroupDTO | null = null;
@@ -35,32 +34,71 @@ let etag: string | undefined;
 let errorMessage: string | null = null;
 let permissionsWarning: string | null = null;
 
-if (campDayResult.ok) {
-  campDayDto = campDayResult.data;
-  etag = campDayResult.etag;
-} else {
-  Astro.response.status = campDayResult.status;
+// Call services directly instead of helper functions that use fetch
+const [campDayResult, permissionsResult] = await Promise.all([
+  getCampDay(supabase, userId, campDayId),
+  getGroupPermissions(supabase, groupId, userId!),
+]);
+
+// Handle camp day result
+if ("error" in campDayResult) {
+  Astro.response.status = campDayResult.error.code === "NOT_FOUND" ? 404 : 500;
   errorMessage = campDayResult.error.message ?? "Nie udało się pobrać danych dnia obozowego.";
-}
-
-if (groupResult.ok) {
-  groupDto = groupResult.data;
-} else if (!errorMessage) {
-  errorMessage = groupResult.error.message ?? "Nie udało się pobrać danych grupy.";
-}
-
-if (permissionsResult.ok) {
-  permissionsDto = permissionsResult.data;
-} else if (permissionsResult.status === 404 || permissionsResult.error.code === "NOT_FOUND") {
-  Astro.response.status = 404;
-  errorMessage = permissionsResult.error.message ?? "Nie znaleziono strony lub nie masz dostępu do tej grupy.";
-  campDayDto = undefined;
-} else if (permissionsResult.status === 401 || permissionsResult.error.code === "UNAUTHORIZED") {
-  Astro.response.status = 401;
-  errorMessage = permissionsResult.error.message ?? "Musisz być zalogowany, aby edytować dzień obozowy.";
-  campDayDto = undefined;
 } else {
-  permissionsWarning = permissionsResult.error.message ?? "Nie udało się pobrać uprawnień użytkownika.";
+  campDayDto = campDayResult.data;
+  // Note: etag is not available from direct service call
+  // If needed, it should be added to the service response
+}
+
+// Handle permissions result
+if ("error" in permissionsResult) {
+  const code = permissionsResult.error.code;
+  if (code === "NOT_FOUND") {
+    Astro.response.status = 404;
+    errorMessage = permissionsResult.error.message ?? "Nie znaleziono strony lub nie masz dostępu do tej grupy.";
+    campDayDto = undefined;
+  } else if (code === "UNAUTHORIZED") {
+    Astro.response.status = 401;
+    errorMessage = permissionsResult.error.message ?? "Musisz być zalogowany, aby edytować dzień obozowy.";
+    campDayDto = undefined;
+  } else {
+    permissionsWarning = permissionsResult.error.message ?? "Nie udało się pobrać uprawnień użytkownika.";
+  }
+} else {
+  permissionsDto = permissionsResult.data;
+}
+
+// Fetch group details - verify membership
+const { data: membership } = await supabase
+  .from("group_memberships")
+  .select("user_id")
+  .eq("group_id", groupId)
+  .eq("user_id", userId!)
+  .maybeSingle();
+
+if (membership) {
+  const { data: groupRow } = await supabase
+    .from("groups")
+    .select("*")
+    .eq("id", groupId)
+    .maybeSingle();
+  
+  if (groupRow) {
+    groupDto = {
+      id: groupRow.id,
+      name: groupRow.name,
+      description: groupRow.description,
+      lore_theme: groupRow.lore_theme,
+      start_date: groupRow.start_date,
+      end_date: groupRow.end_date,
+      status: groupRow.status,
+      invite_code: groupRow.invite_code,
+      created_by: groupRow.created_by,
+      created_at: groupRow.created_at,
+      updated_at: groupRow.updated_at,
+      deleted_at: groupRow.deleted_at,
+    } as GroupDTO;
+  }
 }
 
 const groupDateRange =

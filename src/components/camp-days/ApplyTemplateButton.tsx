@@ -7,12 +7,23 @@ import { toast } from "sonner";
 
 interface TemplateBlock { title: string; minutes: number }
 const DEFAULT_TEMPLATE: TemplateBlock[] = [
-  { title: "Poranny apel", minutes: 15 },
-  { title: "Blok I", minutes: 90 },
+  { title: "Pobudka oboźnego", minutes: 10 },
+  { title: "Pobudka szczepu", minutes: 5 },
+  { title: "Zaprawa poranna", minutes: 20 },
+  { title: "Toaleta poranna", minutes: 20 },
+  { title: "Wyjście na posiłek", minutes: 15 },
+  { title: "Śniadanie", minutes: 45 },
+  { title: "Porządki", minutes: 30 },
+  { title: "Apel", minutes: 45 },
+  { title: "Blok programowy 1", minutes: 150 },
+  { title: "Przerwa", minutes: 30 },
+  { title: "Obiad", minutes: 45 },
+  { title: "Cisza poobiednia", minutes: 60 },
+  { title: "Blok zajęciowy 2", minutes: 180 },
   { title: "Przerwa", minutes: 15 },
-  { title: "Obiad", minutes: 60 },
-  { title: "Blok II", minutes: 90 },
-  { title: "Wieczorne podsumowanie", minutes: 30 },
+  { title: "Kolacja", minutes: 45 },
+  { title: "Blok zajęciowy 3", minutes: 105 },
+  { title: "Toaleta wieczorna", minutes: 30 },
 ];
 
 export interface ApplyTemplateButtonProps {
@@ -33,7 +44,7 @@ export function ApplyTemplateButton({ groupId, campDayId, slots, canEdit, onAppl
     }
   }, [canEdit]);
 
-  const baseStart: TimeHHMM = (slots[0]?.startTime || "09:00") as TimeHHMM; // if list exists, keep day start
+  const baseStart: TimeHHMM = (slots[0]?.startTime || "07:50") as TimeHHMM; // if list exists, keep day start
   const initialStart: TimeHHMM = (slots[slots.length - 1]?.endTime || baseStart) as TimeHHMM;
 
   const preview = React.useMemo(() => {
@@ -124,8 +135,8 @@ export function ApplyTemplateButton({ groupId, campDayId, slots, canEdit, onAppl
       </Button>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Szablon dnia</DialogTitle>
-          <DialogDescription>Dodajemy serię bloków czasowych jako nowe sloty od {initialStart}.</DialogDescription>
+          <DialogTitle>Szablon dnia obozowego</DialogTitle>
+          <DialogDescription>Zastosuj pełny harmonogram dnia od pobudki do ciszy nocnej. Bloki czasowe zostaną dodane jako nowe sloty rozpoczynając od {initialStart}.</DialogDescription>
         </DialogHeader>
         <div className="rounded border divide-y">
           {preview.map((p) => (

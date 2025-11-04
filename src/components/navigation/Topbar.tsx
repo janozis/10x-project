@@ -1,11 +1,39 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface TopbarProps {
   currentPath?: string;
+  userDisplayName?: string;
 }
 
-export function Topbar({ currentPath = "" }: TopbarProps) {
+export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: TopbarProps) {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    
+    setIsLoggingOut(true);
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        toast.success("Wylogowano pomyślnie");
+        // Redirect to login page after short delay
+        setTimeout(() => {
+          window.location.href = "/auth/login";
+        }, 500);
+      } else {
+        toast.error("Nie udało się wylogować");
+        setIsLoggingOut(false);
+      }
+    } catch (error) {
+      toast.error("Błąd połączenia");
+      setIsLoggingOut(false);
+    }
+  };
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -37,10 +65,8 @@ export function Topbar({ currentPath = "" }: TopbarProps) {
     >
       <div className="container flex h-14 max-w-screen-2xl items-center px-4 md:px-8">
         <div className="mr-4 flex">
-          <a href="/" className="mr-6 flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
-              10x Project
-            </span>
+          <a href="/" className="mr-6 flex items-center hover:opacity-80 transition-opacity">
+            <img src="/logo.jpg" alt="LoreProgrammer" className="h-8" />
           </a>
         </div>
 
@@ -75,13 +101,22 @@ export function Topbar({ currentPath = "" }: TopbarProps) {
               variant="ghost"
               size="sm"
               className="text-sm"
-              onClick={() => {
-                // TODO: Implement user menu / logout
-                console.log("User menu clicked");
-              }}
+              asChild
             >
-              <span className="mr-2">👤</span>
-              <span className="hidden sm:inline">Profil</span>
+              <a href="/auth/profile">
+                <span className="mr-2">👤</span>
+                <span className="hidden sm:inline">{userDisplayName}</span>
+              </a>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-sm cursor-pointer"
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+            >
+              <span className="mr-2">🚪</span>
+              <span className="hidden sm:inline">{isLoggingOut ? "Wylogowywanie..." : "Wyloguj"}</span>
             </Button>
           </div>
         </div>

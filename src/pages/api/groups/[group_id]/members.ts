@@ -10,12 +10,21 @@ export const GET: APIRoute = async (context) => {
   const user = context.locals.user; // { id }
   if (!supabase) {
     const err = errors.internal("Supabase client not available");
-    return new Response(JSON.stringify(err), { status: 500 });
+    return new Response(JSON.stringify(err), { 
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
   const result = await listMembers(supabase, user?.id, group_id || "");
   if ("error" in result) {
-    return new Response(JSON.stringify(result), { status: statusForErrorCode(result.error.code) });
+    return new Response(JSON.stringify(result), { 
+      status: statusForErrorCode(result.error.code),
+      headers: { "Content-Type": "application/json" }
+    });
   }
-  return new Response(JSON.stringify(result), { status: 200 });
+  return new Response(JSON.stringify(result), { 
+    status: 200,
+    headers: { "Content-Type": "application/json" }
+  });
 };

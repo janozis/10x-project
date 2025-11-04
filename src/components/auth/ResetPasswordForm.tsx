@@ -65,7 +65,7 @@ export default function ResetPasswordForm() {
         <div className="text-sm">
           Kontynuuj do
           {" "}
-          <a className="text-primary hover:underline" href="/forgot-password">
+          <a className="text-primary hover:underline" href="/auth/forgot-password">
             ponownego resetu hasła
           </a>
           .

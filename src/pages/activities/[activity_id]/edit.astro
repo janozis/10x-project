@@ -3,15 +3,24 @@ import Layout from "@/layouts/Layout.astro";
 import { ActivityEditorApp } from "@/components/activities/editor/ActivityEditorApp";
 import { Toaster } from "@/components/ui/sonner";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
-import type { ApiSingle, ActivityDTO, GroupDTO, CampDayDTO } from "@/types";
+import type { ActivityDTO, GroupDTO, CampDayDTO } from "@/types";
+import { getActivity } from "@/lib/services/activities.service";
+import { getCampDay } from "@/lib/services/camp-days.service";
 
 export const prerender = false;
 
 const activityId = Astro.params.activity_id!;
+const supabase = Astro.locals.supabase;
+const userId = Astro.locals.user?.id;
 
 if (!activityId) {
   Astro.response.status = 400;
   throw new Error("activity_id is required");
+}
+
+if (!supabase) {
+  Astro.response.status = 500;
+  throw new Error("Supabase client not available");
 }
 
 // Check if we're coming from a camp day view
@@ -19,42 +28,61 @@ const urlParams = new URL(Astro.request.url).searchParams;
 const fromCampDay = urlParams.get("from") === "camp-day";
 const campDayId = urlParams.get("camp_day_id");
 
-// Fetch activity details to get group_id
-const activityUrl = new URL(`/api/activities/${activityId}`, Astro.url);
-const activityRes = await fetch(activityUrl);
-
 let activityDto: ActivityDTO | null = null;
 let groupDto: GroupDTO | null = null;
 let campDayDto: CampDayDTO | null = null;
 
-if (activityRes.ok) {
-  const body = (await activityRes.json()) as ApiSingle<ActivityDTO>;
-  activityDto = body.data;
+// Call service directly instead of fetch to avoid session issues
+const activityResult = await getActivity(supabase, userId, activityId);
+
+if ("error" in activityResult) {
+  console.log('[edit.astro] Activity service returned error:', activityResult.error);
+} else {
+  activityDto = activityResult.data as ActivityDTO;
+  console.log('[edit.astro] Activity DTO loaded, group_id:', activityDto.group_id);
   
   // Fetch group details for breadcrumb
   if (activityDto?.group_id) {
-    const groupUrl = new URL(`/api/groups/${activityDto.group_id}`, Astro.url);
-    const groupRes = await fetch(groupUrl);
+    const { data: groupRow } = await supabase
+      .from("groups")
+      .select("*")
+      .eq("id", activityDto.group_id)
+      .maybeSingle();
     
-    if (groupRes.ok) {
-      const groupBody = (await groupRes.json()) as ApiSingle<GroupDTO>;
-      groupDto = groupBody.data;
+    if (groupRow) {
+      groupDto = {
+        id: groupRow.id,
+        name: groupRow.name,
+        description: groupRow.description,
+        lore_theme: groupRow.lore_theme,
+        start_date: groupRow.start_date,
+        end_date: groupRow.end_date,
+        status: groupRow.status,
+        invite_code: groupRow.invite_code,
+        created_by: groupRow.created_by,
+        created_at: groupRow.created_at,
+        updated_at: groupRow.updated_at,
+        deleted_at: groupRow.deleted_at,
+      } as GroupDTO;
+      console.log('[edit.astro] Group DTO loaded:', groupDto.name);
     }
 
     // If coming from camp day, fetch camp day details
     if (fromCampDay && campDayId) {
-      const campDayUrl = new URL(`/api/camp-days/${campDayId}`, Astro.url);
-      const campDayRes = await fetch(campDayUrl);
+      console.log('[edit.astro] Fetching camp day:', campDayId);
+      const campDayResult = await getCampDay(supabase, userId, campDayId);
       
-      if (campDayRes.ok) {
-        const campDayBody = (await campDayRes.json()) as ApiSingle<CampDayDTO>;
-        campDayDto = campDayBody.data;
+      if ("error" in campDayResult) {
+        console.log('[edit.astro] Camp day service returned error:', campDayResult.error);
+      } else {
+        campDayDto = campDayResult.data;
+        console.log('[edit.astro] Camp day DTO loaded:', campDayDto.day_number, campDayDto.theme);
       }
     }
   }
 }
 
-// Build breadcrumb items dynamically
+// Build breadcrumb items dynamically - always show at least "Lista grup"
 const breadcrumbItems = activityDto?.group_id ? [
   { label: "Lista grup", href: "/groups" },
   { label: groupDto?.name || "Grupa", href: `/groups/${activityDto.group_id}/dashboard` },
@@ -67,15 +95,15 @@ const breadcrumbItems = activityDto?.group_id ? [
   ] : [
     { label: "Aktywności", href: `/groups/${activityDto.group_id}/activities` }
   ])
-] : [];
+] : [
+  { label: "Lista grup", href: "/groups" }
+];
 ---
 
 <Layout title="Edytor aktywności">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-5xl">
-      {breadcrumbItems.length > 0 && (
-        <Breadcrumb items={breadcrumbItems} />
-      )}
+      <Breadcrumb items={breadcrumbItems} />
       <ActivityEditorApp client:load activityId={activityId} />
     </div>
   </main>
