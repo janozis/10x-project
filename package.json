@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "dev:test": "dotenv -e .env.test -- astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -19,7 +20,15 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:report": "playwright show-report",
-    "test:all": "npm run test && npm run test:e2e"
+    "test:all": "npm run test && npm run test:e2e",
+    "db:start": "npx supabase start",
+    "db:stop": "npx supabase stop",
+    "db:reset": "npx supabase db reset",
+    "db:migrate": "npx supabase migration up",
+    "db:status": "npx supabase status",
+    "db:push": "npx supabase db push",
+    "db:types": "npx supabase gen types typescript --local > src/db/database.types.ts",
+    "db:types:remote": "npx supabase gen types typescript --linked > src/db/database.types.ts"
   },
   "dependencies": {
     "@astrojs/node": "^9.4.3",
@@ -64,6 +73,8 @@
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/coverage-v8": "^4.0.6",
     "@vitest/ui": "^4.0.6",
+    "dotenv": "^17.2.3",
+    "dotenv-cli": "^11.0.0",
     "eslint": "9.23.0",
     "eslint-config-prettier": "10.1.1",
     "eslint-import-resolver-typescript": "4.2.5",

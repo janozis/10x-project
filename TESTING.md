@@ -27,6 +27,24 @@ For E2E tests, install Chromium browser:
 npx playwright install chromium --with-deps
 ```
 
+### Configure E2E Environment
+
+Create a `.env.test` file for E2E test credentials:
+
+```bash
+cp .env.test.example .env.test
+```
+
+Edit `.env.test` and set your test user credentials:
+
+```env
+E2E_USERNAME_ID=your-test-user-uuid
+E2E_USERNAME=test@example.com
+E2E_PASSWORD=your-test-password
+```
+
+**📖 For detailed E2E setup instructions, see [e2e/SETUP.md](./e2e/SETUP.md)**
+
 ## Running Tests
 
 ### Unit Tests (Vitest)
@@ -47,15 +65,20 @@ npm run test:coverage
 
 ### E2E Tests (Playwright)
 
+**First time setup**: See [e2e/SETUP.md](./e2e/SETUP.md) for detailed configuration.
+
 ```bash
 # Run E2E tests (starts dev server automatically)
 npm run test:e2e
 
-# Run E2E tests with UI
+# Run E2E tests with UI (recommended for development)
 npm run test:e2e:ui
 
 # Run E2E tests in debug mode
 npm run test:e2e:debug
+
+# Run only authentication setup
+npx playwright test auth.setup.ts
 
 # Show test report
 npm run test:e2e:report
@@ -132,19 +155,30 @@ describe('MyComponent', () => {
 
 ### E2E Tests (Playwright)
 
-Place E2E tests in the `/e2e` directory.
+Place E2E tests in the `/e2e` directory. Use Page Object Model for maintainability:
 
 ```typescript
 import { test, expect } from '@playwright/test';
+import { LoginPage } from './page-objects';
 
-test('should navigate to page', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveTitle(/My App/);
-  
-  await page.click('text=Login');
-  await expect(page).toHaveURL(/\/login/);
+test('should login successfully', async ({ page }) => {
+  // Arrange
+  const loginPage = new LoginPage(page);
+  await loginPage.goto();
+
+  // Act
+  await loginPage.loginWithTestUser();
+
+  // Assert
+  await expect(page).toHaveURL(/\/dashboard/);
 });
 ```
+
+**Key conventions:**
+- Follow AAA pattern (Arrange, Act, Assert)
+- Use Page Object Model (see `/e2e/page-objects`)
+- Use `data-testid` for stable selectors when needed
+- Reuse authentication state (see `auth.setup.ts`)
 
 ## Best Practices
 
@@ -194,30 +228,66 @@ test('should navigate to page', async ({ page }) => {
 
 1. **Use Chromium only** (as per project guidelines)
 
-2. **Leverage browser contexts** for isolation
+2. **Follow Page Object Model** (see `/e2e/page-objects`)
+   ```typescript
+   import { LoginPage } from './page-objects';
+   const loginPage = new LoginPage(page);
+   await loginPage.loginWithTestUser();
+   ```
+
+3. **Use AAA pattern** (Arrange, Act, Assert)
+   ```typescript
+   test('should do something', async ({ page }) => {
+     // Arrange - setup
+     const loginPage = new LoginPage(page);
+     
+     // Act - perform action
+     await loginPage.login('user@test.com', 'pass');
+     
+     // Assert - verify outcome
+     await expect(page).toHaveURL(/\/dashboard/);
+   });
+   ```
+
+4. **Reuse authentication state** (configured in `auth.setup.ts`)
+   - Tests automatically use saved auth state
+   - No need to log in for each test
+   - Override when testing unauthenticated flows
+
+5. **Use semantic locators** or `data-testid`
+   ```typescript
+   // Preferred - semantic
+   await page.getByRole('button', { name: 'Submit' }).click();
+   
+   // When needed - data-testid
+   await page.getByTestId('submit-activity').click();
+   ```
+
+6. **Leverage browser contexts for isolation**
    ```typescript
    const context = await browser.newContext();
    const page = await context.newPage();
    ```
 
-3. **Use Page Object Model** for complex flows
-
-4. **Implement proper locators**
-   ```typescript
-   await page.getByRole('button', { name: 'Submit' }).click();
-   ```
-
-5. **Use trace viewer for debugging**
+7. **Use trace viewer for debugging**
    ```bash
    npm run test:e2e:debug
    ```
 
-6. **Enable screenshots on failure** (already configured)
+8. **Enable screenshots on failure** (already configured)
 
-7. **Visual regression tests** with `toHaveScreenshot()`
+9. **Visual regression tests** with `toHaveScreenshot()`
    ```typescript
    await expect(page).toHaveScreenshot('page.png');
    ```
+
+10. **Test APIs directly** when appropriate
+    ```typescript
+    test('should call API', async ({ request }) => {
+      const response = await request.get('/api/groups');
+      expect(response.ok()).toBeTruthy();
+    });
+    ```
 
 ## Coverage
 

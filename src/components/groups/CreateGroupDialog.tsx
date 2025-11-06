@@ -29,7 +29,7 @@ export function CreateGroupDialog({ open, onOpenChange, onCreated }: CreateGroup
       lore_theme: "",
       start_date: "",
       end_date: "",
-      max_members: undefined,
+      max_members: 50,
     },
     mode: "onChange",
   });
@@ -124,8 +124,8 @@ export function CreateGroupDialog({ open, onOpenChange, onCreated }: CreateGroup
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="max_members">Limit członków (opcjonalnie)</Label>
-            <Input id="max_members" type="number" inputMode="numeric" aria-invalid={!!form.formState.errors.max_members} aria-describedby="max-error" {...form.register("max_members", { valueAsNumber: true })} />
+            <Label htmlFor="max_members">Limit członków (domyślnie 50)</Label>
+            <Input id="max_members" type="number" inputMode="numeric" aria-invalid={!!form.formState.errors.max_members} aria-describedby="max-error" {...form.register("max_members", { setValueAs: (v) => v === "" || Number.isNaN(v) ? 50 : Number(v) })} />
             {form.formState.errors.max_members ? (
               <p id="max-error" className="text-xs text-destructive">{form.formState.errors.max_members.message as string}</p>
             ) : null}

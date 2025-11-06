@@ -45,6 +45,7 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO auth.identities (
   id,
   user_id,
+  provider_id,
   identity_data,
   provider,
   last_sign_in_at,
@@ -54,11 +55,12 @@ INSERT INTO auth.identities (
 VALUES (
   'a7a0c17c-69e9-49a3-8b8e-5926b825a021'::uuid,
   'a7a0c17c-69e9-49a3-8b8e-5926b825a021'::uuid,
-  '{"sub":"a7a0c17c-69e9-49a3-8b8e-5926b825a021"}'::jsonb,
+  'a7a0c17c-69e9-49a3-8b8e-5926b825a021',
+  '{"sub":"a7a0c17c-69e9-49a3-8b8e-5926b825a021","email":"dev@localhost"}'::jsonb,
   'email',
   now(),
   now(),
   now()
 )
-ON CONFLICT (provider, id) DO NOTHING;
+ON CONFLICT (id) DO NOTHING;
 

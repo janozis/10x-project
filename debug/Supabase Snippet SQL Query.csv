@@ -1,0 +1,9 @@
+schemaname,tablename,policyname,permissive,roles,cmd,qual,with_check
+public,groups,Authenticated users can insert groups,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,groups,Enable insert for authenticated users only,PERMISSIVE,{authenticated},INSERT,null,true
+public,groups,groups_delete_authenticated,PERMISSIVE,{authenticated},DELETE,"(user_group_role(( SELECT auth.uid() AS uid), id) = 'admin'::text)",null
+public,groups,groups_insert_authenticated,PERMISSIVE,{authenticated},INSERT,null,true
+public,groups,groups_select_authenticated,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM group_memberships gm
+  WHERE ((gm.group_id = groups.id) AND (gm.user_id = ( SELECT auth.uid() AS uid)))))",null
+public,groups,groups_update_authenticated,PERMISSIVE,{authenticated},UPDATE,"(user_group_role(( SELECT auth.uid() AS uid), id) = 'admin'::text)","(user_group_role(( SELECT auth.uid() AS uid), id) = 'admin'::text)"
