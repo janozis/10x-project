@@ -32,7 +32,7 @@ export function useGroupPermissions(groupId: UUID) {
       } else {
         setState({ loading: false, data: res.data, error: undefined, errorCode: undefined, errorStatus: undefined });
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       const message: string = e?.body?.error?.message || e?.message || "Request failed";
       const code: string | undefined = e?.body?.error?.code;
       const status: number | undefined = e?.status;

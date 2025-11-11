@@ -56,10 +56,10 @@ export function useActivityDetails(activityId: UUID) {
         getActivity(activityId).then((res) => {
           if ("error" in res) {
             const code = res.error.code as string;
-            const status = statusForErrorCode(code as any);
+            const status = statusForErrorCode(code);
             throw Object.assign(new Error(res.error.message), { status, body: res, code });
           }
-          return res as ApiSingle<any>;
+          return res as ApiSingle<ActivityWithEditorsDTO>;
         }),
         supabaseClient.auth.getUser().then((r) => r.data.user || null),
       ]);
@@ -117,7 +117,7 @@ export function useActivityDetails(activityId: UUID) {
       };
 
       setState({ loading: false, vm });
-    } catch (e: any) {
+    } catch (e: unknown) {
       const msg: string = e?.body?.error?.message || e?.message || "Request failed";
       const code: string | undefined = e?.body?.error?.code || e?.code;
       const status: number | undefined = e?.status;

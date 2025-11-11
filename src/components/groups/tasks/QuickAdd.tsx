@@ -68,7 +68,7 @@ export function QuickAdd({ defaultActivityId, canCreate, onCreate }: QuickAddPro
       setDescription("");
       setDueDate("");
       setActivityId(defaultActivityId ?? "");
-    } catch (e: any) {
+    } catch (e: unknown) {
       const details = e?.body?.error?.details as Record<string, string> | undefined;
       const message = e?.body?.error?.message || e?.message || "Nie udało się utworzyć zadania.";
       setError(message);

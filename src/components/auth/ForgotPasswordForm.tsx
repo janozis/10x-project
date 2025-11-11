@@ -83,7 +83,7 @@ export default function ForgotPasswordForm() {
         </div>
       ) : null}
 
-      <EmailField register={register("email")} error={errors.email?.message} disabled={loading} autoFocus />
+      <EmailField register={register("email")} error={errors.email?.message} disabled={loading} />
 
       <Button
         type="submit"

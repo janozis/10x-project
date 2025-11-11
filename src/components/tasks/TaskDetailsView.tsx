@@ -33,13 +33,13 @@ export function TaskDetailsView({ taskId }: TaskDetailsViewProps): JSX.Element {
     setError(undefined);
     try {
       const res = await getTaskWithMeta(taskId);
-      if ("error" in (res as any)) {
-        setError((res as any).error.message);
+      if ("error" in (res as { error?: { message: string } })) {
+        setError((res as { error: { message: string } }).error.message);
         setTask(undefined);
         setPermissions(null);
         return;
       }
-      const ok = res as any;
+      const ok = res as { data: GroupTaskDTO; _meta?: { etag?: string } };
       setTask(ok.data);
       setEtag(ok?._meta?.etag);
       try {
@@ -49,12 +49,15 @@ export function TaskDetailsView({ taskId }: TaskDetailsViewProps): JSX.Element {
         } else {
           setPermissions(permsRes.data);
         }
-      } catch (e: any) {
+      } catch {
         // Non-fatal for the details view; defaults to read-only
         setPermissions(null);
       }
-    } catch (e: any) {
-      const message: string = e?.body?.error?.message || e?.message || "Nie udało się pobrać zadania.";
+    } catch (e: unknown) {
+      const message: string =
+        (e as { body?: { error?: { message?: string } }; message?: string })?.body?.error?.message ||
+        (e as { message?: string })?.message ||
+        "Nie udało się pobrać zadania.";
       setError(message);
     } finally {
       setLoading(false);
@@ -71,21 +74,21 @@ export function TaskDetailsView({ taskId }: TaskDetailsViewProps): JSX.Element {
       setSuccess(undefined);
       try {
         const res = await patchTaskWithIfMatch(task.id, payload, etag);
-        if ("error" in (res as any)) {
-          const err = (res as any).error as { code?: string; message: string; details?: Record<string, unknown> };
+        if ("error" in (res as { error?: { code?: string; message: string; details?: Record<string, unknown> } })) {
+          const err = (res as { error: { code?: string; message: string; details?: Record<string, unknown> } }).error;
           if (err.code === "CONFLICT") {
             toast.error("Konflikt edycji – odświeżam dane.");
             await refresh();
           }
           return { ok: false as const, code: err.code, details: err.details, message: err.message };
         }
-        const ok = res as any;
+        const ok = res as { _meta?: { etag?: string } };
         setEtag(ok?._meta?.etag ?? etag);
         setSuccess("Zapisano zmiany.");
         toast.success("Zapisano zmiany");
         await refresh();
         return { ok: true as const };
-      } catch (e: any) {
+      } catch (e: unknown) {
         const message: string = e?.body?.error?.message || e?.message || "Nie udało się zapisać zmian.";
         toast.error(message);
         return { ok: false as const, message };
@@ -114,7 +117,7 @@ export function TaskDetailsView({ taskId }: TaskDetailsViewProps): JSX.Element {
       window.setTimeout(() => {
         window.location.href = target;
       }, 600);
-    } catch (e: any) {
+    } catch (e: unknown) {
       const message: string = e?.body?.error?.message || e?.message || "Nie udało się usunąć zadania.";
       setError(message);
       toast.error(message);

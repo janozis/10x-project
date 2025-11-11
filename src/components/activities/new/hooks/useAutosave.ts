@@ -86,7 +86,7 @@ export function useAutosave(activityId: UUID | undefined, values: ActivityCreate
         }
         snapshotRef.current = { ...values } as Snapshot;
         setState({ isSaving: false, lastSavedAt: new Date().toISOString(), error: undefined });
-      } catch (e: any) {
+      } catch (e: unknown) {
         setState((s) => ({ ...s, isSaving: false, error: e?.message || "Network error" }));
       }
     }, debounceMs) as unknown as number;

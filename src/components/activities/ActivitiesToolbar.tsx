@@ -34,12 +34,14 @@ export function ActivitiesToolbar({
   const [searchLocal, setSearchLocal] = React.useState<string>(value.search || "");
   const debounced = useDebouncedValue(searchLocal, 300);
 
+  /* eslint-disable react-compiler/react-compiler */
   React.useEffect(() => {
     if ((value.search || "") === debounced) return;
     const trimmed = debounced.trim();
     onChange({ ...value, search: trimmed.length ? trimmed : undefined });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
+  /* eslint-enable react-compiler/react-compiler */
 
   React.useEffect(() => {
     setSearchLocal(value.search || "");

@@ -230,7 +230,7 @@ export default function CampDayEditForm({
       if (code === "CONFLICT" || payloadWasConflict) {
         toast.error(nextErrors._form);
         const fresh = await getCampDayWithMeta(campDay.id);
-        if ("error" in (fresh as any)) {
+        if ("error" in (fresh as ApiError | WithMeta<CampDayDTO>)) {
           return;
         }
         const success = fresh as WithMeta<CampDayDTO>;
@@ -287,7 +287,7 @@ export default function CampDayEditForm({
 
       try {
         const response = await patchCampDayWithIfMatch(campDay.id, payload, etag);
-        if ("error" in (response as any)) {
+        if ("error" in (response as ApiError | WithMeta<CampDayDTO>)) {
           const apiError = response as ApiError;
           await applyApiError(apiError, apiError.error.code === "CONFLICT");
           return;
@@ -325,8 +325,8 @@ export default function CampDayEditForm({
           navigateBack();
         }, 400);
       } catch (error: unknown) {
-        const apiError = (error as any)?.body as ApiError | undefined;
-        const status = (error as any)?.status as number | undefined;
+        const apiError = (error as { body?: ApiError; status?: number })?.body;
+        const status = (error as { status?: number })?.status;
         if (apiError?.error) {
           await applyApiError(apiError, apiError.error.code === "CONFLICT");
         } else {

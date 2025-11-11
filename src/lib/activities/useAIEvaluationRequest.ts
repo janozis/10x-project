@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { ActivityDTO, ActivityEditorDTO, GroupPermissionsDTO, UUID } from "@/types";
+import type { UUID } from "@/types";
 import { requestActivityAIEvaluation } from "./api.client";
 
 interface State {
@@ -42,8 +42,9 @@ export function useAIEvaluationRequest(
         );
         timeoutsRef.current.push(id);
       });
-    } catch (e: any) {
-      const message: string = e?.body?.error?.message || e?.message || "Nie udało się zlecić oceny AI.";
+    } catch (e: unknown) {
+      const error = e as { body?: { error?: { message?: string } }; message?: string };
+      const message: string = error?.body?.error?.message || error?.message || "Nie udało się zlecić oceny AI.";
       setState({ requesting: false, error: message });
       return;
     }

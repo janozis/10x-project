@@ -83,8 +83,8 @@ export function ConflictDiffModal<T = Record<string, unknown>>({
                     </div>
                     <pre className="overflow-x-auto text-xs whitespace-pre-wrap bg-amber-50/60 p-2 rounded">
                       {renderDiff(
-                        String((conflict?.local as any)?.[k] ?? ""),
-                        String((conflict?.server as any)?.[k] ?? ""),
+                        String((conflict?.local as Record<string, unknown>)?.[k] ?? ""),
+                        String((conflict?.server as Record<string, unknown>)?.[k] ?? ""),
                         "local"
                       )}
                     </pre>
@@ -100,8 +100,8 @@ export function ConflictDiffModal<T = Record<string, unknown>>({
                     <div className="text-xs text-muted-foreground">{k}</div>
                     <pre className="overflow-x-auto text-xs whitespace-pre-wrap bg-emerald-50/60 p-2 rounded">
                       {renderDiff(
-                        String((conflict?.server as any)?.[k] ?? ""),
-                        String((conflict?.local as any)?.[k] ?? ""),
+                        String((conflict?.server as Record<string, unknown>)?.[k] ?? ""),
+                        String((conflict?.local as Record<string, unknown>)?.[k] ?? ""),
                         "server"
                       )}
                     </pre>

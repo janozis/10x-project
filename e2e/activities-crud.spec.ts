@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test, expect } from "./fixtures"; // Use fixtures with auto-cleanup
 import type { Page } from "@playwright/test";
 import {

@@ -27,10 +27,11 @@ export function useColumnPreferences(groupId: UUID | undefined, userId: UUID | u
   const ready = typeof window !== "undefined" && !!groupId && !!userId;
 
   // Load from localStorage
+  /* eslint-disable react-compiler/react-compiler */
   React.useEffect(() => {
-    if (!ready) return;
+    if (!ready || !groupId || !userId) return;
     try {
-      const raw = window.localStorage.getItem(makeStorageKey(groupId!, userId!));
+      const raw = window.localStorage.getItem(makeStorageKey(groupId, userId));
       if (raw) {
         const parsed = JSON.parse(raw) as Partial<ColumnVisibilityState>;
         const next: ColumnVisibilityState = {
@@ -48,12 +49,13 @@ export function useColumnPreferences(groupId: UUID | undefined, userId: UUID | u
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId, userId]);
+  /* eslint-enable react-compiler/react-compiler */
 
   const persist = React.useCallback(
     (next: ColumnVisibilityState) => {
-      if (!ready) return;
+      if (!ready || !groupId || !userId) return;
       try {
-        window.localStorage.setItem(makeStorageKey(groupId!, userId!), JSON.stringify(next));
+        window.localStorage.setItem(makeStorageKey(groupId, userId), JSON.stringify(next));
       } catch {
         // Ignore storage quota errors
       }

@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginSchema } from "@/lib/validation/auth";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { isSafeInternalRedirect } from "@/lib/auth/client";
 import { useLogin } from "@/lib/auth/useLogin";
 import EmailField from "@/components/auth/EmailField";
 import PasswordField from "@/components/auth/PasswordField";
@@ -30,11 +29,6 @@ export default function LoginForm(props: LoginFormProps) {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
-
-  const targetHref = useMemo(() => {
-    if (isSafeInternalRedirect(props.redirectTo)) return props.redirectTo;
-    return "/";
-  }, [props.redirectTo]);
 
   const onSubmit = useCallback(
     async (values: LoginSchema) => {
@@ -98,7 +92,7 @@ export default function LoginForm(props: LoginFormProps) {
         </div>
       ) : null}
 
-      <EmailField register={register("email")} error={errors.email?.message} disabled={isSubmitting} autoFocus />
+      <EmailField register={register("email")} error={errors.email?.message} disabled={isSubmitting} />
 
       <PasswordField register={register("password")} error={errors.password?.message} disabled={isSubmitting} />
 

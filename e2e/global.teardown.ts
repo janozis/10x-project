@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test as teardown } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "../src/db/database.types";

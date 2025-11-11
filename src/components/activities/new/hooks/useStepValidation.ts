@@ -1,11 +1,5 @@
 import * as React from "react";
-import { z } from "zod";
-import {
-  activityCreateSchema,
-  type ActivityCreateInput,
-  activityUpdateSchema,
-  zodErrorToDetails,
-} from "@/lib/validation/activity";
+import { activityCreateSchema, type ActivityCreateInput, zodErrorToDetails } from "@/lib/validation/activity";
 import type { ActivityCreateVM, FieldErrors } from "../types";
 
 function coerceToCreateInput(values: ActivityCreateVM): ActivityCreateInput {

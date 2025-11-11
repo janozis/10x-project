@@ -87,15 +87,18 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
             }
           }
         }
-        if (alertRef.current) {
-          alertRef.current.focus();
-        }
       }
     },
     [formState.dirtyFields, onSubmit, clearErrors, setError]
   );
 
   const status = watch("status") as TaskStatus | undefined;
+
+  React.useEffect(() => {
+    if (submitError && alertRef.current) {
+      alertRef.current.focus();
+    }
+  }, [submitError]);
 
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="space-y-6" data-test-id="task-form">

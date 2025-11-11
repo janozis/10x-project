@@ -138,7 +138,7 @@ describe("dashboard.mapper", () => {
 
     it("should handle empty activities list", () => {
       // Arrange
-      const recentActivities: any[] = [];
+      const recentActivities: unknown[] = [];
 
       // Act
       const result = mapDashboardStatsToDTO(mockStatsRow, recentActivities);

@@ -54,7 +54,7 @@ export function useCampDayData(
       setSlots(mapped);
       // Local conflict best-effort
       setConflicts(detectLocalConflicts(mapped));
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Błąd ładowania danych");
     } finally {
       setLoading(false);

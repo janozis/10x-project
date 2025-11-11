@@ -46,7 +46,8 @@ export const POST: APIRoute = async (context) => {
     const status = mapErrorCodeToHttpStatus(result.error.code);
     const headers: Record<string, string> = { "Content-Type": "application/json" };
     // If service populates details.retryAfterSec we can expose Retry-After
-    const retryAfterSec = (result as any)?.error?.details?.retryAfterSec;
+    const retryAfterSec = (result as { error?: { details?: { retryAfterSec?: number } } })?.error?.details
+      ?.retryAfterSec;
     if (status === 429 && typeof retryAfterSec === "number") {
       headers["Retry-After"] = String(retryAfterSec);
     }

@@ -44,7 +44,7 @@ export const POST: APIRoute = async (context) => {
   const result = await joinGroupByCode(supabase, userId, jsonBody);
   if ("error" in result) {
     // Special-case INVITE_* codes exposed via details.code
-    const code = (result.error.details as any)?.code ?? result.error.code;
+    const code = (result.error.details as { code?: string } | undefined)?.code ?? result.error.code;
     const status = mapErrorCodeToHttpStatus(code);
     return new Response(JSON.stringify(result), { status, headers: { "Content-Type": "application/json" } });
   }

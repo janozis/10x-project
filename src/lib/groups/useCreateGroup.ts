@@ -20,7 +20,7 @@ export function useCreateGroup() {
       }
       setCreated(res.data);
       return { ok: true as const, data: res.data };
-    } catch (e: any) {
+    } catch (e: unknown) {
       const message: string = e?.body?.error?.message || e?.message || "Request failed";
       setError(message);
       return { ok: false as const, error: { message } } as const;

@@ -4,7 +4,7 @@ import { errors } from "../../../lib/errors";
 
 export const prerender = false;
 
-function statusFromResponse(resp: any): number {
+function statusFromResponse(resp: { error?: { code: string } }): number {
   if (resp && resp.error) {
     switch (resp.error.code) {
       case "VALIDATION_ERROR":
@@ -42,8 +42,8 @@ export const GET: APIRoute = async ({ params, locals }) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-  const { supabase } = locals as { supabase: any };
-  const result = await getCampDay(supabase, (locals as any).userId, parsed.id);
+  const { supabase, user } = locals as App.Locals;
+  const result = await getCampDay(supabase, user?.id, parsed.id);
   return new Response(JSON.stringify(result), {
     status: statusFromResponse(result),
     headers: { "Content-Type": "application/json" },
@@ -67,8 +67,8 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-  const { supabase } = locals as { supabase: any };
-  const result = await updateCampDay(supabase, (locals as any).userId, parsed.id, body);
+  const { supabase, user } = locals as App.Locals;
+  const result = await updateCampDay(supabase, user?.id, parsed.id, body);
   return new Response(JSON.stringify(result), {
     status: statusFromResponse(result),
     headers: { "Content-Type": "application/json" },
@@ -83,8 +83,8 @@ export const DELETE: APIRoute = async ({ params, locals }) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-  const { supabase } = locals as { supabase: any };
-  const result = await deleteCampDay(supabase, (locals as any).userId, parsed.id);
+  const { supabase, user } = locals as App.Locals;
+  const result = await deleteCampDay(supabase, user?.id, parsed.id);
   return new Response(JSON.stringify(result), {
     status: statusFromResponse(result),
     headers: { "Content-Type": "application/json" },

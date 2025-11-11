@@ -99,7 +99,7 @@ export default function RegisterForm() {
         </div>
       ) : null}
 
-      <EmailField register={register("email")} error={errors.email?.message} disabled={loading} autoFocus />
+      <EmailField register={register("email")} error={errors.email?.message} disabled={loading} />
 
       <PasswordField
         id="password"

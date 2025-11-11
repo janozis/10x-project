@@ -11,11 +11,12 @@ interface Props {
   cooldownMs?: number;
 }
 
-export function InviteCard({ groupId, invite, canManage, onRequestRotate, cooldownMs }: Props): JSX.Element | null {
+export function InviteCard({ invite, canManage, onRequestRotate, cooldownMs }: Props): JSX.Element | null {
+  const [show, setShow] = React.useState(false);
+  const [busy] = React.useState(false);
+
   if (!canManage) return null;
   if (!invite) return null;
-  const [show, setShow] = React.useState(false);
-  const [busy, setBusy] = React.useState(false);
 
   const joinLink = `/join?code=${invite.code}`;
   const masked = show ? invite.code : maskCode(invite.code);

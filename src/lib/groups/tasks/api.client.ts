@@ -63,7 +63,7 @@ export async function getTaskWithMeta(taskId: UUID): Promise<WithMeta<GroupTaskD
   const body = isJson ? await res.json() : undefined;
   if (!res.ok) return body as ApiResponse<GroupTaskDTO>;
   const etag = res.headers.get("ETag") || res.headers.get("etag") || undefined;
-  return { data: (body as any).data as GroupTaskDTO, _meta: etag ? { etag } : undefined };
+  return { data: (body as { data: GroupTaskDTO }).data, _meta: etag ? { etag } : undefined };
 }
 
 export async function patchTaskWithIfMatch(
@@ -78,5 +78,5 @@ export async function patchTaskWithIfMatch(
   const body = isJson ? await res.json() : undefined;
   if (!res.ok) return body as ApiResponse<GroupTaskDTO>;
   const etag = res.headers.get("ETag") || res.headers.get("etag") || undefined;
-  return { data: (body as any).data as GroupTaskDTO, _meta: etag ? { etag } : undefined };
+  return { data: (body as { data: GroupTaskDTO }).data, _meta: etag ? { etag } : undefined };
 }

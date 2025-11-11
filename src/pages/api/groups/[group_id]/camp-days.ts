@@ -30,8 +30,8 @@ function statusFromResponse<T>(resp: ApiResponse<T> | ApiListResponse<T>): numbe
 }
 
 export const GET: APIRoute = async ({ params, locals }) => {
-  const { supabase } = locals as { supabase: any };
-  const userId = locals.user?.id;
+  const { supabase, user } = locals as App.Locals;
+  const userId = user?.id;
   const groupId = params.group_id;
   if (!groupId || typeof groupId !== "string") {
     const resp = errors.validation({ group_id: "required" });
@@ -42,8 +42,8 @@ export const GET: APIRoute = async ({ params, locals }) => {
 };
 
 export const POST: APIRoute = async ({ params, request, locals }) => {
-  const { supabase } = locals as { supabase: any };
-  const userId = locals.user?.id;
+  const { supabase, user } = locals as App.Locals;
+  const userId = user?.id;
   const groupId = params.group_id;
   if (!groupId || typeof groupId !== "string") {
     const resp = errors.validation({ group_id: "required" });

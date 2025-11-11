@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test, expect, type Page } from "@playwright/test";
 import {
   GroupsListPage,
@@ -199,7 +200,7 @@ test.describe("AI Evaluation", () => {
     }
   });
 
-  test("should handle timeout during generation", async ({ page }) => {
+  test("should handle timeout during generation", async () => {
     // This test would require mocking or very long activity
     // For now, just verify timeout handling exists
     test.skip();
@@ -221,7 +222,7 @@ test.describe("AI Evaluation", () => {
     }
   });
 
-  test("only admin and assigned editors can generate evaluation", async ({ page, context }) => {
+  test("only admin and assigned editors can generate evaluation", async () => {
     // This would require testing permissions
     // Already covered in permissions.spec.ts
     test.skip();

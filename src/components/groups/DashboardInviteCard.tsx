@@ -15,7 +15,6 @@ export function DashboardInviteCard({ groupId, group, canManage }: DashboardInvi
   const [show, setShow] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
-  const [confirmAction, setConfirmAction] = React.useState<"generate" | "rotate" | undefined>(undefined);
   const [joinLink, setJoinLink] = React.useState<string>("");
 
   const invite = group.invite;
@@ -45,8 +44,9 @@ export function DashboardInviteCard({ groupId, group, canManage }: DashboardInvi
       } else if ("error" in res) {
         toast.error(res.error.message || "Nie udało się wygenerować kodu");
       }
-    } catch (e: any) {
-      toast.error(e?.message || "Wystąpił błąd");
+    } catch (e: unknown) {
+      const error = e as { message?: string };
+      toast.error(error?.message || "Wystąpił błąd");
     } finally {
       setBusy(false);
       setConfirmOpen(false);

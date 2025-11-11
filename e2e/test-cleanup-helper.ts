@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Helper function for per-test cleanup
  *

@@ -21,7 +21,7 @@ async function fetchMembership(
   supabase: SupabaseClient,
   groupId: string,
   userId: string
-): Promise<{ row: Tables<"group_memberships"> | null; dbError: any | null }> {
+): Promise<{ row: Tables<"group_memberships"> | null; dbError: { message: string } | null }> {
   const { data, error } = await supabase
     .from("group_memberships")
     .select("*")
@@ -36,7 +36,7 @@ async function fetchCallerMembership(
   supabase: SupabaseClient,
   groupId: string,
   authUserId: string
-): Promise<{ row: Tables<"group_memberships"> | null; dbError: any | null }> {
+): Promise<{ row: Tables<"group_memberships"> | null; dbError: { message: string } | null }> {
   return fetchMembership(supabase, groupId, authUserId);
 }
 
@@ -49,9 +49,9 @@ function isLastAdminRemovalError(message: string | undefined): boolean {
 /**
  * Attach diagnostics info (only in dev) to an error response object.
  */
-function withDiagnostics<T extends { error?: any }>(base: T, diagnostics: Record<string, unknown>): T {
+function withDiagnostics<T extends { error?: unknown }>(base: T, diagnostics: Record<string, unknown>): T {
   if (import.meta.env.DEV) {
-    (base as any).diagnostics = diagnostics;
+    (base as Record<string, unknown>).diagnostics = diagnostics;
   }
   return base;
 }
@@ -85,7 +85,7 @@ export async function listMembers(
   if (!caller) {
     // Determine if group exists (for diagnostics only)
     let groupExists = false;
-    let groupQueryError: any | null = null;
+    let groupQueryError: { message: string } | null = null;
     if (!callerErr) {
       const { data: gRows, error: gError } = await supabase.from("groups").select("id").eq("id", groupId).limit(1);
       if (gError) {
@@ -143,7 +143,7 @@ export async function listMembers(
     });
   }
 
-  const dtos = (rows ?? []).map((row) => mapMembershipRowToDTO(row as any));
+  const dtos = (rows ?? []).map((row) => mapMembershipRowToDTO(row as Record<string, unknown>));
   console.log("[listMembers] Mapped DTOs:", { count: dtos.length, emails: dtos.map((d) => d.user_email) });
   return { data: dtos, count: dtos.length };
 }

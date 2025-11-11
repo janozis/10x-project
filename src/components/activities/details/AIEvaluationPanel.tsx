@@ -1,14 +1,12 @@
 import * as React from "react";
-import type { ActivityDTO, AIEvaluationDTO } from "@/types";
+import type { AIEvaluationDTO } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Countdown } from "./Countdown";
 import { AIEvaluationTimeline } from "./AIEvaluationTimeline";
 import { AIEvaluationSummary } from "./AIEvaluationSummary";
 
 export interface AIEvaluationPanelProps {
-  activity?: ActivityDTO;
   evaluations: AIEvaluationDTO[];
   canRequest: boolean;
   cooldownRemainingSec: number;
@@ -17,7 +15,6 @@ export interface AIEvaluationPanelProps {
 }
 
 export function AIEvaluationPanel({
-  activity,
   evaluations,
   canRequest,
   cooldownRemainingSec,

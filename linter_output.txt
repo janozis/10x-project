@@ -1,0 +1,126 @@
+
+> 10x-project@0.0.1 lint
+> eslint .
+
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/playwright.config.ts
+  12:1  warning  Unexpected console statement  no-console
+  13:1  warning  Unexpected console statement  no-console
+  14:1  warning  Unexpected console statement  no-console
+  15:1  warning  Unexpected console statement  no-console
+  16:1  warning  Unexpected console statement  no-console
+  17:1  warning  Unexpected console statement  no-console
+  18:1  warning  Unexpected console statement  no-console
+  19:1  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/editor/ConflictDiffModal.tsx
+  31:6  warning  React Hook React.useEffect has a missing dependency: 'fields'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/new/hooks/useAutosave.ts
+  58:6  warning  React Hook React.useEffect has a missing dependency: 'values'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/AddSlotButton.tsx
+  26:7   warning  Unexpected console statement  no-console
+  88:13  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/ApplyTemplateButton.tsx
+   59:7   warning  Unexpected console statement  no-console
+  148:11  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/CampDayView.tsx
+  112:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/DeleteCampDayButton.tsx
+   37:7   warning  Unexpected console statement  no-console
+  112:11  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/activities/useRealtimeActivities.ts
+  26:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/camp-days/useAutosaveSchedule.ts
+  51:5  warning  React Hook React.useCallback has missing dependencies: 'opts' and 'setStateBoth'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/camp-days/useRealtimeCampDay.ts
+  8:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/dashboard/useDashboardRealtime.ts
+  36:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/tasks/useRealtimeTasks.ts
+  29:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useGroupMembersForPicker.ts
+  25:7  warning  Unexpected console statement  no-console
+  31:7  warning  Unexpected console statement  no-console
+  41:7  warning  Unexpected console statement  no-console
+  44:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/hooks/useIntersection.ts
+  20:6  warning  React Hook React.useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/services/group-memberships.service.ts
+   74:3  warning  Unexpected console statement  no-console
+   75:3  warning  Unexpected console statement  no-console
+   83:3  warning  Unexpected console statement  no-console
+  109:3  warning  Unexpected console statement  no-console
+  114:3  warning  Unexpected console statement  no-console
+  126:5  warning  Unexpected console statement  no-console
+  147:3  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/services/groups.service.ts
+   29:5  warning  Unexpected console statement  no-console
+   30:5  warning  Unexpected console statement  no-console
+   37:7  warning  Unexpected console statement  no-console
+   56:5  warning  Unexpected console statement  no-console
+   61:7  warning  Unexpected console statement  no-console
+   78:5  warning  Unexpected console statement  no-console
+  102:7  warning  Unexpected console statement  no-console
+  114:7  warning  Unexpected console statement  no-console
+  120:5  warning  Unexpected console statement  no-console
+  139:5  warning  Unexpected console statement  no-console
+  148:5  warning  Unexpected console statement  no-console
+  157:7  warning  Unexpected console statement  no-console
+  170:5  warning  Unexpected console statement  no-console
+  210:5  warning  Unexpected console statement  no-console
+  218:7  warning  Unexpected console statement  no-console
+  465:5  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/services/permissions.service.ts
+  62:5  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/activities/[activity_id].astro
+  38:3  warning  Unexpected console statement  no-console
+  68:9  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/activities/[activity_id]/edit.astro
+  39:3  warning  Unexpected console statement  no-console
+  42:3  warning  Unexpected console statement  no-console
+  63:7  warning  Unexpected console statement  no-console
+  68:7  warning  Unexpected console statement  no-console
+  72:9  warning  Unexpected console statement  no-console
+  75:9  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/auth/logout.ts
+  17:7  warning  Unexpected console statement  no-console
+  48:7  warning  Unexpected console statement  no-console
+  56:5  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups.ts
+   30:5  warning  Unexpected console statement  no-console
+   31:5  warning  Unexpected console statement  no-console
+   38:7  warning  Unexpected console statement  no-console
+   55:7  warning  Unexpected console statement  no-console
+   66:5  warning  Unexpected console statement  no-console
+   85:5  warning  Unexpected console statement  no-console
+   86:5  warning  Unexpected console statement  no-console
+   98:7  warning  Unexpected console statement  no-console
+  114:5  warning  Unexpected console statement  no-console
+  126:7  warning  Unexpected console statement  no-console
+  133:5  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups/[group_id]/camp-days/metrics.ts
+  54:5  warning  Unexpected console statement  no-console
+  73:5  warning  Unexpected console statement  no-console
+
+✖ 75 problems (0 errors, 75 warnings)
+

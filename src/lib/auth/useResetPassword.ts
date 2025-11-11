@@ -46,7 +46,7 @@ export function useResetPassword(options: UseResetPasswordOptions = {}) {
             return;
           }
         }
-      } catch (e) {
+      } catch {
         // ignore URL parse errors
       }
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { ActivityStatus, ActivityWithEditorsDTO, UUID } from "@/types";
+import type { ActivityStatus, ActivityWithEditorsDTO, UUID, ApiList } from "@/types";
 import { listActivities } from "./api.client";
 
 export interface ActivitiesListFilters {
@@ -89,7 +89,7 @@ export function useInfiniteActivities(options: {
           initialized: true,
         });
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       const message: string = e?.body?.error?.message || e?.message || "Request failed";
       const code: string | undefined = e?.body?.error?.code;
       const status: number | undefined = e?.status;
@@ -123,7 +123,7 @@ export function useInfiniteActivities(options: {
       setState((s) => ({
         ...s,
         items: [...s.items, ...res.data],
-        nextCursor: (res as any).nextCursor,
+        nextCursor: (res as ApiList<ActivityWithEditorsDTO>).nextCursor,
         loadingMore: false,
       }));
       return { ok: true as const };

@@ -21,6 +21,7 @@ export function AIEvaluationPanel({
   const { items, loading, error, refresh } = useAIEvaluations(activityId);
 
   // Polling after a request trigger
+  /* eslint-disable react-compiler/react-compiler */
   React.useEffect(() => {
     if (!requestTrigger) return;
     let cancelled = false;
@@ -44,6 +45,7 @@ export function AIEvaluationPanel({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestTrigger]);
+  /* eslint-enable react-compiler/react-compiler */
   return (
     <div className="rounded-lg border p-6 text-sm space-y-3">
       <h2 className="text-lg font-semibold">Oceny AI</h2>

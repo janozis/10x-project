@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { minutesBetween, isValidTimeString, addMinutes, mapScheduleToSlotVM } from "./types";
-import type { ActivityScheduleDTO } from "@/types";
+import { minutesBetween, isValidTimeString, addMinutes } from "./types";
 
 describe("camp-days/types - Time Calculations", () => {
   describe("minutesBetween", () => {

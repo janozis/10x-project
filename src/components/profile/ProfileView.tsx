@@ -39,7 +39,7 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
       } else {
         toast.error("Nie udało się załadować profilu");
       }
-    } catch (error) {
+    } catch {
       toast.error("Błąd połączenia");
     } finally {
       setLoading(false);
@@ -72,10 +72,10 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
         setProfile(data.data);
         toast.success("Profil zaktualizowany pomyślnie");
       } else {
-        const error = await response.json();
-        toast.error(error.error?.message || "Nie udało się zaktualizować profilu");
+        const errorData = await response.json();
+        toast.error(errorData.error?.message || "Nie udało się zaktualizować profilu");
       }
-    } catch (error) {
+    } catch {
       toast.error("Błąd połączenia");
     } finally {
       setSaving(false);

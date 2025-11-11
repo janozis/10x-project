@@ -91,12 +91,12 @@ export function useGroupPermissions(groupId: UUID | null | undefined): UseGroupP
       const timestamp = Date.now();
       permissionsFetchTimestampCache.set(groupId, timestamp);
       setLastFetchedAt(timestamp);
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (controller.signal.aborted) {
         return;
       }
-      setError(err?.message ?? "Wystąpił nieznany błąd");
-      if (err?.name === "AbortError") {
+      setError((err as Error)?.message ?? "Wystąpił nieznany błąd");
+      if ((err as Error)?.name === "AbortError") {
         return;
       }
     } finally {

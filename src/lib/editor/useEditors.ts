@@ -19,7 +19,7 @@ export function useEditors(activityId: UUID) {
     try {
       const res = await fetchJson<{ data: ActivityEditorDTO[] }>(`/api/activities/${activityId}/editors`);
       setItems(res.data);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Load failed");
     } finally {
       setLoading(false);

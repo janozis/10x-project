@@ -56,8 +56,8 @@ export function useCreateActivity(groupId: UUID) {
           const details = (err.error.details || {}) as Record<string, string>;
           return { ok: false, fieldErrors: details, errorCode: err.error.code, errorMessage: err.error.message };
         }
-        return { ok: true, activity: (json as any).data as ActivityWithEditorsDTO };
-      } catch (e: any) {
+        return { ok: true, activity: (json as { data: ActivityWithEditorsDTO }).data };
+      } catch (e: unknown) {
         return { ok: false, errorMessage: e?.message || "Request failed" };
       } finally {
         setIsSubmitting(false);

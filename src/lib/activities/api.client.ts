@@ -53,8 +53,10 @@ async function fetchJson<T>(input: RequestInfo | URL, init?: RequestInit): Promi
         console.log("[fetchJson] Parsed body:", {
           bodyType: typeof body,
           bodyKeys: body && typeof body === "object" ? Object.keys(body) : [],
-          hasData: !!(body as any)?.data,
-          dataLength: Array.isArray((body as any)?.data) ? (body as any).data.length : undefined,
+          hasData: !!(body as Record<string, unknown>)?.data,
+          dataLength: Array.isArray((body as Record<string, unknown>)?.data)
+            ? ((body as Record<string, unknown>).data as unknown[]).length
+            : undefined,
         });
       }
     } else {
@@ -89,8 +91,10 @@ async function fetchJson<T>(input: RequestInfo | URL, init?: RequestInit): Promi
     console.log("[fetchJson] Success response:", {
       status: res.status,
       bodyType: typeof body,
-      hasData: !!(body as any)?.data,
-      dataLength: Array.isArray((body as any)?.data) ? (body as any).data.length : undefined,
+      hasData: !!(body as Record<string, unknown>)?.data,
+      dataLength: Array.isArray((body as Record<string, unknown>)?.data)
+        ? ((body as Record<string, unknown>).data as unknown[]).length
+        : undefined,
       bodyKeys: body && typeof body === "object" ? Object.keys(body) : [],
       bodyPreview: body && typeof body === "object" ? JSON.stringify(body).substring(0, 200) : body,
     });

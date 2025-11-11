@@ -26,7 +26,6 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
   const [status, setStatus] = React.useState<"idle" | "loading" | "error" | "ready">("idle");
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(undefined);
   const [errorStatus, setErrorStatus] = React.useState<number | undefined>(undefined);
-  const [permissions, setPermissions] = React.useState<GroupPermissionsDTO | null>(null);
   const [events, setEvents] = React.useState<ActivityFeedEventVM[]>([]);
   const [realtimeStatus, setRealtimeStatus] = React.useState<RealtimeStatus>("off");
   const [loadingMore, setLoadingMore] = React.useState(false);
@@ -73,11 +72,10 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
           return;
         }
 
-        const permBody = (await permRes.json()) as { data: GroupPermissionsDTO };
+        await permRes.json(); // Validate permissions but don't store
         const dashBody = dashRes.ok ? ((await dashRes.json()) as { data: GroupDashboardDTO }) : null;
 
         if (!isMounted) return;
-        setPermissions(permBody.data);
         const mapped = mapRecentToVM(dashBody?.data?.recent_activity ?? [], groupId);
         setEvents(mapped);
         setStatus("ready");
@@ -96,7 +94,7 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
   }, [groupId]);
 
   // Realtime subscription (activities only in MVP)
-  const { isRealtimeConnected, connectionStatus } = useDashboardRealtime(groupId, {
+  const { connectionStatus } = useDashboardRealtime(groupId, {
     onEvent: (ev) => {
       if (ev.type !== "activity_created" && ev.type !== "activity_updated") return;
       setEvents((prev) => {
@@ -289,7 +287,7 @@ function safeParseDate(iso: string): Date {
   return isNaN(d.getTime()) ? new Date() : d;
 }
 
-async function safeJson(res: Response): Promise<any | null> {
+async function safeJson(res: Response): Promise<unknown | null> {
   try {
     return await res.json();
   } catch {

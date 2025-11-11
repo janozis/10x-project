@@ -45,7 +45,7 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
       setServerCode(undefined);
       return;
     }
-    const code = (res.error as any)?.code as string | undefined;
+    const code = (res.error as { code?: string })?.code;
     setServerCode(code);
     if (code === "INVITE_INVALID") {
       form.setError("code", { type: "server", message: "Nieprawidłowy kod zaproszenia." });

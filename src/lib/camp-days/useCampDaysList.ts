@@ -184,12 +184,12 @@ export function useCampDaysList(groupId: UUID | null | undefined): UseCampDaysLi
       setCampDays(payload.data);
       await computeMetrics(payload.data, controller.signal);
       setNotFound(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (controller.signal.aborted) {
         return;
       }
-      setError(err?.message ?? "Wystąpił nieznany błąd");
-      if (err?.name === "AbortError") {
+      setError((err as Error)?.message ?? "Wystąpił nieznany błąd");
+      if ((err as Error)?.name === "AbortError") {
         return;
       }
     } finally {

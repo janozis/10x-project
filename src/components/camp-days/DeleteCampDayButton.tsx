@@ -146,8 +146,9 @@ function isApiError(response: ApiResponse<unknown>): response is ApiError {
 
 function extractErrorDetails(error: unknown): { status?: number; code?: ApiErrorCode } {
   if (typeof error === "object" && error !== null) {
-    const status = typeof (error as any).status === "number" ? (error as any).status : undefined;
-    const code = (error as any).body?.error?.code as ApiErrorCode | undefined;
+    const status =
+      typeof (error as { status?: number }).status === "number" ? (error as { status?: number }).status : undefined;
+    const code = (error as { body?: { error?: { code?: ApiErrorCode } } }).body?.error?.code;
     return { status, code };
   }
   return {};

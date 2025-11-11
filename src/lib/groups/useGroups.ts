@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { GroupDTO } from "@/types";
+import type { GroupDTO, ApiList } from "@/types";
 import { listGroups } from "./api.client";
 
 interface UseGroupsState {
@@ -34,13 +34,16 @@ export function useGroups(options?: { showDeleted?: boolean }) {
           error: undefined,
           errorCode: undefined,
           errorStatus: undefined,
-          nextCursor: (res as any).nextCursor,
+          nextCursor: (res as ApiList<GroupDTO>).nextCursor,
         });
       }
-    } catch (e: any) {
-      const message: string = e?.body?.error?.message || e?.message || "Request failed";
-      const code: string | undefined = e?.body?.error?.code;
-      const status: number | undefined = e?.status;
+    } catch (e: unknown) {
+      const message: string =
+        (e as { body?: { error?: { message?: string } }; message?: string })?.body?.error?.message ||
+        (e as { message?: string })?.message ||
+        "Request failed";
+      const code: string | undefined = (e as { body?: { error?: { code?: string } } })?.body?.error?.code;
+      const status: number | undefined = (e as { status?: number })?.status;
       setState({ loading: false, error: message, errorCode: code, errorStatus: status, items: [] });
     }
   }, [options?.showDeleted]);
@@ -70,7 +73,7 @@ export function useGroups(options?: { showDeleted?: boolean }) {
         setState((s) => ({
           ...s,
           items: [...s.items, ...res.data],
-          nextCursor: (res as any).nextCursor,
+          nextCursor: (res as ApiList<GroupDTO>).nextCursor,
           loadingMore: false,
         }));
         return { ok: true as const };

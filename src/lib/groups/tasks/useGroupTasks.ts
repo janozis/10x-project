@@ -150,7 +150,7 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
       setTasks((prev) => (reset ? vms : [...prev, ...vms]));
       setNextCursor(result.nextCursor);
     } catch (e: unknown) {
-      const anyErr = e as { body?: any; message?: string };
+      const anyErr = e as { body?: { error?: { message?: string } }; message?: string };
       const msg = anyErr?.body?.error?.message || anyErr?.message || "Nie udało się załadować zadań.";
       setError(msg);
     } finally {
@@ -178,12 +178,12 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
         activity_id: input.activityId ?? null,
       };
       const res = await apiCreate(groupId, payload);
-      if ((res as any).error) throw new Error((res as any).error?.message || "Nie udało się utworzyć zadania.");
-      const dto = (res as any).data as GroupTaskDTO;
+      if ("error" in res) throw new Error(res.error?.message || "Nie udało się utworzyć zadania.");
+      const dto = res.data;
       const vm = toVM(dto, canEdit);
       setTasks((prev) => [vm, ...prev]);
     } catch (e: unknown) {
-      const anyErr = e as { body?: any; message?: string };
+      const anyErr = e as { body?: { error?: { message?: string } }; message?: string };
       const msg = anyErr?.body?.error?.message || anyErr?.message || "Nie udało się utworzyć zadania.";
       setError(msg);
       throw e;
@@ -194,12 +194,12 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
     setError(null);
     try {
       const res = await apiPatch(id, patch);
-      if ((res as any).error) throw new Error((res as any).error?.message || "Nie udało się zaktualizować zadania.");
-      const dto = (res as any).data as GroupTaskDTO;
+      if ("error" in res) throw new Error(res.error?.message || "Nie udało się zaktualizować zadania.");
+      const dto = res.data;
       const vm = toVM(dto, canEdit);
       setTasks((prev) => prev.map((t) => (t.id === id ? vm : t)));
     } catch (e: unknown) {
-      const anyErr = e as { body?: any; message?: string };
+      const anyErr = e as { body?: { error?: { message?: string } }; message?: string };
       const msg = anyErr?.body?.error?.message || anyErr?.message || "Nie udało się zaktualizować zadania.";
       setError(msg);
       throw e;
@@ -210,10 +210,10 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
     setError(null);
     try {
       const res = await apiDelete(id);
-      if ((res as any).error) throw new Error((res as any).error?.message || "Nie udało się usunąć zadania.");
+      if ("error" in res) throw new Error(res.error?.message || "Nie udało się usunąć zadania.");
       setTasks((prev) => prev.filter((t) => t.id !== id));
     } catch (e: unknown) {
-      const anyErr = e as { body?: any; message?: string };
+      const anyErr = e as { body?: { error?: { message?: string } }; message?: string };
       const msg = anyErr?.body?.error?.message || anyErr?.message || "Nie udało się usunąć zadania.";
       setError(msg);
       throw e;
@@ -300,6 +300,7 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
   useRealtimeTasks(groupId, handleRealtime);
 
   // Initial and reactive load on filters change
+  /* eslint-disable react-compiler/react-compiler */
   React.useEffect(() => {
     // skip first effect if already loaded once and no filters changed? We'll always reset on filter change
     if (loadedRef.current) {
@@ -310,6 +311,7 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
     resetAndLoad();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId, filters.status, filters.activityId]);
+  /* eslint-enable react-compiler/react-compiler */
 
   return {
     filters,

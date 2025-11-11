@@ -91,9 +91,11 @@ describe("utils", () => {
         const cursor = nextActivityCursorFromPage(rows);
         expect(cursor).toBeTruthy();
 
-        const parsed = parseActivityCursor(cursor!);
-        expect(parsed?.created_at).toBe(mockCreatedAt);
-        expect(parsed?.id).toBe(mockId);
+        if (cursor) {
+          const parsed = parseActivityCursor(cursor);
+          expect(parsed?.created_at).toBe(mockCreatedAt);
+          expect(parsed?.id).toBe(mockId);
+        }
       });
 
       it("should return undefined for empty array", () => {

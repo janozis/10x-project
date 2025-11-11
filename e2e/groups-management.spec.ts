@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test, expect } from "./fixtures"; // Use fixtures with auto-cleanup
 import { GroupsListPage, CreateGroupDialog, GroupPage, type CreateGroupData } from "./page-objects";
 import { generateGroupData, getFutureDate } from "./test-helpers";

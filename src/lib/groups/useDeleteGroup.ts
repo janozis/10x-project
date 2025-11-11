@@ -16,7 +16,7 @@ export function useDeleteGroup() {
         return { ok: false as const, error: res.error };
       }
       return { ok: true as const };
-    } catch (e: any) {
+    } catch (e: unknown) {
       const message: string = e?.body?.error?.message || e?.message || "Request failed";
       setError(message);
       return { ok: false as const, error: { message } } as const;

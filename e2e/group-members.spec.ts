@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test, expect } from "@playwright/test";
 import { GroupsListPage, CreateGroupDialog, GroupPage, GroupMembersPage } from "./page-objects";
 import { generateGroupData } from "./test-helpers";

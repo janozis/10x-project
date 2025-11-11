@@ -28,11 +28,19 @@ let permissionsDto: GroupPermissionsDTO | null = null;
 let groupDto: GroupDTO | null = null;
 let errorMessage: string | null = null;
 
+// Ensure userId exists before proceeding
+if (!userId) {
+  Astro.response.status = 401;
+  errorMessage = "Brak autoryzacji.";
+}
+
 // Call services directly instead of fetch
-const [campDayResult, permissionsResult] = await Promise.all([
-  getCampDay(supabase, userId, campDayId),
-  getGroupPermissions(supabase, groupId, userId!),
-]);
+const [campDayResult, permissionsResult] = userId
+  ? await Promise.all([getCampDay(supabase, userId, campDayId), getGroupPermissions(supabase, groupId, userId)])
+  : [
+      { error: { code: "UNAUTHORIZED", message: "Brak autoryzacji." } },
+      { error: { code: "UNAUTHORIZED", message: "Brak autoryzacji." } },
+    ];
 
 // Handle camp day result
 if ("error" in campDayResult) {
@@ -48,12 +56,14 @@ if ("data" in permissionsResult) {
 }
 
 // Fetch group details - verify membership
-const { data: membership } = await supabase
-  .from("group_memberships")
-  .select("user_id")
-  .eq("group_id", groupId)
-  .eq("user_id", userId!)
-  .maybeSingle();
+const { data: membership } = userId
+  ? await supabase
+      .from("group_memberships")
+      .select("user_id")
+      .eq("group_id", groupId)
+      .eq("user_id", userId)
+      .maybeSingle()
+  : { data: null };
 
 if (membership) {
   // User is a member, fetch group

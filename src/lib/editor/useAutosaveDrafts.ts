@@ -48,14 +48,17 @@ export function useAutosaveDrafts(activityId: UUID) {
     load();
   }, [load]);
 
-  function persist(next: AutosaveDraft[]) {
-    try {
-      localStorage.setItem(keyFor(activityId), JSON.stringify(next));
-      setError(null);
-    } catch (e) {
-      setError("Przekroczono limit pamięci przeglądarki dla szkiców.");
-    }
-  }
+  const persist = React.useCallback(
+    (next: AutosaveDraft[]) => {
+      try {
+        localStorage.setItem(keyFor(activityId), JSON.stringify(next));
+        setError(null);
+      } catch {
+        setError("Przekroczono limit pamięci przeglądarki dla szkiców.");
+      }
+    },
+    [activityId]
+  );
 
   const saveDraft = React.useCallback(
     (values: ActivityFormValues, etag?: string) => {
@@ -70,7 +73,7 @@ export function useAutosaveDrafts(activityId: UUID) {
       setDrafts(next);
       persist(next);
     },
-    [activityId, drafts]
+    [activityId, drafts, persist]
   );
 
   const listDrafts = React.useCallback(() => drafts, [drafts]);
@@ -87,7 +90,7 @@ export function useAutosaveDrafts(activityId: UUID) {
     const next = drafts.slice(0, MAX_DRAFTS);
     setDrafts(next);
     persist(next);
-  }, [drafts]);
+  }, [drafts, persist]);
 
   return { drafts, error, saveDraft, listDrafts, restoreDraft, clearOld } as const;
 }

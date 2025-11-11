@@ -224,8 +224,9 @@ export default function GroupsView(): JSX.Element {
                 if (res.data) setRestoredRecent(res.data);
               }
               if (tab === "active" && res.data) {
-                mutate((prev) => (prev.some((g) => g.id === res.data!.id) ? prev : [res.data!, ...prev]));
-                setFocusId(res.data.id);
+                const restoredGroup = res.data;
+                mutate((prev) => (prev.some((g) => g.id === restoredGroup.id) ? prev : [restoredGroup, ...prev]));
+                setFocusId(restoredGroup.id);
                 window.setTimeout(() => setFocusId(null), 4000);
               }
               await refresh();

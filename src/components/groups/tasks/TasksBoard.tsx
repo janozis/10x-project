@@ -77,17 +77,20 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
   }, [inView, nextCursor, loading, loadMore]);
 
   // URL <-> filters sync
+  /* eslint-disable react-compiler/react-compiler */
   React.useEffect(() => {
     // initialize from current URL
     const sp = new URLSearchParams(window.location.search);
     const s = sp.get("status");
     const a = sp.get("activity_id");
-    const patch: any = {};
-    if (s && (s === "pending" || s === "in_progress" || s === "done" || s === "canceled")) patch.status = s;
+    const patch: Partial<{ status: TaskStatus; activityId: UUID }> = {};
+    if (s && (s === "pending" || s === "in_progress" || s === "done" || s === "canceled"))
+      patch.status = s as TaskStatus;
     if (a && /^[0-9a-fA-F-]{36}$/.test(a)) patch.activityId = a as UUID;
     if (Object.keys(patch).length > 0) setFilters(patch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId]);
+  /* eslint-enable react-compiler/react-compiler */
 
   React.useEffect(() => {
     const url = new URL(window.location.href);
@@ -229,19 +232,4 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
       />
     </div>
   );
-}
-
-function labelForStatus(status: TaskStatus): string {
-  switch (status) {
-    case "pending":
-      return "Oczekujące";
-    case "in_progress":
-      return "W toku";
-    case "done":
-      return "Zrobione";
-    case "canceled":
-      return "Anulowane";
-    default:
-      return status;
-  }
 }

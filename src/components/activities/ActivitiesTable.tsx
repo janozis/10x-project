@@ -71,6 +71,7 @@ export function ActivitiesTable({
           <div
             key={it.id}
             role="row"
+            tabIndex={0}
             className="grid grid-cols-12 border-t px-3 py-2 text-sm hover:bg-accent/40 group cursor-pointer"
             data-test-id="activities-table-row"
             onClick={(e) => {
@@ -81,6 +82,16 @@ export function ActivitiesTable({
               }
               // Click on row opens details view
               onRequestView?.(it.id);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                const target = e.target as HTMLElement;
+                if (target.closest('input[type="checkbox"]') || target.closest("button")) {
+                  return;
+                }
+                onRequestView?.(it.id);
+              }
             }}
           >
             {visible.title ? (

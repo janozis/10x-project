@@ -1,7 +1,7 @@
 import * as React from "react";
-import type { UUID, GroupPermissionsDTO, UUID as UuidType } from "@/types";
+import type { UUID, GroupPermissionsDTO, UUID as UuidType, ActivityStatus } from "@/types";
 import type { ActivityFormValues, ActivityEditorViewModel } from "@/lib/editor/useActivity";
-import type { ActivityEditorDTO } from "@/types";
+import type { ActivityEditorDTO, ActivityWithEditorsDTO } from "@/types";
 import { ActivityHeader } from "./ActivityHeader";
 import { ActivityTabs } from "./ActivityTabs";
 import { ActivityForm } from "./ActivityForm";
@@ -64,6 +64,7 @@ export function ActivityEditorForm({
   const { handleSubmit, formState, watch, reset } = form;
   const isDirty = formState.isDirty;
 
+  /* eslint-disable react-compiler/react-compiler */
   React.useEffect(() => {
     if (import.meta.env.DEV) {
       // eslint-disable-next-line no-console
@@ -84,16 +85,17 @@ export function ActivityEditorForm({
     setLastSavedAt(new Date());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValues]);
+  /* eslint-enable react-compiler/react-compiler */
 
   const doSave = React.useCallback(
     async (values: ActivityFormValues) => {
       setSaving(true);
       try {
-        const res = await patchActivity(activityId, values);
+        await patchActivity(activityId, values);
         toast.success("Zapisano zmiany");
         onValuesChange(values);
         await onRefresh();
-      } catch (e: any) {
+      } catch (e: unknown) {
         const code = e?.body?.error?.code as string | undefined;
         if (code === "VALIDATION_ERROR") {
           const details = e?.body?.error?.details as Record<string, string> | undefined;
@@ -101,7 +103,9 @@ export function ActivityEditorForm({
             Object.entries(details).forEach(([k, msg]) => {
               try {
                 form.setError(k as keyof ActivityFormValues, { type: "server", message: String(msg) });
-              } catch {}
+              } catch {
+                // Ignore errors when setting form errors
+              }
             });
             toast.error("Popraw błędy formularza");
             return;
@@ -160,7 +164,7 @@ export function ActivityEditorForm({
         setNextPollAfterSec(res.data.next_poll_after_sec);
         setAiRequestTrigger(Date.now());
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.body?.error?.message || e?.message || "Nie udało się wysłać żądania");
     } finally {
       setRequestingAI(false);
@@ -211,7 +215,7 @@ export function ActivityEditorForm({
     <div className="space-y-4" aria-busy={saving || requestingAI}>
       <ActivityHeader
         title="Edytor aktywności"
-        status={(vm?.status as any) || "draft"}
+        status={(vm?.status || "draft") as ActivityStatus}
         isDirty={isDirty}
         canEdit={canEdit}
         saving={saving}
@@ -284,7 +288,7 @@ export function ActivityEditorForm({
             const server = conflict.server as ActivityFormValues;
             const merged = { ...local } as ActivityFormValues;
             (selectedServerKeys || []).forEach((k) => {
-              (merged as any)[k] = (server as any)[k];
+              merged[k as keyof ActivityFormValues] = server[k as keyof ActivityFormValues];
             });
             reset(merged, { keepDirty: false, keepDirtyValues: false });
             setConflictOpen(false);
@@ -300,7 +304,7 @@ export function ActivityEditorForm({
   );
 }
 
-function dtoToForm(dto: any): ActivityFormValues {
+function dtoToForm(dto: ActivityWithEditorsDTO): ActivityFormValues {
   return {
     title: dto.title || "",
     objective: dto.objective || "",

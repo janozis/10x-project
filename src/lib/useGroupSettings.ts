@@ -46,7 +46,7 @@ export function useGroupSettings(groupId: UUID) {
       } // perms error is non-fatal for rendering basic settings shell
 
       setState(next);
-    } catch (e: any) {
+    } catch (e: unknown) {
       const message: string = e?.body?.error?.message || e?.message || "Request failed";
       const code: string | undefined = e?.body?.error?.code;
       const status: number | undefined = e?.status;
@@ -104,7 +104,7 @@ export function useGroupSettings(groupId: UUID) {
           setState((s) => ({ ...s, error: res.error.message, errorCode: res.error.code }));
           return false;
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         const retryAfterMs: number | undefined = e?.retryAfterMs;
         if (typeof retryAfterMs === "number") {
           setState((s) => ({ ...s, cooldownUntil: Date.now() + retryAfterMs }));

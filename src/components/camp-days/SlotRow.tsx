@@ -15,7 +15,6 @@ export interface SlotRowProps {
   onAnyChangeState: (state: "idle" | "saving" | "saved" | "error") => void;
   onDelete?: () => void;
   onDuplicate?: () => void;
-  groupId?: string;
 }
 
 export const SlotRow = ({
@@ -26,7 +25,6 @@ export const SlotRow = ({
   onAnyChangeState,
   onDelete,
   onDuplicate,
-  groupId,
 }: SlotRowProps): JSX.Element => {
   const { queue } = useAutosaveSchedule(slot.id, {
     onStateChange: onAnyChangeState,
@@ -80,7 +78,13 @@ export const SlotRow = ({
         />
         <ActivityBadge title={slot.activity?.title} status={slot.activity?.status} />
       </div>
-      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+      <div
+        className="flex items-center gap-2"
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        role="group"
+      >
         {onDuplicate ? (
           <Button variant="ghost" size="sm" onClick={onDuplicate} disabled={disabled || !slot.canEdit}>
             Duplikuj

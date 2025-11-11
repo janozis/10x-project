@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * Custom Playwright Fixtures with Auto-Cleanup
  *
@@ -20,10 +22,9 @@ interface TestFixtures {
 
 // Extend base test with auto-cleanup fixture
 export const test = base.extend<TestFixtures>({
-  // eslint-disable-next-line @typescript-eslint/no-empty-pattern, no-empty-pattern
+  // eslint-disable-next-line no-empty-pattern
   skipCleanup: async ({}, use, testInfo) => {
     let shouldSkip = false;
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(() => {
       shouldSkip = true;
       console.log("   ⏭️  Cleanup will be skipped for this test");
@@ -36,7 +37,7 @@ export const test = base.extend<TestFixtures>({
 
   // Auto-cleanup fixture that runs after each test
   autoCleanup: [
-    // eslint-disable-next-line @typescript-eslint/no-empty-pattern, no-empty-pattern
+    // eslint-disable-next-line no-empty-pattern
     async ({}, use, testInfo) => {
       // Setup (runs before test)
       await use();

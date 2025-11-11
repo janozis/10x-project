@@ -52,7 +52,7 @@ describe("ai-evaluation.mapper", () => {
           true, // boolean - should be filtered
           { invalid: "object" }, // object - should be filtered
           "Last valid suggestion",
-        ] as any,
+        ] as unknown,
       };
 
       // Act
@@ -77,11 +77,11 @@ describe("ai-evaluation.mapper", () => {
         { suggestions: { key: "value" }, description: "object" },
       ];
 
-      testCases.forEach(({ suggestions, description }) => {
+      testCases.forEach(({ suggestions }) => {
         // Act
         const row: Tables<"ai_evaluations"> = {
           ...baseMockRow,
-          suggestions: suggestions as any,
+          suggestions: suggestions as unknown,
         };
         const result = mapAIEvaluationRow(row);
 

@@ -15,7 +15,7 @@ export function useAIEvaluations(activityId: UUID) {
       const res = await listActivityAIEvaluations(activityId);
       if ("data" in res) setItems(res.data);
       else throw new Error(res?.error?.message || "Load failed");
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Load failed");
     } finally {
       setLoading(false);

@@ -51,8 +51,8 @@ export function CreateGroupDialog({ open, onOpenChange, onCreated }: CreateGroup
       return;
     }
     // Map specific server-side codes to field errors when possible
-    const code = (res.error as any)?.code as string | undefined;
-    const details = (res.error as any)?.details as Record<string, unknown> | undefined;
+    const code = (res.error as { code?: string; details?: Record<string, unknown> })?.code;
+    const details = (res.error as { code?: string; details?: Record<string, unknown> })?.details;
     setServerCode(code);
     if (code === "DATE_RANGE_INVALID") {
       form.setError("end_date", { type: "server", message: "Data końcowa musi być ≥ daty początkowej" });

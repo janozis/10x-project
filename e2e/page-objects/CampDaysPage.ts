@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Page, Locator } from "@playwright/test";
 
 /**

@@ -26,7 +26,7 @@ export function useAssignSelfOnCreate() {
         return { ok: false, errorCode: err.error.code, errorMessage: err.error.message };
       }
       return { ok: true };
-    } catch (e: any) {
+    } catch (e: unknown) {
       return { ok: false, errorMessage: e?.message || "Request failed" };
     }
   }, []);

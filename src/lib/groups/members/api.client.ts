@@ -22,8 +22,8 @@ export function changeMemberRole(groupId: UUID, userId: UUID, role: GroupRole): 
   });
 }
 
-export function removeMember(groupId: UUID, userId: UUID): Promise<void> {
-  return fetchJson<void>(`/api/groups/${groupId}/members/${userId}`, { method: "DELETE" });
+export async function removeMember(groupId: UUID, userId: UUID): Promise<void> {
+  await fetchJson<Record<string, never>>(`/api/groups/${groupId}/members/${userId}`, { method: "DELETE" });
 }
 
 export function promoteMember(groupId: UUID, userId: UUID): Promise<ApiResponse<GroupMemberDTO>> {

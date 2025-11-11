@@ -27,7 +27,7 @@ export function GroupMembersView({ groupId }: GroupMembersViewProps): JSX.Elemen
       try {
         await changeRole(row.userId, newRole);
         toast.success("Zmieniono rolę");
-      } catch (e: any) {
+      } catch (e: unknown) {
         const code = e?.body?.error?.code || e?.code;
         const msg =
           code === "LAST_ADMIN_REMOVAL"
@@ -50,7 +50,7 @@ export function GroupMembersView({ groupId }: GroupMembersViewProps): JSX.Elemen
       try {
         await promote(row.userId);
         toast.success("Użytkownik został administratorem");
-      } catch (e: any) {
+      } catch (e: unknown) {
         const code = e?.body?.error?.code || e?.code;
         const msg =
           code === "UNAUTHORIZED" || code === "FORBIDDEN_ROLE"
@@ -75,7 +75,7 @@ export function GroupMembersView({ groupId }: GroupMembersViewProps): JSX.Elemen
     try {
       await remove(member.userId);
       toast.success(member.isSelf ? "Opuściłeś grupę" : "Usunięto członka");
-    } catch (e: any) {
+    } catch (e: unknown) {
       const code = e?.body?.error?.code || e?.code;
       const msg =
         code === "LAST_ADMIN_REMOVAL"

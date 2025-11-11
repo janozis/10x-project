@@ -35,7 +35,7 @@ export function useRealtimeTasks(groupId: UUID, onEvent: (payload: TaskRealtimeP
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "group_tasks", filter: `group_id=eq.${groupId}` },
-        (payload: any) => {
+        (payload: { eventType: string; new?: TaskRow; old?: TaskRow }) => {
           const evt: TaskRealtimePayload = {
             eventType: payload.eventType,
             new: (payload.new ?? null) as TaskRow | null,
@@ -44,7 +44,7 @@ export function useRealtimeTasks(groupId: UUID, onEvent: (payload: TaskRealtimeP
           onEvent(evt);
         }
       )
-      .subscribe((status) => {
+      .subscribe(() => {
         // no-op; could log status if needed
       });
 

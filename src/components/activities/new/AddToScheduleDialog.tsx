@@ -116,7 +116,7 @@ export default function AddToScheduleDialog({
         return;
       }
       onCreated();
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.message || "Błąd sieci");
     } finally {
       setSubmitting(false);

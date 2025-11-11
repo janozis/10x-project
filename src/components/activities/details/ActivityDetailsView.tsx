@@ -14,7 +14,7 @@ export interface ActivityDetailsViewProps {
 }
 
 export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
-  const { loading, error, errorCode, errorStatus, vm, refresh } = useActivityDetails(activityId);
+  const { loading, error, errorStatus, vm, refresh } = useActivityDetails(activityId);
   const requestHook = useAIEvaluationRequest(activityId, {
     canRequest: vm?.computed.canRequestEvaluation ?? false,
     onRefresh: refresh,

@@ -33,7 +33,7 @@ export function useRealtimeActivities({
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "activities", filter: `group_id=eq.${groupId}` },
         async (payload) => {
-          const id = (payload.new as any)?.id as UUID | undefined;
+          const id = (payload.new as { id?: UUID })?.id;
           if (!id) return;
           // Only relevant for active list; for deleted list inserts won't show as they're not deleted yet
           if (mode === "active") {
@@ -46,10 +46,10 @@ export function useRealtimeActivities({
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "activities", filter: `group_id=eq.${groupId}` },
         async (payload) => {
-          const id = (payload.new as any)?.id as UUID | undefined;
+          const id = (payload.new as { id?: UUID })?.id;
           if (!id) return;
-          const wasDeleted = !!(payload.old as any)?.deleted_at;
-          const isDeleted = !!(payload.new as any)?.deleted_at;
+          const wasDeleted = !!(payload.old as { deleted_at?: string | null })?.deleted_at;
+          const isDeleted = !!(payload.new as { deleted_at?: string | null })?.deleted_at;
           if (isDeleted && !wasDeleted) {
             // Soft-deleted: remove from active list; add to deleted list (cannot fetch deleted via getActivity)
             if (mode === "active") onDelete?.(id);
@@ -77,14 +77,14 @@ export function useRealtimeActivities({
         "postgres_changes",
         { event: "DELETE", schema: "public", table: "activities", filter: `group_id=eq.${groupId}` },
         async (payload) => {
-          const id = (payload.old as any)?.id as UUID | undefined;
+          const id = (payload.old as { id?: UUID })?.id;
           if (!id) return;
           onDelete?.(id);
         }
       )
       // Editors assignment changes – no filter by group_id available; we fetch activity if we already track it
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "activity_editors" }, async (payload) => {
-        const activityId = (payload.new as any)?.activity_id as UUID | undefined;
+        const activityId = (payload.new as { activity_id?: UUID })?.activity_id;
         if (!activityId) return;
         if (mode === "active") {
           const res = await getActivity(activityId);
@@ -92,7 +92,7 @@ export function useRealtimeActivities({
         }
       })
       .on("postgres_changes", { event: "DELETE", schema: "public", table: "activity_editors" }, async (payload) => {
-        const activityId = (payload.old as any)?.activity_id as UUID | undefined;
+        const activityId = (payload.old as { activity_id?: UUID })?.activity_id;
         if (!activityId) return;
         if (mode === "active") {
           const res = await getActivity(activityId);

@@ -43,7 +43,7 @@ export function useJoinGroup() {
 
       if ("data" in payload) {
         const data = payload.data as { group_id?: UUID } | GroupDTO;
-        const groupId: UUID | undefined = (data as any).group_id || (data as GroupDTO).id;
+        const groupId: UUID | undefined = "group_id" in data ? data.group_id : "id" in data ? data.id : undefined;
         if (groupId) {
           return { ok: true, groupId } as JoinSuccess;
         }

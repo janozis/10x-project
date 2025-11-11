@@ -31,18 +31,19 @@ export function useGroupMembersForPicker(groupId: UUID | undefined) {
       console.log("[useGroupMembersForPicker] Raw data:", res.data);
 
       const options = res.data
-        .filter((m) => m.user_email) // Only include members with email
+        .filter((m): m is typeof m & { user_email: string } => !!m.user_email) // Only include members with email
         .map((m) => ({
           userId: m.user_id as UUID,
-          email: m.user_email!,
+          email: m.user_email,
           role: m.role,
         }));
 
       console.log("[useGroupMembersForPicker] Mapped options:", options);
       setMembers(options);
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error("[useGroupMembersForPicker] Error:", e);
-      setError(e?.message || "Failed to load members");
+      const error = e as { message?: string };
+      setError(error?.message || "Failed to load members");
     } finally {
       setLoading(false);
     }

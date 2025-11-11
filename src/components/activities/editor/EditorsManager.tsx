@@ -33,7 +33,7 @@ export function EditorsManager({ activityId, groupId, canManage = false }: Edito
       setSelectedUserId(null);
       setLocalError(null);
       toast.success("Edytor dodany");
-    } catch (e: any) {
+    } catch (e: unknown) {
       const code: string | undefined = e?.body?.error?.code;
       if (code === "ALREADY_ASSIGNED") setLocalError("Ten użytkownik jest już edytorem tej aktywności.");
       else if (code === "USER_NOT_IN_GROUP") setLocalError("Użytkownik nie należy do grupy tej aktywności.");
@@ -50,7 +50,7 @@ export function EditorsManager({ activityId, groupId, canManage = false }: Edito
     try {
       await remove(target);
       toast.success("Edytor usunięty");
-    } catch (e: any) {
+    } catch (e: unknown) {
       const code: string | undefined = e?.body?.error?.code;
       if (code === "FORBIDDEN_ROLE") setLocalError("Tylko administrator może zarządzać edytorami.");
       else setLocalError(e?.body?.error?.message || e?.message || "Nie udało się usunąć edytora");

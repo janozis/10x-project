@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import * as React from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { ActivityFormValues } from "@/lib/editor/useActivity";

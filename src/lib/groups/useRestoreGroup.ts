@@ -7,7 +7,7 @@ export function useRestoreGroup() {
   const [error, setError] = React.useState<string | undefined>(undefined);
 
   const restore = React.useCallback(
-    async (groupId: UUID): Promise<{ ok: true; data?: GroupDTO } | { ok: false; error: any }> => {
+    async (groupId: UUID): Promise<{ ok: true; data?: GroupDTO } | { ok: false; error: Error }> => {
       setLoading(true);
       setError(undefined);
       try {
@@ -17,7 +17,7 @@ export function useRestoreGroup() {
           return { ok: false as const, error: res.error };
         }
         return { ok: true as const, data: res.data };
-      } catch (e: any) {
+      } catch (e: unknown) {
         const message: string = e?.body?.error?.message || e?.message || "Request failed";
         setError(message);
         return { ok: false as const, error: { message } } as const;

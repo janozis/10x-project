@@ -113,9 +113,14 @@ function validateViewModel(
     return { errors: nextErrors };
   }
 
+  // Type guard: if no errors and validation succeeded, data must exist
+  if (!dayResult.success || !dateResult.success) {
+    return { errors: nextErrors };
+  }
+
   const command: CampDayCreateCommand = {
-    day_number: dayResult.data!,
-    date: dateResult.data!,
+    day_number: dayResult.data,
+    date: dateResult.data,
   };
   if (normalizedTheme) {
     command.theme = normalizedTheme;
@@ -317,11 +322,14 @@ export default function CampDayCreateForm({
         setTimeout(() => {
           window.location.assign(targetUrl);
         }, 300);
-      } catch (err: any) {
-        const apiError = err?.body?.error as
-          | { code?: ApiErrorCode; message?: string; details?: Record<string, unknown> }
-          | undefined;
-        const status = err?.status as number | undefined;
+      } catch (err: unknown) {
+        const apiError = (
+          err as {
+            body?: { error?: { code?: ApiErrorCode; message?: string; details?: Record<string, unknown> } };
+            status?: number;
+          }
+        )?.body?.error;
+        const status = (err as { status?: number })?.status;
         const fallbackMessage =
           status && status >= 500
             ? "Serwer napotkał błąd. Spróbuj ponownie później."

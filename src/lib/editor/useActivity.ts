@@ -59,12 +59,14 @@ export function useActivity(activityId: UUID) {
         group_id: dto.group_id,
         status: dto.status,
         updated_at: dto.updated_at,
-        last_evaluation_requested_at: (dto as any).last_evaluation_requested_at ?? null,
+        last_evaluation_requested_at:
+          (dto as ActivityWithEditorsDTO & { last_evaluation_requested_at?: string | null })
+            .last_evaluation_requested_at ?? null,
       });
       setFormValues(mapToFormValues(dto));
       setEditors(dto.editors || []);
-    } catch (e: any) {
-      setError(e?.message || "Load failed");
+    } catch (e: unknown) {
+      setError((e as Error)?.message || "Load failed");
     } finally {
       setLoading(false);
     }

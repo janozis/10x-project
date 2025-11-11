@@ -1,6 +1,5 @@
 import * as React from "react";
-import { z } from "zod";
-import type { GroupDTO, GroupUpdateCommand, UUID } from "@/types";
+import type { GroupDTO, GroupUpdateCommand, GroupStatus } from "@/types";
 import { groupUpdateSchema } from "@/lib/validation/group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -72,7 +71,7 @@ export function GroupDetailsForm({ initial, canEdit, isSubmitting, onSave, onTog
   const nextStatus: GroupDTO["status"] = values.status === "archived" ? "active" : "archived";
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit} aria-disabled={!canEdit}>
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-4">
         <div>
           <Label htmlFor="name">Nazwa</Label>
@@ -147,7 +146,7 @@ export function GroupDetailsForm({ initial, canEdit, isSubmitting, onSave, onTog
             id="status"
             className="mt-1 block w-full rounded-md border px-2 py-1 text-sm"
             value={values.status}
-            onChange={(e) => update("status", e.target.value as any)}
+            onChange={(e) => update("status", e.target.value as GroupStatus)}
             disabled={!canEdit || submitting || isSubmitting}
           >
             <option value="planning">planning</option>

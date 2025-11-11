@@ -84,7 +84,7 @@ export function AddSlotButton({ groupId, campDayId, slots, canEdit, onCreated }:
         <Button
           disabled={!canEdit}
           size="sm"
-          onClick={(e) => {
+          onClick={() => {
             console.log("[AddSlotButton] Clicked, canEdit:", canEdit);
           }}
         >

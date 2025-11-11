@@ -1,5 +1,14 @@
 import * as React from "react";
-import type { ApiListResponse, ApiResponse, GroupMemberDTO, GroupPermissionsDTO, GroupRole, UUID } from "@/types";
+import type {
+  ApiListResponse,
+  ApiResponse,
+  GroupMemberDTO,
+  GroupPermissionsDTO,
+  GroupRole,
+  UUID,
+  ApiSingle,
+  ApiList,
+} from "@/types";
 import { supabaseClient, DEFAULT_USER_ID } from "@/db/supabase.client";
 import { getGroupPermissions } from "./api.client";
 import {
@@ -100,11 +109,14 @@ export function useGroupMembers(groupId: UUID) {
         ApiListResponse<GroupMemberDTO>
       >([resolveCurrentUserId(), getGroupPermissions(groupId), apiList(groupId)]);
 
-      const perms = (permsRes as any)?.data as GroupPermissionsDTO | undefined;
-      const members = (membersRes as any)?.data ?? [];
+      const perms = (permsRes as ApiSingle<GroupPermissionsDTO>)?.data;
+      const members = (membersRes as ApiList<GroupMemberDTO>)?.data ?? [];
       setState({ loading: false, error: null, permissions: perms, members, currentUserId: userId });
-    } catch (e: any) {
-      const message: string = e?.body?.error?.message || e?.message || "Nie udało się załadować członków.";
+    } catch (e: unknown) {
+      const message: string =
+        (e as { body?: { error?: { message?: string } }; message?: string })?.body?.error?.message ||
+        (e as { message?: string })?.message ||
+        "Nie udało się załadować członków.";
       setState((s) => ({ ...s, loading: false, error: message }));
     }
   }, [groupId]);
@@ -122,15 +134,18 @@ export function useGroupMembers(groupId: UUID) {
       const res = await apiChangeRole(groupId, userId, role);
       if ("error" in res) throw new Error(res.error.message || "Zmiana roli nie powiodła się");
       // Use returned DTO if present to keep in sync
-      const dto = (res as any).data as GroupMemberDTO | undefined;
+      const dto = "data" in res ? res.data : undefined;
       if (dto) {
         setState((s) => ({ ...s, members: s.members.map((m) => (m.user_id === userId ? dto : m)) }));
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setState((s) => ({
         ...s,
         members: prevMembers,
-        error: e?.body?.error?.message || e?.message || "Zmiana roli nie powiodła się",
+        error:
+          (e as { body?: { error?: { message?: string } }; message?: string })?.body?.error?.message ||
+          (e as { message?: string })?.message ||
+          "Zmiana roli nie powiodła się",
       }));
       throw e;
     }
@@ -143,11 +158,11 @@ export function useGroupMembers(groupId: UUID) {
     try {
       const res = await apiPromote(groupId, userId);
       if ("error" in res) throw new Error(res.error.message || "Promocja nie powiodła się");
-      const dto = (res as any).data as GroupMemberDTO | undefined;
+      const dto = "data" in res ? res.data : undefined;
       if (dto) {
         setState((s) => ({ ...s, members: s.members.map((m) => (m.user_id === userId ? dto : m)) }));
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setState((s) => ({
         ...s,
         members: prevMembers,
@@ -163,7 +178,7 @@ export function useGroupMembers(groupId: UUID) {
     setState((s) => ({ ...s, members: updated }));
     try {
       await apiRemove(groupId, userId);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setState((s) => ({
         ...s,
         members: prevMembers,

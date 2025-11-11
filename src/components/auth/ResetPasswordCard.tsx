@@ -1,10 +1,6 @@
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 
-interface ResetPasswordCardProps {
-  redirectAfterMs?: number;
-}
-
-export default function ResetPasswordCard(_props: ResetPasswordCardProps) {
+export default function ResetPasswordCard() {
   return (
     <div className="w-full max-w-md rounded-lg border bg-white dark:bg-neutral-950 p-6 shadow-sm md:p-8">
       <header className="mb-6">

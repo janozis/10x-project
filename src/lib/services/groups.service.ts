@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "../../db/supabase.client";
-import type { GroupDTO, ApiResponse, GroupCreateCommand, ApiListResponse, UUID, GroupStatus } from "../../types";
+import type { GroupDTO, ApiResponse, ApiListResponse, UUID, GroupStatus } from "../../types";
 import {
   groupCreateSchema,
   groupUpdateSchema,
@@ -184,7 +184,7 @@ export async function listGroups(
     .order("id", { ascending: false });
 
   if (options?.deleted) {
-    query = query.not("deleted_at", "is", null as any);
+    query = query.not("deleted_at", "is", null);
   } else {
     query = query.is("deleted_at", null);
   }
@@ -226,7 +226,7 @@ export async function listGroups(
   }
   const dtos = (rows ?? []).map(mapGroupRowToDTO);
   const nextCursor = nextGroupCursorFromPage(rows ?? []);
-  return { data: dtos, count: dtos.length, nextCursor } as any;
+  return { data: dtos, count: dtos.length, nextCursor };
 }
 
 /** Soft delete a group (sets deleted_at). Only creator can delete (basic rule for now). */

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test, expect } from "./fixtures"; // Auto-cleanup after each test
 import type { Browser } from "@playwright/test";
 import {
@@ -111,7 +112,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       if (response.ok()) {
         const result = await response.json();
         if (result.data && Array.isArray(result.data)) {
-          const group = result.data.find((g: any) => g.name === groupData.name);
+          const group = result.data.find((g: { name: string; id: string }) => g.name === groupData.name);
           if (group) {
             groupId = group.id;
           }
@@ -220,7 +221,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       if (response.ok()) {
         const result = await response.json();
         if (result.data && Array.isArray(result.data)) {
-          const group = result.data.find((g: any) => g.name === groupData.name);
+          const group = result.data.find((g: { name: string; id: string }) => g.name === groupData.name);
           if (group) {
             groupId = group.id;
           }
@@ -331,7 +332,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       if (response.ok()) {
         const result = await response.json();
         if (result.data && Array.isArray(result.data)) {
-          const group = result.data.find((g: any) => g.name === groupData.name);
+          const group = result.data.find((g: { name: string; id: string }) => g.name === groupData.name);
           if (group) {
             groupId = group.id;
           }
@@ -441,7 +442,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       if (response.ok()) {
         const result = await response.json();
         if (result.data && Array.isArray(result.data)) {
-          const group = result.data.find((g: any) => g.name === groupData.name);
+          const group = result.data.find((g: { name: string; id: string }) => g.name === groupData.name);
           if (group) {
             groupId = group.id;
           }
@@ -554,7 +555,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       if (response.ok()) {
         const result = await response.json();
         if (result.data && Array.isArray(result.data)) {
-          const group = result.data.find((g: any) => g.name === groupData.name);
+          const group = result.data.find((g: { name: string; id: string }) => g.name === groupData.name);
           if (group) {
             groupId = group.id;
           }
@@ -669,7 +670,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       if (response.ok()) {
         const result = await response.json();
         if (result.data && Array.isArray(result.data)) {
-          const group = result.data.find((g: any) => g.name === groupData.name);
+          const group = result.data.find((g: { name: string; id: string }) => g.name === groupData.name);
           if (group) {
             groupId = group.id;
           }

@@ -22,7 +22,13 @@ export const TimeRangeEditor = ({ start, end, disabled, onChange }: TimeRangeEdi
   const rangeValid = startValid && endValid && localEnd > localStart;
 
   return (
-    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+    <div
+      className="flex items-center gap-2"
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+      role="group"
+    >
       <Input
         type="time"
         value={localStart}

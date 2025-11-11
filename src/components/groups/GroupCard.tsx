@@ -6,13 +6,12 @@ import { Button } from "@/components/ui/button";
 
 export interface GroupCardProps {
   item: GroupCardVM;
-  onDelete?: (id: string) => void;
   onRestore?: (id: string) => void;
   onCopyInvite?: (code: string) => void;
   focusMe?: boolean;
 }
 
-function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }: GroupCardProps): JSX.Element {
+function GroupCardComponent({ item, onRestore, onCopyInvite, focusMe }: GroupCardProps): JSX.Element {
   const canRestore = item.isArchived;
   const inviteCode = item.inviteCode ?? undefined;
 

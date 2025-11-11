@@ -90,7 +90,7 @@ export const POST: APIRoute = async (context) => {
         title: import.meta.env.OPENROUTER_TITLE,
       },
     });
-  } catch (error) {
+  } catch {
     // Configuration error (missing API key)
     const body = JSON.stringify({
       ok: false,

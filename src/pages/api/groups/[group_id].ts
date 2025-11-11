@@ -89,7 +89,7 @@ export const GET: APIRoute = async (context) => {
     });
   }
 
-  const dto = mapGroupRowToDTO(row as any);
+  const dto = mapGroupRowToDTO(row);
   return new Response(JSON.stringify({ data: dto }), {
     status: 200,
     headers: { "Content-Type": "application/json" },

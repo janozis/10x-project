@@ -54,8 +54,13 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
       "postgres_changes",
       { event: "INSERT", schema: "public", table: "activities", filter: `group_id=eq.${groupId}` },
       (payload) => {
-        const row: any = payload.new;
-        emitEvent({ type: "activity_created", id: row.id, at: row.created_at, user_id: row.created_by });
+        const row = payload.new as Record<string, unknown>;
+        emitEvent({
+          type: "activity_created",
+          id: row.id as string,
+          at: row.created_at as string,
+          user_id: row.created_by as string,
+        });
         triggerInvalidate();
       }
     );
@@ -65,8 +70,13 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
       "postgres_changes",
       { event: "UPDATE", schema: "public", table: "activities", filter: `group_id=eq.${groupId}` },
       (payload) => {
-        const row: any = payload.new;
-        emitEvent({ type: "activity_updated", id: row.id, at: row.updated_at, user_id: row.updated_by });
+        const row = payload.new as Record<string, unknown>;
+        emitEvent({
+          type: "activity_updated",
+          id: row.id as string,
+          at: row.updated_at as string,
+          user_id: row.updated_by as string,
+        });
         triggerInvalidate();
       }
     );
@@ -76,8 +86,13 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
       "postgres_changes",
       { event: "INSERT", schema: "public", table: "group_tasks", filter: `group_id=eq.${groupId}` },
       (payload) => {
-        const row: any = payload.new;
-        emitEvent({ type: "task_created", id: row.id, at: row.created_at, user_id: row.created_by });
+        const row = payload.new as Record<string, unknown>;
+        emitEvent({
+          type: "task_created",
+          id: row.id as string,
+          at: row.created_at as string,
+          user_id: row.created_by as string,
+        });
         triggerInvalidate();
       }
     );
@@ -87,9 +102,9 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
       "postgres_changes",
       { event: "UPDATE", schema: "public", table: "group_tasks", filter: `group_id=eq.${groupId}` },
       (payload) => {
-        const row: any = payload.new;
+        const row = payload.new as Record<string, unknown>;
         const type = row.status === "done" ? "task_done" : "task_updated";
-        emitEvent({ type, id: row.id, at: row.updated_at, user_id: row.updated_by });
+        emitEvent({ type, id: row.id as string, at: row.updated_at as string, user_id: row.updated_by as string });
         triggerInvalidate();
       }
     );
@@ -100,7 +115,7 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
       triggerInvalidate();
     });
 
-    const subscription = channel.subscribe((status) => {
+    channel.subscribe((status) => {
       const isLive = status === "SUBSCRIBED";
       setIsRealtimeConnected(isLive);
       if (status === "SUBSCRIBED") {

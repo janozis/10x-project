@@ -14,6 +14,7 @@ export default function ResetPasswordForm() {
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
   const alertId = useId();
   const alertRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
@@ -39,6 +40,12 @@ export default function ResetPasswordForm() {
       alertRef.current.focus();
     }
   }, [submitError]);
+
+  useEffect(() => {
+    if (submitSuccess && successRef.current) {
+      successRef.current.focus();
+    }
+  }, [submitSuccess]);
 
   const onSubmit = useCallback(
     async (values: ResetPasswordSchema) => {
@@ -73,14 +80,6 @@ export default function ResetPasswordForm() {
       </div>
     );
   }
-
-  const successRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (submitSuccess && successRef.current) {
-      successRef.current.focus();
-    }
-  }, [submitSuccess]);
 
   return (
     <form
@@ -133,7 +132,6 @@ export default function ResetPasswordForm() {
         register={register("password")}
         error={errors.password?.message}
         disabled={loading}
-        autoFocus
         additionalDescribedByIds={[strengthId]}
       />
 

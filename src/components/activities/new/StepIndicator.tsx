@@ -35,6 +35,7 @@ export default function StepIndicator({ current, completed, onStepClick }: StepI
     <div
       ref={containerRef}
       role="tablist"
+      tabIndex={0}
       aria-label="Kroki tworzenia"
       className="flex flex-wrap gap-2"
       onKeyDown={onKeyDown}
