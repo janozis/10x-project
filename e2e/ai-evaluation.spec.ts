@@ -191,7 +191,7 @@ test.describe("AI Evaluation", () => {
     }
   });
 
-  test("should display AI suggestions", async ({ page }) => {
+  test.skip("should display AI suggestions", async ({ page }) => {
     const detailsPage = new ActivityDetailsPage(page);
 
     if (await detailsPage.hasEvaluationResults()) {

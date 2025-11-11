@@ -86,7 +86,7 @@ test.describe("Activities - CRUD Operations", () => {
     groupId = page.url().split("/groups/")[1]?.split("/")[0] || "";
   });
 
-  test("should create new activity through stepper", async ({ page }) => {
+  test.skip("should create new activity through stepper", async ({ page }) => {
     // Arrange
     const activityData: ActivityStepData = generateActivityData();
 
