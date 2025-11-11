@@ -4,7 +4,7 @@ NOTE: This README is auto-curated from project artefacts (PRD, tech stack, depen
 
 # LoreProgrammer
 
-Building collaborative, lore-driven programming for Harcerskie Akcje Letnie (HAL). LoreProgrammer helps scouts and instructors co-create coherent summer camp programmes that remain faithful to a chosen thematic "lore" while advancing scouting educational values. 
+Building collaborative, lore-driven programming for Harcerskie Akcje Letnie (HAL). LoreProgrammer helps scouts and instructors co-create coherent summer camp programmes that remain faithful to a chosen thematic "lore" while advancing scouting educational values.
 
 ![Node Version](https://img.shields.io/badge/node-22.14.0-43853d?logo=node.js) ![Astro](https://img.shields.io/badge/Astro-5.x-ff5d01?logo=astro) ![React](https://img.shields.io/badge/React-19-61dafb?logo=react) ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
