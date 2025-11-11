@@ -33,14 +33,14 @@ export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChang
     onSortChange({ direction: next });
   }
   return (
-    <div className="overflow-x-auto rounded-lg border bg-background">
+    <div className="overflow-x-auto rounded-lg border bg-background" data-test-id="members-table">
       <table className="w-full text-sm">
         <thead className="bg-muted/50 text-left">
           <tr>
             <th className="px-4 py-2 font-medium">Użytkownik</th>
             <th className="px-4 py-2 font-medium">Rola</th>
             <th className="px-4 py-2 font-medium">
-              <button type="button" className="underline-offset-2 hover:underline" onClick={toggleSort} aria-label="Sortuj po dacie dołączenia">
+              <button type="button" className="underline-offset-2 hover:underline" onClick={toggleSort} aria-label="Sortuj po dacie dołączenia" data-test-id="members-table-sort-button">
                 Dołączył {sort.direction === "asc" ? "↑" : "↓"}
               </button>
             </th>
@@ -63,7 +63,7 @@ export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChang
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={row.userId} className="border-t">
+              <tr key={row.userId} className="border-t" data-test-id="members-table-row">
                 <td className="px-4 py-3 font-mono text-xs sm:text-sm">{row.userId}</td>
                 <td className="px-4 py-3 flex items-center gap-2">
                   <RoleBadge role={row.role} />

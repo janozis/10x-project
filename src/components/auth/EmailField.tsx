@@ -24,6 +24,7 @@ export default function EmailField({ register, error, disabled, autoFocus }: Ema
         aria-invalid={error ? "true" : undefined}
         aria-describedby={error ? errorId : undefined}
         disabled={disabled}
+        data-test-id="auth-email-input"
         {...register}
       />
       {error ? (

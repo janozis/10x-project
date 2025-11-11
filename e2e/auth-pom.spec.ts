@@ -17,7 +17,7 @@ test.describe('Authentication Flow with POM', () => {
     await loginPage.goto();
 
     // Assert
-    await expect(page).toHaveTitle(/10x-project/i);
+    await expect(page).toHaveTitle(/logowanie|10x-project/i);
     await expect(page.getByRole('heading', { name: /zaloguj|login/i })).toBeVisible();
     await expect(loginPage.emailInput).toBeVisible();
     await expect(loginPage.passwordInput).toBeVisible();
@@ -29,11 +29,28 @@ test.describe('Authentication Flow with POM', () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
 
-    // Act
-    await loginPage.loginButton.click();
+    // Act - Just check if validation happens automatically (button should be disabled)
+    // With mode: "onChange", the form validates on change, so empty fields should show errors
+    // But errors might only appear after trying to interact with fields
+    
+    // Alternative: Check if button is disabled when fields are empty
+    await expect(loginPage.loginButton).toBeDisabled();
+    
+    // Try to fill and clear fields to trigger validation
+    await loginPage.emailInput.click();
+    await loginPage.emailInput.fill('a');
+    await loginPage.emailInput.clear();
+    await loginPage.emailInput.blur();
+    await page.waitForTimeout(300);
+    
+    await loginPage.passwordInput.click();
+    await loginPage.passwordInput.fill('a');
+    await loginPage.passwordInput.clear();
+    await loginPage.passwordInput.blur();
+    await page.waitForTimeout(300);
 
-    // Assert - Wait for validation errors
-    const errorText = await page.locator('text=/wymagane|required/i').first();
+    // Assert - Look for specific Zod validation message
+    const errorText = await page.locator('text=/podaj poprawny adres email|hasło jest wymagane/i').first();
     await expect(errorText).toBeVisible({ timeout: 3000 });
   });
 
@@ -42,11 +59,14 @@ test.describe('Authentication Flow with POM', () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
 
-    // Act
-    await loginPage.login('invalid-email', 'password123');
+    // Act - Fill with invalid email
+    await loginPage.emailInput.click();
+    await loginPage.emailInput.fill('invalid-email');
+    await loginPage.emailInput.blur();
+    await page.waitForTimeout(500);
 
-    // Assert
-    const emailError = page.locator('text=/nieprawidłowy|invalid.*email/i').first();
+    // Assert - Look for the actual Zod validation message
+    const emailError = page.locator('text=/podaj poprawny adres email/i').first();
     await expect(emailError).toBeVisible({ timeout: 3000 });
   });
 
@@ -99,6 +119,9 @@ test.describe('Protected Routes', () => {
   test('should redirect to login when accessing protected route without auth', async ({ page }) => {
     // Arrange & Act
     await page.goto('/groups');
+    await page.waitForLoadState('networkidle');
+    // Wait for redirect to complete
+    await page.waitForTimeout(500);
 
     // Assert
     await expect(page).toHaveURL(/\/(auth\/login|login|join)/);

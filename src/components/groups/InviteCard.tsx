@@ -41,6 +41,7 @@ export function InviteCard({ groupId, invite, canManage, onRequestRotate, cooldo
             await navigator.clipboard.writeText(invite.code);
             toast.success("Skopiowano kod zaproszenia");
           }}
+          data-test-id="groups-settings-copy-code-button"
         >
           Kopiuj kod
         </Button>
@@ -52,6 +53,7 @@ export function InviteCard({ groupId, invite, canManage, onRequestRotate, cooldo
             await navigator.clipboard.writeText(joinLink);
             toast.success("Skopiowano link do zaproszenia");
           }}
+          data-test-id="groups-settings-copy-link-button"
         >
           Kopiuj link
         </Button>

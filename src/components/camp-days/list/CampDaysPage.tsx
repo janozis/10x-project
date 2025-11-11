@@ -165,7 +165,7 @@ const CampDaysPage = ({ groupId }: CampDaysPageProps): React.ReactElement => {
   }, [highlightId]);
 
   return (
-    <section className="flex flex-col gap-6" aria-label="Zarządzanie dniami obozu">
+    <section className="flex flex-col gap-6" aria-label="Zarządzanie dniami obozu" data-test-id="camp-days-page">
       <CampDaysHeader
         canManageDays={permissionsVM.canManageDays}
         hasCampDays={campDays.length > 0}
@@ -183,10 +183,11 @@ const CampDaysPage = ({ groupId }: CampDaysPageProps): React.ReactElement => {
         <div
           role="alert"
           className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+          data-test-id="camp-days-error-message"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span>{errorMessage}</span>
-            <Button size="sm" variant="outline" onClick={handleRetry}>
+            <Button size="sm" variant="outline" onClick={handleRetry} data-test-id="camp-days-retry-button">
               Spróbuj ponownie
             </Button>
           </div>
@@ -208,10 +209,11 @@ const CampDaysPage = ({ groupId }: CampDaysPageProps): React.ReactElement => {
             "animate-in fade-in"
           )}
           role="status"
+          data-test-id="camp-days-no-results"
         >
           Brak wyników dla wybranych filtrów.
           <div className="mt-3">
-            <Button size="sm" variant="ghost" onClick={handleResetFilters}>
+            <Button size="sm" variant="ghost" onClick={handleResetFilters} data-test-id="camp-days-clear-filters-button">
               Wyczyść filtry
             </Button>
           </div>

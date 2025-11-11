@@ -22,6 +22,7 @@ export function RoleSelect({ value, disabled, onChange, title }: RoleSelectProps
         value={value}
         onChange={(e) => onChange(e.target.value as GroupRole)}
         disabled={disabled}
+        data-test-id="members-role-select"
       >
         <option value="admin">admin</option>
         <option value="editor">editor</option>

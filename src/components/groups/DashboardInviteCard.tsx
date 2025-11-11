@@ -119,6 +119,7 @@ export function DashboardInviteCard({ groupId, group, canManage }: DashboardInvi
             await navigator.clipboard.writeText(invite.code);
             toast.success("Skopiowano kod zaproszenia");
           }}
+          data-test-id="groups-dashboard-copy-code-button"
         >
           Kopiuj kod
         </Button>
@@ -130,6 +131,7 @@ export function DashboardInviteCard({ groupId, group, canManage }: DashboardInvi
             await navigator.clipboard.writeText(joinLink);
             toast.success("Skopiowano link do zaproszenia");
           }}
+          data-test-id="groups-dashboard-copy-link-button"
         >
           Kopiuj link
         </Button>

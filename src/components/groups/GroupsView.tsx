@@ -69,7 +69,7 @@ export default function GroupsView(): JSX.Element {
           onTabChange={handleTabChange}
         />
         {/* Inline live region for errors or info */}
-        <div aria-live="polite" className="sr-only" data-testid="groups-live-region">
+        <div aria-live="polite" className="sr-only" data-test-id="groups-live-region">
           {loading ? "Ładowanie listy grup…" : undefined}
           {error ? `Błąd: ${error}` : undefined}
         </div>
@@ -79,23 +79,25 @@ export default function GroupsView(): JSX.Element {
             role="status"
             tabIndex={-1}
             className="rounded-md border border-emerald-400/40 bg-emerald-400/10 text-emerald-700 p-3 text-sm outline-none"
+            data-test-id="groups-success-message"
           >
             {success}
           </div>
         ) : null}
         {error ? (
           errorCode === "UNAUTHORIZED" || errorStatus === 401 ? (
-            <div role="alert" className="rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-700 p-3 text-sm">
+            <div role="alert" className="rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-700 p-3 text-sm" data-test-id="groups-unauthorized-error">
               Aby zobaczyć swoje grupy, zaloguj się.
-              <a href="/auth/login?redirect=/groups" className="ml-2 underline">Zaloguj się</a>
+              <a href="/auth/login?redirect=/groups" className="ml-2 underline" data-test-id="groups-login-link">Zaloguj się</a>
             </div>
           ) : (
-            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">
+            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm" data-test-id="groups-error-message">
               Wystąpił błąd podczas ładowania listy grup. Spróbuj ponownie.
               <button
                 type="button"
                 className="ml-2 underline"
                 onClick={() => refresh()}
+                data-test-id="groups-refresh-button"
               >
                 Odśwież
               </button>
@@ -139,6 +141,7 @@ export default function GroupsView(): JSX.Element {
             type="button"
             className="mt-2 px-4 py-2 text-sm rounded-md border hover:bg-accent hover:text-accent-foreground"
             onClick={() => { void loadMore(); }}
+            data-test-id="groups-load-more-button"
           >
             Załaduj więcej
           </button>

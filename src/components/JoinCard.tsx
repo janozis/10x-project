@@ -50,7 +50,7 @@ interface JoinFormProps {
 
 type GeneralErrorCode = "UNAUTHORIZED" | "VALIDATION_ERROR" | "INTERNAL_ERROR" | "BAD_REQUEST";
 
-type InviteErrorCode = "INVITE_INVALID" | "INVITE_EXPIRED" | "INVITE_MAXED";
+type InviteErrorCode = "INVITE_INVALID" | "INVITE_EXPIRED" | "INVITE_MAXED" | "ALREADY_MEMBER";
 
 type JoinErrorCode = InviteErrorCode | GeneralErrorCode;
 
@@ -344,6 +344,8 @@ function mapErrorToMessage(code: JoinErrorCode | undefined, enteredCode: string)
       return "Kod zaproszenia wygasł. Poproś administratora o nowy kod.";
     case "INVITE_MAXED":
       return "Limit użyć kodu został wyczerpany.";
+    case "ALREADY_MEMBER":
+      return "Jesteś już członkiem tej grupy.";
     case "UNAUTHORIZED": {
       const raw = sanitizeInviteCodeInput(enteredCode);
       const href = `/login?redirect=${encodeURIComponent(`/join?code=${raw}`)}`;

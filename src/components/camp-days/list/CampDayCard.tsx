@@ -39,6 +39,7 @@ export function CampDayCard({
         isHighlighted ? "ring-2 ring-primary/60" : undefined
       )}
       onClick={handleCardClick}
+      data-test-id="camp-day-card"
     >
       <CardHeader className="flex flex-col gap-4 space-y-0">
         <div className="flex items-center justify-between gap-2">

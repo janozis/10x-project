@@ -114,6 +114,7 @@ export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: To
               className="text-sm cursor-pointer"
               onClick={handleLogout}
               disabled={isLoggingOut}
+              data-test-id="topbar-logout-button"
             >
               <span className="mr-2">🚪</span>
               <span className="hidden sm:inline">{isLoggingOut ? "Wylogowywanie..." : "Wyloguj"}</span>

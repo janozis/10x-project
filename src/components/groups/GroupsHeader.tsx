@@ -22,6 +22,7 @@ const GroupsHeaderComponent = ({ total, onOpenCreate, onOpenJoin, tab, onTabChan
             className={`px-3 py-1.5 text-sm rounded-md ${tab === "active" ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => onTabChange("active")}
             type="button"
+            data-test-id="groups-header-tab-active"
           >
             Aktywne
           </button>
@@ -31,14 +32,15 @@ const GroupsHeaderComponent = ({ total, onOpenCreate, onOpenJoin, tab, onTabChan
             className={`px-3 py-1.5 text-sm rounded-md ${tab === "deleted" ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => onTabChange("deleted")}
             type="button"
+            data-test-id="groups-header-tab-deleted"
           >
             Ostatnio usunięte
           </button>
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="outline" onClick={onOpenJoin}>Dołącz do grupy</Button>
-        <Button onClick={onOpenCreate}>Utwórz grupę</Button>
+        <Button variant="outline" onClick={onOpenJoin} data-test-id="groups-header-join-button">Dołącz do grupy</Button>
+        <Button onClick={onOpenCreate} data-test-id="groups-header-create-button">Utwórz grupę</Button>
       </div>
     </header>
   );

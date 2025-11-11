@@ -48,6 +48,7 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
           disabled={disabled}
           onChange={(e) => setSearchLocal(e.target.value)}
           className="w-64"
+          data-test-id="activities-search-input"
         />
       </div>
 
@@ -59,6 +60,7 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
           disabled={disabled}
           onChange={(e) => onChange({ ...value, status: (e.target.value || undefined) as ActivityStatus | undefined })}
           className="px-2 py-1 text-sm rounded-md border bg-background"
+          data-test-id="activities-status-filter"
         >
           <option value="">Wszystkie</option>
           <option value="draft">Szkic</option>
@@ -75,6 +77,7 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
             checked={value.assigned === "me"}
             onChange={(e) => onChange({ ...value, assigned: e.target.checked ? "me" : undefined })}
             disabled={disabled}
+            data-test-id="activities-assigned-checkbox"
           />
           <span>Tylko moje</span>
         </label>
@@ -82,7 +85,7 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
 
       <div className="ml-auto flex items-center gap-2">
         {canCreate ? (
-          <Button type="button" size="sm" onClick={onCreateClick} disabled={disabled}>
+          <Button type="button" size="sm" onClick={onCreateClick} disabled={disabled} data-test-id="activities-create-button">
             <Plus className="h-4 w-4 mr-1" />
             Dodaj aktywność
           </Button>

@@ -20,10 +20,10 @@ export default function LoginCard(props: LoginCardProps) {
       <div className="grid gap-6">
         <LoginForm redirectTo={props.redirectTo} />
         <nav aria-label="Pomocnicze linki" className="flex items-center justify-between text-sm">
-          <a className="text-primary hover:underline" href="/auth/forgot-password">
+          <a className="text-primary hover:underline" href="/auth/forgot-password" data-test-id="auth-login-forgot-password-link">
             Zapomniałeś hasła?
           </a>
-          <a className="text-primary hover:underline" href="/auth/register">
+          <a className="text-primary hover:underline" href="/auth/register" data-test-id="auth-login-register-link">
             Zarejestruj się
           </a>
         </nav>

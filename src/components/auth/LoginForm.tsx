@@ -79,6 +79,7 @@ export default function LoginForm(props: LoginFormProps) {
           aria-live="polite"
           tabIndex={-1}
           className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive"
+          data-test-id="auth-login-error-message"
         >
           {submitError}
         </div>
@@ -87,7 +88,7 @@ export default function LoginForm(props: LoginFormProps) {
       )}
 
       {successAnnounce ? (
-        <div role="status" aria-live="polite" className="rounded-md border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-emerald-700 dark:text-emerald-300">
+        <div role="status" aria-live="polite" className="rounded-md border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-emerald-700 dark:text-emerald-300" data-test-id="auth-login-success-message">
           {successAnnounce}
         </div>
       ) : null}
@@ -105,7 +106,7 @@ export default function LoginForm(props: LoginFormProps) {
         disabled={isSubmitting}
       />
 
-      <Button type="submit" disabled={!isValid || isSubmitting} aria-disabled={!isValid || isSubmitting}>
+      <Button type="submit" disabled={!isValid || isSubmitting} aria-disabled={!isValid || isSubmitting} data-test-id="auth-login-submit-button">
         {isSubmitting ? (
           <span className="inline-flex items-center gap-2">
             <Loader2 className="animate-spin" />

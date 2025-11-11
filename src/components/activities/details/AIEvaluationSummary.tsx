@@ -37,29 +37,29 @@ export function AIEvaluationSummary({ latest, loading }: AIEvaluationSummaryProp
     return <div className="text-sm text-muted-foreground">Brak ocen.</div>;
   }
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2 flex-wrap">
-        <Badge variant="secondary">Lore: {latest.lore_score}</Badge>
-        <Badge variant="secondary">Wartości: {latest.scouting_values_score}</Badge>
+    <div className="space-y-3" data-test-id="ai-evaluation-result">
+      <div className="flex items-center gap-2 flex-wrap" data-test-id="ai-evaluation-scores">
+        <Badge variant="secondary" data-test-id="ai-evaluation-lore-score">Lore: {latest.lore_score}</Badge>
+        <Badge variant="secondary" data-test-id="ai-evaluation-scouting-score">Wartości: {latest.scouting_values_score}</Badge>
         {typeof latest.tokens === "number" ? <Badge variant="outline">Tokens: {latest.tokens}</Badge> : null}
       </div>
 
       {latest.lore_feedback ? (
-        <div>
+        <div data-test-id="ai-evaluation-lore-feedback">
           <div className="text-xs font-medium text-muted-foreground mb-1">Feedback (lore)</div>
           <TruncatedText text={latest.lore_feedback} />
         </div>
       ) : null}
 
       {latest.scouting_feedback ? (
-        <div>
+        <div data-test-id="ai-evaluation-scouting-feedback">
           <div className="text-xs font-medium text-muted-foreground mb-1">Feedback (wartości)</div>
           <TruncatedText text={latest.scouting_feedback} />
         </div>
       ) : null}
 
       {Array.isArray(latest.suggestions) && latest.suggestions.length > 0 ? (
-        <div>
+        <div data-test-id="ai-evaluation-suggestions">
           <div className="text-xs font-medium text-muted-foreground mb-1">Sugestie</div>
           <SuggestionsList items={latest.suggestions} />
         </div>

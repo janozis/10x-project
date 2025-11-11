@@ -23,7 +23,7 @@ interface ActivitiesTableProps {
 
 export function ActivitiesTable({ items, visible, selectable, selectedIds, onToggleSelect, mode = "active", canEdit = false, canDelete = false, canRestore = false, onRequestView, onRequestEdit, onRequestDelete, onRequestRestore }: ActivitiesTableProps): JSX.Element {
   return (
-    <div role="table" className="w-full border rounded-md overflow-hidden">
+    <div role="table" className="w-full border rounded-md overflow-hidden" data-test-id="activities-table">
       <div role="row" className="grid grid-cols-12 bg-muted text-xs font-medium px-3 py-2">
         {visible.title ? <div role="columnheader" className="col-span-5">Tytuł</div> : null}
         {visible.objective ? <div role="columnheader" className="col-span-3">Cel</div> : null}
@@ -38,6 +38,7 @@ export function ActivitiesTable({ items, visible, selectable, selectedIds, onTog
             key={it.id} 
             role="row" 
             className="grid grid-cols-12 border-t px-3 py-2 text-sm hover:bg-accent/40 group cursor-pointer"
+            data-test-id="activities-table-row"
             onClick={(e) => {
               // Prevent row click if clicking on checkbox or action menu
               const target = e.target as HTMLElement;
@@ -57,6 +58,7 @@ export function ActivitiesTable({ items, visible, selectable, selectedIds, onTog
                     className="hidden lg:block flex-shrink-0"
                     checked={!!selectedIds?.has(it.id)}
                     onChange={() => onToggleSelect?.(it.id)}
+                    data-test-id="activities-row-checkbox"
                   />
                 ) : null}
                 <span className="truncate text-left">

@@ -12,10 +12,10 @@ export default function ForgotPasswordCard() {
       <div className="grid gap-6">
         <ForgotPasswordForm />
         <nav aria-label="Pomocnicze linki" className="flex items-center justify-between text-sm">
-          <a className="text-primary hover:underline" href="/auth/login">
+          <a className="text-primary hover:underline" href="/auth/login" data-test-id="auth-forgot-login-link">
             Wróć do logowania
           </a>
-          <a className="text-primary hover:underline" href="/auth/register">
+          <a className="text-primary hover:underline" href="/auth/register" data-test-id="auth-forgot-register-link">
             Zarejestruj się
           </a>
         </nav>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { sanitizeInviteCodeInput, isValidInviteCode, formatInviteCodeMasked } from "@/lib/validation/join";
+import { sanitizeInviteCodeInput, isValidInviteCode } from "@/lib/validation/join";
 import { useJoinGroup } from "@/lib/groups/useJoinGroup";
 
 export interface JoinGroupDialogProps {
@@ -25,7 +25,6 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
   });
 
   const codeValue = form.watch("code");
-  const masked = formatInviteCodeMasked(codeValue);
   const isValid = isValidInviteCode(codeValue);
 
   async function onSubmit(values: FormValues) {
@@ -45,6 +44,8 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
       form.setError("code", { type: "server", message: "Kod zaproszenia wygasł." });
     } else if (code === "INVITE_MAXED") {
       form.setError("code", { type: "server", message: "Wykorzystano maksymalną liczbę użyć kodu." });
+    } else if (code === "ALREADY_MEMBER") {
+      form.setError("code", { type: "server", message: "Jesteś już członkiem tej grupy." });
     } else if (code === "NOT_FOUND") {
       form.setError("code", { type: "server", message: "Nie znaleziono grupy dla tego kodu." });
     }
@@ -52,14 +53,14 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent aria-labelledby="join-title" aria-describedby="join-desc">
+      <DialogContent aria-labelledby="join-title" aria-describedby="join-desc" data-test-id="groups-join-dialog">
         <DialogHeader>
           <DialogTitle id="join-title">Dołącz do grupy</DialogTitle>
           <DialogDescription id="join-desc">Wpisz 8-znakowy kod zaproszenia.</DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" aria-busy={loading}>
           {error ? (
-            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm">
+            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm" data-test-id="groups-join-error-message">
               {serverCode === "RATE_LIMIT_EXCEEDED" ? "Przekroczono limit żądań. Spróbuj ponownie za chwilę." : error}
             </div>
           ) : null}
@@ -69,9 +70,10 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
               id="code"
               inputMode="text"
               autoCapitalize="characters"
-              value={masked}
+              value={codeValue}
               aria-invalid={!isValid && codeValue.length > 0}
               aria-describedby="code-help code-error"
+              data-test-id="groups-join-code-input"
               onChange={(e) => {
                 const sanitized = sanitizeInviteCodeInput(e.target.value);
                 form.setValue("code", sanitized, { shouldValidate: true, shouldDirty: true });
@@ -83,8 +85,8 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
             ) : null}
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Anuluj</Button>
-            <Button type="submit" disabled={loading || !isValid} aria-disabled={loading || !isValid}>{loading ? "Dołączanie…" : "Dołącz"}</Button>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading} data-test-id="groups-join-cancel-button">Anuluj</Button>
+            <Button type="submit" disabled={loading || !isValid} aria-disabled={loading || !isValid} data-test-id="groups-join-submit-button">{loading ? "Dołączanie…" : "Dołącz"}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

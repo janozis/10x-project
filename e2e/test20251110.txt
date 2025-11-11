@@ -1,0 +1,1118 @@
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 Teardown loading env from: /Users/jkosmala/Documents/git-repos/private/10x-project/.env.test
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+✅ Loaded .env.test successfully
+
+Running 145 tests using 1 worker
+
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 Authenticating as: testowy@jankosmala.pl
+✓ Navigated to login page
+✓ Page fully loaded
+✓ Filled email field
+✓ Filled password field
+🔍 Button state - disabled: null, aria-disabled: false
+🔍 Button state after wait - disabled: null
+🖱️  Attempting to click submit button...
+⏳ Waiting for redirect after login...
+✓ Redirected to: http://localhost:4321/groups
+✅ Authentication successful!
+  ✓    1 [setup] › e2e/auth.setup.ts:14:1 › authenticate (6.2s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  override existing env vars with { override: true }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓    2 [chromium] › e2e/accessibility.spec.ts:13:3 › Accessibility › login page a11y scan (2.1s)
+  -    3 [chromium] › e2e/accessibility.spec.ts:22:3 › Accessibility › dashboard a11y scan
+  -    4 [chromium] › e2e/accessibility.spec.ts:27:3 › Accessibility › activity form a11y scan
+  -    5 [chromium] › e2e/accessibility.spec.ts:31:3 › Accessibility › groups list a11y scan
+  ✓    6 [chromium] › e2e/accessibility.spec.ts:35:3 › Accessibility › form labels verification (1.9s)
+  -    7 [chromium] › e2e/accessibility.spec.ts:47:3 › Accessibility › ARIA attributes verification
+  -    8 [chromium] › e2e/accessibility.spec.ts:51:3 › Accessibility › color contrast WCAG AA
+  ✓    9 [chromium] › e2e/accessibility.spec.ts:56:3 › Accessibility › keyboard navigation tab order (1.9s)
+🧹 Pre-cleaned test data before Activities CRUD tests
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   10 [chromium] › e2e/activities-crud.spec.ts:91:3 › Activities - CRUD Operations › should create new activity through stepper (15.6s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   11 [chromium] › e2e/activities-crud.spec.ts:113:3 › Activities - CRUD Operations › should validate all 10 required fields (14.7s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   12 [chromium] › e2e/activities-crud.spec.ts:143:3 › Activities - CRUD Operations › should show validation error when required fields are empty (7.7s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   13 [chromium] › e2e/activities-crud.spec.ts:172:3 › Activities - CRUD Operations › should edit existing activity (19.1s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   14 [chromium] › e2e/activities-crud.spec.ts:212:3 › Activities - CRUD Operations › should assign multiple editors to activity
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   15 [chromium] › e2e/activities-crud.spec.ts:246:3 › Activities - CRUD Operations › should delete activity (17.0s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   16 [chromium] › e2e/activities-crud.spec.ts:281:3 › Activities - CRUD Operations › should list all activities in group (30.8s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   17 [chromium] › e2e/activities-crud.spec.ts:321:3 › Activities - CRUD Operations › should filter activities by status (15.8s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   18 [chromium] › e2e/activities-crud.spec.ts:350:3 › Activities - CRUD Operations › should filter only assigned activities
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   19 [chromium] › e2e/activities-crud.spec.ts:378:3 › Activities - CRUD Operations › should search activities by name (23.7s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   20 [chromium] › e2e/activities-details.spec.ts:70:3 › Activity Details › should display all 10 activity fields (19.7s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   21 [chromium] › e2e/activities-details.spec.ts:85:3 › Activity Details › edit button visible for admin (20.3s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   22 [chromium] › e2e/activities-details.spec.ts:94:3 › Activity Details › edit button visible for assigned editors
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   23 [chromium] › e2e/activities-details.spec.ts:98:3 › Activity Details › read-only view for other editors
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   24 [chromium] › e2e/activities-details.spec.ts:102:3 › Activity Details › display list of assigned editors
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   25 [chromium] › e2e/activities-details.spec.ts:106:3 › Activity Details › display activity status
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   26 [chromium] › e2e/activities-details.spec.ts:110:3 › Activity Details › link to related tasks
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   27 [chromium] › e2e/activities-details.spec.ts:114:3 › Activity Details › display activity change history
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   28 [chromium] › e2e/ai-evaluation.spec.ts:66:3 › AI Evaluation › should generate AI evaluation for activity (30.8s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   29 [chromium] › e2e/ai-evaluation.spec.ts:88:3 › AI Evaluation › should display pending state during generation (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   30 [chromium] › e2e/ai-evaluation.spec.ts:102:3 › AI Evaluation › should display both evaluation scores (lore + harcerstwo) (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  override existing env vars with { override: true }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   31 [chromium] › e2e/ai-evaluation.spec.ts:111:3 › AI Evaluation › should show lore score in 1-10 scale (30.8s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   32 [chromium] › e2e/ai-evaluation.spec.ts:124:3 › AI Evaluation › should show harcerstwo score in 1-10 scale (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   33 [chromium] › e2e/ai-evaluation.spec.ts:136:3 › AI Evaluation › should display AI suggestions (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   34 [chromium] › e2e/ai-evaluation.spec.ts:145:3 › AI Evaluation › should handle timeout during generation (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   35 [chromium] › e2e/ai-evaluation.spec.ts:151:3 › AI Evaluation › should allow re-generation of evaluation (31.4s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  enable debug logging with { debug: true }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   36 [chromium] › e2e/ai-evaluation.spec.ts:167:3 › AI Evaluation › only admin and assigned editors can generate evaluation (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘   37 [chromium] › e2e/ai-evaluation.spec.ts:173:3 › AI Evaluation › should persist evaluation after page reload (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓   38 [chromium] › e2e/auth-pom.spec.ts:12:3 › Authentication Flow with POM › should display login page with all elements (2.0s)
+  ✓   39 [chromium] › e2e/auth-pom.spec.ts:27:3 › Authentication Flow with POM › should show validation errors for empty form (2.5s)
+  ✓   40 [chromium] › e2e/auth-pom.spec.ts:57:3 › Authentication Flow with POM › should show error for invalid email format (2.5s)
+  ✓   41 [chromium] › e2e/auth-pom.spec.ts:73:3 › Authentication Flow with POM › should navigate to registration page (2.0s)
+  ✓   42 [chromium] › e2e/auth-pom.spec.ts:86:3 › Authentication Flow with POM › should login successfully with valid credentials (3.6s)
+  ✓   43 [chromium] › e2e/auth-pom.spec.ts:102:3 › Authentication Flow with POM › should use helper method for test user login (3.4s)
+  ✓   44 [chromium] › e2e/auth-pom.spec.ts:119:3 › Protected Routes › should redirect to login when accessing protected route without auth (1.2s)
+  -   45 [chromium] › e2e/auth-pom.spec.ts:136:8 › Visual Tests › login page visual snapshot
+  ✓   46 [chromium] › e2e/auth.spec.ts:16:3 › Authentication Flow › should display login page (1.5s)
+  ✓   47 [chromium] › e2e/auth.spec.ts:31:3 › Authentication Flow › should show validation errors for empty form (2.2s)
+  ✓   48 [chromium] › e2e/auth.spec.ts:58:3 › Authentication Flow › should show error for invalid email format (2.1s)
+  ✓   49 [chromium] › e2e/auth.spec.ts:74:3 › Authentication Flow › should navigate to registration page (3.3s)
+  ✓   50 [chromium] › e2e/auth.spec.ts:96:3 › Authentication Flow › should display registration form elements (1.5s)
+  ✓   51 [chromium] › e2e/auth.spec.ts:108:3 › Authentication Flow › should navigate to forgot password page (2.2s)
+  ✓   52 [chromium] › e2e/auth.spec.ts:128:3 › Protected Routes › should redirect to login when accessing protected route (1.2s)
+  -   53 [chromium] › e2e/auth.spec.ts:147:8 › Visual Tests › login page visual snapshot
+  -   54 [chromium] › e2e/auth.spec.ts:152:8 › Visual Tests › register page visual snapshot
+  ✓   55 [chromium] › e2e/authenticated.spec.ts:16:3 › Authenticated User Actions › should access dashboard when authenticated (426ms)
+  ✓   56 [chromium] › e2e/authenticated.spec.ts:29:3 › Authenticated User Actions › should navigate to groups page (604ms)
+  ✓   57 [chromium] › e2e/authenticated.spec.ts:41:3 › Authenticated User Actions › should have user session maintained (391ms)
+  ✓   58 [chromium] › e2e/authenticated.spec.ts:62:3 › API Tests (Authenticated) › should access protected API endpoint (572ms)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   59 [chromium] › e2e/camp-days.spec.ts:64:3 › Camp Days Structure › should display list of all HAL days (7.7s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   60 [chromium] › e2e/camp-days.spec.ts:79:3 › Camp Days Structure › should auto-generate days on group creation (7.8s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   61 [chromium] › e2e/camp-days.spec.ts:96:3 › Camp Days Structure › should add new day with time blocks (7.7s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   62 [chromium] › e2e/camp-days.spec.ts:132:3 › Camp Days Structure › should edit day
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   63 [chromium] › e2e/camp-days.spec.ts:172:3 › Camp Days Structure › should delete day
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   64 [chromium] › e2e/camp-days.spec.ts:210:3 › Camp Days Structure › should assign activity to time slot
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   65 [chromium] › e2e/camp-days.spec.ts:266:3 › Camp Days Structure › should detect time slot conflicts
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   66 [chromium] › e2e/camp-days.spec.ts:319:3 › Camp Days Structure › should display calendar view of entire camp (8.0s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   67 [chromium] › e2e/camp-days.spec.ts:341:3 › Camp Days Structure › should filter days by date range
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   68 [chromium] › e2e/dashboard-admin.spec.ts:30:3 › Dashboard Admin › should display group progress (3.8s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   69 [chromium] › e2e/dashboard-admin.spec.ts:39:3 › Dashboard Admin › should show admin tasks list (4.3s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   70 [chromium] › e2e/dashboard-admin.spec.ts:47:3 › Dashboard Admin › should display recent activities timeline
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   71 [chromium] › e2e/dashboard-admin.spec.ts:51:3 › Dashboard Admin › dashboard updates after adding activity
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   72 [chromium] › e2e/dashboard-admin.spec.ts:55:3 › Dashboard Admin › statistics update after AI evaluation
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   73 [chromium] › e2e/dashboard-admin.spec.ts:59:3 › Dashboard Admin › click task navigates to details
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -   74 [chromium] › e2e/dashboard-admin.spec.ts:63:3 › Dashboard Admin › click activity navigates to details
+  ✓   75 [chromium] › e2e/edge-cases.spec.ts:11:3 › Edge Cases › very long group name (2.0s)
+  -   76 [chromium] › e2e/edge-cases.spec.ts:29:3 › Edge Cases › very long activity description
+  -   77 [chromium] › e2e/edge-cases.spec.ts:33:3 › Edge Cases › group with maximum members
+  -   78 [chromium] › e2e/edge-cases.spec.ts:37:3 › Edge Cases › activity with maximum editors
+  -   79 [chromium] › e2e/edge-cases.spec.ts:41:3 › Edge Cases › empty group without members
+  -   80 [chromium] › e2e/edge-cases.spec.ts:45:3 › Edge Cases › group without activities
+  -   81 [chromium] › e2e/edge-cases.spec.ts:49:3 › Edge Cases › activity without assigned editors
+  -   82 [chromium] › e2e/edge-cases.spec.ts:53:3 › Edge Cases › camp day without activities
+  -   83 [chromium] › e2e/edge-cases.spec.ts:57:3 › Edge Cases › multiple concurrent requests
+  ✘   84 [chromium] › e2e/example.spec.ts:9:3 › Homepage › should load homepage successfully (5.5s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓   85 [chromium] › e2e/example.spec.ts:17:3 › Homepage › should have working navigation (510ms)
+  ✓   86 [chromium] › e2e/example.spec.ts:25:3 › Homepage › should be responsive (384ms)
+  ✘   87 [chromium] › e2e/example.spec.ts:39:3 › API Tests › API health check (109ms)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   88 [chromium] › e2e/group-members.spec.ts:28:3 › Group Members Management › should display members list (8.6s)
+   ⏭️  Cleanup will be skipped for this test
+📋 Copied invite code: twydz7sm
+🚪 Logging out User A...
+👤 Logging in as User B...
+🎯 User B joining group...
+✅ User B successfully joined the group!
+🚪 User B logged out
+   ⏭️  Cleanup skipped
+  ✓   89 [chromium] › e2e/groups-join.spec.ts:76:3 › Groups - Join via Invitation Code › should join group using valid invitation code (23.3s)
+   ⏭️  Cleanup will be skipped for this test
+   ⏭️  Cleanup skipped
+  ✓   90 [chromium] › e2e/groups-join.spec.ts:187:3 › Groups - Join via Invitation Code › should show group in list after joining (22.0s)
+   ⏭️  Cleanup will be skipped for this test
+🚪 Logging out User A...
+👤 Logging in as User B...
+✅ Error message displayed correctly: Group not found
+   ⏭️  Cleanup skipped
+  ✓   91 [chromium] › e2e/groups-join.spec.ts:296:3 › Groups - Join via Invitation Code › should show error with invalid invitation code (20.8s)
+   ⏭️  Cleanup will be skipped for this test
+   ⏭️  Cleanup skipped
+  ✓   92 [chromium] › e2e/groups-join.spec.ts:407:3 › Groups - Join via Invitation Code › should prevent joining same group twice (24.8s)
+   ⏭️  Cleanup will be skipped for this test
+   ⏭️  Cleanup skipped
+  ✓   93 [chromium] › e2e/groups-join.spec.ts:521:3 › Groups - Join via Invitation Code › should display members list after joining (28.3s)
+   ⏭️  Cleanup will be skipped for this test
+   ⏭️  Cleanup skipped
+🔄 Restoring main user session after groups-join tests...
+✅ Main user session restored successfully
+  ✓   94 [chromium] › e2e/groups-join.spec.ts:637:3 › Groups - Join via Invitation Code › should handle user joining a group with invite code (24.6s)
+🧹 Pre-cleaned test data before Groups Management tests
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   95 [chromium] › e2e/groups-management.spec.ts:53:3 › Groups Management › should create a group with full data (6.3s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   96 [chromium] › e2e/groups-management.spec.ts:81:3 › Groups Management › should display invitation code after creating group (8.5s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   97 [chromium] › e2e/groups-management.spec.ts:108:3 › Groups Management › should edit group settings (8.0s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   98 [chromium] › e2e/groups-management.spec.ts:146:3 › Groups Management › should delete group as owner (8.0s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓   99 [chromium] › e2e/groups-management.spec.ts:182:3 › Groups Management › should display multiple groups as cards (11.8s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓  100 [chromium] › e2e/groups-management.spec.ts:216:3 › Groups Management › should navigate to group details when clicking card (7.2s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓  101 [chromium] › e2e/groups-management.spec.ts:240:3 › Groups Management › should copy invitation code to clipboard (8.1s)
+  ✓  102 [chromium] › e2e/password-reset.spec.ts:7:3 › Password Reset › navigate to forgot password from login (2.1s)
+  ✘  103 [chromium] › e2e/password-reset.spec.ts:15:3 › Password Reset › send reset request with valid email (30.1s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✘  104 [chromium] › e2e/password-reset.spec.ts:26:3 › Password Reset › show error with invalid email (30.1s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓  105 [chromium] › e2e/password-reset.spec.ts:35:3 › Password Reset › reset password form with token (449ms)
+  -  106 [chromium] › e2e/password-reset.spec.ts:42:3 › Password Reset › validate new password strength
+  -  107 [chromium] › e2e/password-reset.spec.ts:46:3 › Password Reset › successful password change redirects to login
+  -  108 [chromium] › e2e/password-reset.spec.ts:50:3 › Password Reset › login with new password
+  ✓  109 [chromium] › e2e/password-reset.spec.ts:54:3 › Password Reset › show token error for invalid token (243ms)
+  -  110 [chromium] › e2e/password-reset.spec.ts:62:3 › Password Reset › display success message after reset
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓  111 [chromium] › e2e/performance.spec.ts:12:3 › Performance › homepage loads in under 3 seconds (1.8s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓  112 [chromium] › e2e/performance.spec.ts:21:3 › Performance › dashboard loads with large data (1.6s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  113 [chromium] › e2e/performance.spec.ts:32:3 › Performance › activities list with 100+ items
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  114 [chromium] › e2e/performance.spec.ts:37:3 › Performance › members list with 50+ members
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  115 [chromium] › e2e/performance.spec.ts:41:3 › Performance › AI evaluation generation time
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  116 [chromium] › e2e/performance.spec.ts:46:3 › Performance › performance budget FCP < 1.8s
+  -  117 [chromium] › e2e/realtime-updates.spec.ts:12:3 › Realtime Updates › user A creates activity, user B sees it
+  -  118 [chromium] › e2e/realtime-updates.spec.ts:82:3 › Realtime Updates › user A edits activity, user B sees changes
+  -  119 [chromium] › e2e/realtime-updates.spec.ts:86:3 › Realtime Updates › user A generates AI evaluation, user B sees it
+  -  120 [chromium] › e2e/realtime-updates.spec.ts:90:3 › Realtime Updates › user A changes task status, user B sees update
+  -  121 [chromium] › e2e/realtime-updates.spec.ts:94:3 › Realtime Updates › user A adds member, user B sees them
+  -  122 [chromium] › e2e/realtime-updates.spec.ts:98:3 › Realtime Updates › user A deletes activity, user B sees removal
+  ✓  123 [chromium] › e2e/tasks.spec.ts:29:3 › Tasks Management › should create new task (4.8s)
+  ✓  124 [chromium] › e2e/tasks.spec.ts:40:3 › Tasks Management › should assign task to activity (7.8s)
+  ✓  125 [chromium] › e2e/tasks.spec.ts:60:3 › Tasks Management › should update task status (5.0s)
+  ✓  126 [chromium] › e2e/tasks.spec.ts:71:3 › Tasks Management › should edit task (4.7s)
+  ✓  127 [chromium] › e2e/tasks.spec.ts:90:3 › Tasks Management › should delete task with confirmation (4.7s)
+  ✓  128 [chromium] › e2e/tasks.spec.ts:102:3 › Tasks Management › should filter tasks by status (4.8s)
+  ✘  129 [chromium] › e2e/tasks.spec.ts:112:3 › Tasks Management › should display task board (5.0s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  write to custom object with { processEnv: myObject }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓  130 [chromium] › e2e/tasks.spec.ts:120:3 › Tasks Management › should load more tasks (5.0s)
+  ✓  131 [chromium] › e2e/tasks.spec.ts:130:3 › Tasks Management › should view task details (5.1s)
+  ✓  132 [chromium] › e2e/tasks.spec.ts:143:3 › Tasks Management › should handle task without due date (4.8s)
+✓ Test group created: [TEARDOWN-TEST] 2025-11-10T14:21:19.779Z
+  This group should be automatically deleted after all tests complete.
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓  133 [chromium] › e2e/teardown-verification.spec.ts:19:3 › Teardown Verification › creates test data that should be cleaned by teardown (4.8s)
+✓ Created bulk test group 1/3: [TEARDOWN-BULK-0] 2025-11-10T14:21:25.893Z
+✓ Created bulk test group 2/3: [TEARDOWN-BULK-1] 2025-11-10T14:21:28.415Z
+✓ Created bulk test group 3/3: [TEARDOWN-BULK-2] 2025-11-10T14:21:30.950Z
+  All 3 groups should be automatically deleted after tests complete.
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓  134 [chromium] › e2e/teardown-verification.spec.ts:45:3 › Teardown Verification › creates multiple groups to verify bulk cleanup (9.7s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘  135 [chromium] › e2e/validation-errors.spec.ts:18:3 › Validation Errors › group form - empty required field (30.9s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  write to custom object with { processEnv: myObject }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✘  136 [chromium] › e2e/validation-errors.spec.ts:32:3 › Validation Errors › group form - end date before start date (2.5s)
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  ✓  137 [chromium] › e2e/validation-errors.spec.ts:51:3 › Validation Errors › activity form - missing required fields (6.9s)
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  138 [chromium] › e2e/validation-errors.spec.ts:75:3 › Validation Errors › task form - empty title
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  139 [chromium] › e2e/validation-errors.spec.ts:79:3 › Validation Errors › activity form - too long description
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  140 [chromium] › e2e/validation-errors.spec.ts:83:3 › Validation Errors › task form - invalid date format
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  141 [chromium] › e2e/validation-errors.spec.ts:87:3 › Validation Errors › camp day - time slot conflict
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  142 [chromium] › e2e/validation-errors.spec.ts:91:3 › Validation Errors › form - too long values in text fields
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  143 [chromium] › e2e/validation-errors.spec.ts:95:3 › Validation Errors › join group - invalid email format
+   🧹 Cleaning up after test...
+   ✓  Cleanup completed
+  -  144 [chromium] › e2e/validation-errors.spec.ts:99:3 › Validation Errors › validation messages under fields
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PLAYWRIGHT ENVIRONMENT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E2E_USERNAME: testowy@jankosmala.pl
+SUPABASE_URL: https://bfwzubyllwcblruugtaa.s...
+BASE_URL: http://localhost:4321
+WebServer command: npm run dev:test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 Teardown loading env from: /Users/jkosmala/Documents/git-repos/private/10x-project/.env.test
+[dotenv@17.2.3] injecting env (19) from .env.test -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+✅ Loaded .env.test successfully
+🔍 Debug - SUPABASE_URL present: true
+🔍 Debug - SUPABASE_ANON_KEY present: true
+
+🧹 Starting database cleanup...
+   Test user IDs to clean: a04ccb88-15f1-49a8-b3c0-f07b7bb226e5, ea8413b5-1491-48b1-8e53-baadde8366f2
+   Found 0 groups to clean
+✓  No groups to clean - database already clean
+  ✓  145 [cleanup] › e2e/global.teardown.ts:245:1 › cleanup database (194ms)
+
+
+  1) [chromium] › e2e/ai-evaluation.spec.ts:66:3 › AI Evaluation › should generate AI evaluation for activity 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783679526')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-4e72d--AI-evaluation-for-activity-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-4e72d--AI-evaluation-for-activity-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-4e72d--AI-evaluation-for-activity-chromium/error-context.md
+
+  2) [chromium] › e2e/ai-evaluation.spec.ts:88:3 › AI Evaluation › should display pending state during generation 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783710970')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-d0d04-ing-state-during-generation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-d0d04-ing-state-during-generation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-d0d04-ing-state-during-generation-chromium/error-context.md
+
+  3) [chromium] › e2e/ai-evaluation.spec.ts:102:3 › AI Evaluation › should display both evaluation scores (lore + harcerstwo) 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783742474')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-3b5bc-ion-scores-lore-harcerstwo--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-3b5bc-ion-scores-lore-harcerstwo--chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-3b5bc-ion-scores-lore-harcerstwo--chromium/error-context.md
+
+  4) [chromium] › e2e/ai-evaluation.spec.ts:111:3 › AI Evaluation › should show lore score in 1-10 scale 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783773538')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-c13be-ow-lore-score-in-1-10-scale-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-c13be-ow-lore-score-in-1-10-scale-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-c13be-ow-lore-score-in-1-10-scale-chromium/error-context.md
+
+  5) [chromium] › e2e/ai-evaluation.spec.ts:124:3 › AI Evaluation › should show harcerstwo score in 1-10 scale 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783804767')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-c20a5-cerstwo-score-in-1-10-scale-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-c20a5-cerstwo-score-in-1-10-scale-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-c20a5-cerstwo-score-in-1-10-scale-chromium/error-context.md
+
+  6) [chromium] › e2e/ai-evaluation.spec.ts:136:3 › AI Evaluation › should display AI suggestions ──
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783836378')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluation-should-display-AI-suggestions-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluation-should-display-AI-suggestions-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluation-should-display-AI-suggestions-chromium/error-context.md
+
+  7) [chromium] › e2e/ai-evaluation.spec.ts:145:3 › AI Evaluation › should handle timeout during generation 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783867528')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-b5a41-e-timeout-during-generation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-b5a41-e-timeout-during-generation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-b5a41-e-timeout-during-generation-chromium/error-context.md
+
+  8) [chromium] › e2e/ai-evaluation.spec.ts:151:3 › AI Evaluation › should allow re-generation of evaluation 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783898966')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-98583-re-generation-of-evaluation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-98583-re-generation-of-evaluation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-98583-re-generation-of-evaluation-chromium/error-context.md
+
+  9) [chromium] › e2e/ai-evaluation.spec.ts:167:3 › AI Evaluation › only admin and assigned editors can generate evaluation 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783931054')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-c5123-ors-can-generate-evaluation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-c5123-ors-can-generate-evaluation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-c5123-ors-can-generate-evaluation-chromium/error-context.md
+
+  10) [chromium] › e2e/ai-evaluation.spec.ts:173:3 › AI Evaluation › should persist evaluation after page reload 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      25 |   let activityId: string;
+      26 |
+    > 27 |   test.beforeEach(async ({ page }) => {
+         |        ^
+      28 |     // User is already authenticated via storageState
+      29 |     const groupData = generateGroupData();
+      30 |     const groupsPage = new GroupsListPage(page);
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:27:8
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByText('Test Activity 1762783962538')[22m
+
+
+      53 |     // Navigate to activity details
+      54 |     await activitiesPage.goto(groupId);
+    > 55 |     await page.getByText(activityData.temat || '').click();
+         |                                                    ^
+      56 |     await page.waitForLoadState('networkidle');
+      57 |     activityId = page.url().split('/activities/')[1]?.split('/')[0] || '';
+      58 |   });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/ai-evaluation.spec.ts:55:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-92225-valuation-after-page-reload-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/ai-evaluation-AI-Evaluatio-92225-valuation-after-page-reload-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/ai-evaluation-AI-Evaluatio-92225-valuation-after-page-reload-chromium/error-context.md
+
+  11) [chromium] › e2e/example.spec.ts:9:3 › Homepage › should load homepage successfully ──────────
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveTitle[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Expected pattern: [32m/10x-project/i[39m
+    Received string:  [31m"Grupy"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveTitle" with timeout 5000ms[22m
+    [2m    9 × unexpected value "Grupy"[22m
+
+
+      12 |
+      13 |     // Verify the page loaded
+    > 14 |     await expect(page).toHaveTitle(/10x-project/i);
+         |                        ^
+      15 |   });
+      16 |
+      17 |   test('should have working navigation', async ({ page }) => {
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/example.spec.ts:14:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/example-Homepage-should-load-homepage-successfully-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/example-Homepage-should-load-homepage-successfully-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/example-Homepage-should-load-homepage-successfully-chromium/error-context.md
+
+  12) [chromium] › e2e/example.spec.ts:39:3 › API Tests › API health check ─────────────────────────
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      43 |     
+      44 |     if (response) {
+    > 45 |       expect(response.ok()).toBeTruthy();
+         |                             ^
+      46 |     }
+      47 |   });
+      48 | });
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/example.spec.ts:45:29
+
+  13) [chromium] › e2e/password-reset.spec.ts:15:3 › Password Reset › send reset request with valid email 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByTestId('auth-email-input')[22m
+
+
+       at page-objects/ForgotPasswordPage.ts:43
+
+      41 |    */
+      42 |   async requestReset(email: string) {
+    > 43 |     await this.emailInput.fill(email);
+         |                           ^
+      44 |     await this.submitButton.click();
+      45 |   }
+      46 |
+        at ForgotPasswordPage.requestReset (/Users/jkosmala/Documents/git-repos/private/10x-project/e2e/page-objects/ForgotPasswordPage.ts:43:27)
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/password-reset.spec.ts:19:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/password-reset-Password-Re-ee98e-et-request-with-valid-email-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/password-reset-Password-Re-ee98e-et-request-with-valid-email-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/password-reset-Password-Re-ee98e-et-request-with-valid-email-chromium/error-context.md
+
+  14) [chromium] › e2e/password-reset.spec.ts:26:3 › Password Reset › show error with invalid email 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByTestId('auth-email-input')[22m
+
+
+       at page-objects/ForgotPasswordPage.ts:43
+
+      41 |    */
+      42 |   async requestReset(email: string) {
+    > 43 |     await this.emailInput.fill(email);
+         |                           ^
+      44 |     await this.submitButton.click();
+      45 |   }
+      46 |
+        at ForgotPasswordPage.requestReset (/Users/jkosmala/Documents/git-repos/private/10x-project/e2e/page-objects/ForgotPasswordPage.ts:43:27)
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/password-reset.spec.ts:29:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/password-reset-Password-Reset-show-error-with-invalid-email-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/password-reset-Password-Reset-show-error-with-invalid-email-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/password-reset-Password-Reset-show-error-with-invalid-email-chromium/error-context.md
+
+  15) [chromium] › e2e/tasks.spec.ts:112:3 › Tasks Management › should display task board ──────────
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      115 |     
+      116 |     const hasBoard = await tasksPage.hasTasksBoard();
+    > 117 |     expect(hasBoard).toBe(true);
+          |                      ^
+      118 |   });
+      119 |
+      120 |   test('should load more tasks', async ({ page }) => {
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/tasks.spec.ts:117:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/tasks-Tasks-Management-should-display-task-board-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/tasks-Tasks-Management-should-display-task-board-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/tasks-Tasks-Management-should-display-task-board-chromium/error-context.md
+
+  16) [chromium] › e2e/validation-errors.spec.ts:18:3 › Validation Errors › group form - empty required field 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.isEnabled: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByTestId('groups-create-submit-button')[22m
+
+
+      26 |     
+      27 |     const submitBtn = page.getByTestId('groups-create-submit-button');
+    > 28 |     const canSubmit = await submitBtn.isEnabled();
+         |                                       ^
+      29 |     expect(canSubmit).toBe(false);
+      30 |   });
+      31 |
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/validation-errors.spec.ts:28:39
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/validation-errors-Validati-919b8-form---empty-required-field-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/validation-errors-Validati-919b8-form---empty-required-field-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/validation-errors-Validati-919b8-form---empty-required-field-chromium/error-context.md
+
+  17) [chromium] › e2e/validation-errors.spec.ts:32:3 › Validation Errors › group form - end date before start date 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      46 |     
+      47 |     const hasError = await createDialog.hasError();
+    > 48 |     expect(hasError).toBe(true);
+         |                      ^
+      49 |   });
+      50 |
+      51 |   test('activity form - missing required fields', async ({ page }) => {
+        at /Users/jkosmala/Documents/git-repos/private/10x-project/e2e/validation-errors.spec.ts:48:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/validation-errors-Validati-ce937--end-date-before-start-date-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/validation-errors-Validati-ce937--end-date-before-start-date-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/validation-errors-Validati-ce937--end-date-before-start-date-chromium/error-context.md
+
+  17 failed
+    [chromium] › e2e/ai-evaluation.spec.ts:66:3 › AI Evaluation › should generate AI evaluation for activity 
+    [chromium] › e2e/ai-evaluation.spec.ts:88:3 › AI Evaluation › should display pending state during generation 
+    [chromium] › e2e/ai-evaluation.spec.ts:102:3 › AI Evaluation › should display both evaluation scores (lore + harcerstwo) 
+    [chromium] › e2e/ai-evaluation.spec.ts:111:3 › AI Evaluation › should show lore score in 1-10 scale 
+    [chromium] › e2e/ai-evaluation.spec.ts:124:3 › AI Evaluation › should show harcerstwo score in 1-10 scale 
+    [chromium] › e2e/ai-evaluation.spec.ts:136:3 › AI Evaluation › should display AI suggestions ───
+    [chromium] › e2e/ai-evaluation.spec.ts:145:3 › AI Evaluation › should handle timeout during generation 
+    [chromium] › e2e/ai-evaluation.spec.ts:151:3 › AI Evaluation › should allow re-generation of evaluation 
+    [chromium] › e2e/ai-evaluation.spec.ts:167:3 › AI Evaluation › only admin and assigned editors can generate evaluation 
+    [chromium] › e2e/ai-evaluation.spec.ts:173:3 › AI Evaluation › should persist evaluation after page reload 
+    [chromium] › e2e/example.spec.ts:9:3 › Homepage › should load homepage successfully ────────────
+    [chromium] › e2e/example.spec.ts:39:3 › API Tests › API health check ───────────────────────────
+    [chromium] › e2e/password-reset.spec.ts:15:3 › Password Reset › send reset request with valid email 
+    [chromium] › e2e/password-reset.spec.ts:26:3 › Password Reset › show error with invalid email ──
+    [chromium] › e2e/tasks.spec.ts:112:3 › Tasks Management › should display task board ────────────
+    [chromium] › e2e/validation-errors.spec.ts:18:3 › Validation Errors › group form - empty required field 
+    [chromium] › e2e/validation-errors.spec.ts:32:3 › Validation Errors › group form - end date before start date 
+  55 skipped
+  73 passed (19.9m)
+
+[36m  Serving HTML report at http://localhost:65049. Press Ctrl+C to quit.[39m

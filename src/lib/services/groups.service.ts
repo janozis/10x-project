@@ -353,14 +353,19 @@ export async function joinGroupByCode(
     .eq("user_id", effectiveUserId)
     .limit(1);
   if (memErr) return errors.internal("Failed to check membership");
-  if (!membership || membership.length === 0) {
-    const { error: insertMemErr } = await supabase.from("group_memberships").insert({
-      group_id: group.id,
-      user_id: effectiveUserId,
-      role: "member",
-    });
-    if (insertMemErr) return errors.internal("Failed to join group");
+  
+  // If user is already a member, return error
+  if (membership && membership.length > 0) {
+    return errors.badRequest("Already a member of this group", { code: "ALREADY_MEMBER" });
   }
+  
+  // Add new membership
+  const { error: insertMemErr } = await supabase.from("group_memberships").insert({
+    group_id: group.id,
+    user_id: effectiveUserId,
+    role: "member",
+  });
+  if (insertMemErr) return errors.internal("Failed to join group");
   // Increment invite usage (best-effort)
   const { error: incErr } = await supabase
     .from("groups")

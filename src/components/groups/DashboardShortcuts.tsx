@@ -13,6 +13,9 @@ export function DashboardShortcuts({ groupId, permissions }: DashboardShortcutsP
 
   return (
     <nav aria-label="Skróty" className="my-4 flex flex-wrap gap-2">
+      <a href={`/groups/${groupId}/members`}>
+        <Button variant="outline" size="sm">Członkowie</Button>
+      </a>
       <a href={`/groups/${groupId}/activities`}>
         <Button variant="outline" size="sm">Zajęcia</Button>
       </a>

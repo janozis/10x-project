@@ -15,7 +15,7 @@ export default function RegisterCard() {
           <span className="text-neutral-600 dark:text-neutral-400">
             Masz już konto?
             {" "}
-            <a className="text-primary hover:underline" href="/auth/login">
+            <a className="text-primary hover:underline" href="/auth/login" data-test-id="auth-register-login-link">
               Zaloguj się
             </a>
           </span>

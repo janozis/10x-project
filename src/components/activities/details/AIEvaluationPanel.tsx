@@ -34,7 +34,7 @@ export function AIEvaluationPanel({ activity, evaluations, canRequest, cooldownR
   const title = !canRequest ? "Brak uprawnień do tej akcji" : cooldownRemainingSec > 0 ? "Odczekaj do końca cooldownu" : undefined;
 
   return (
-    <Card>
+    <Card data-test-id="ai-evaluation-panel">
       <CardHeader>
         <CardTitle>Ocena AI</CardTitle>
         <CardDescription>Ostatnia ocena oraz historia</CardDescription>
@@ -47,7 +47,7 @@ export function AIEvaluationPanel({ activity, evaluations, canRequest, cooldownR
         </div>
 
         <div className="flex items-center justify-between">
-          <Button onClick={handleRequest} disabled={disabled} aria-disabled={disabled} title={title}>
+          <Button onClick={handleRequest} disabled={disabled} aria-disabled={disabled} title={title} data-test-id="ai-evaluation-request-button">
             {requesting ? "Kolejkowanie…" : "Poproś o ocenę AI"}
           </Button>
           {cooldownRemainingSec > 0 ? (

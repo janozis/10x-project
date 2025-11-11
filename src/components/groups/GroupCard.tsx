@@ -56,6 +56,7 @@ function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }
       tabIndex={focusMe ? -1 : undefined}
       className="cursor-pointer transition-colors hover:bg-accent/40"
       onClick={handleCardClick}
+      data-test-id="groups-list-card"
     >
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
@@ -100,6 +101,7 @@ function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }
                     // Ignore silently
                   }
                 }}
+                data-test-id="groups-card-copy-invite-button"
               >
                 Kopiuj kod
               </Button>
@@ -114,6 +116,7 @@ function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }
                   e.stopPropagation();
                   onRestore?.(item.id);
                 }}
+                data-test-id="groups-card-restore-button"
               >
                 Przywróć
               </Button>

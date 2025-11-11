@@ -80,6 +80,7 @@ export default function RegisterForm() {
           aria-live="polite"
           tabIndex={-1}
           className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive"
+          data-test-id="auth-register-error-message"
         >
           {submitError}
         </div>
@@ -92,6 +93,7 @@ export default function RegisterForm() {
           role="status"
           aria-live="polite"
           className="rounded-md border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-emerald-700 dark:text-emerald-300"
+          data-test-id="auth-register-success-message"
         >
           {successAnnounce}
         </div>
@@ -126,7 +128,7 @@ export default function RegisterForm() {
         showToggle={false}
       />
 
-      <Button type="submit" disabled={!isValid || loading} aria-disabled={!isValid || loading}>
+      <Button type="submit" disabled={!isValid || loading} aria-disabled={!isValid || loading} data-test-id="auth-register-submit-button">
         {loading ? (
           <span className="inline-flex items-center gap-2">
             <Loader2 className="animate-spin" />

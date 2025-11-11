@@ -131,9 +131,9 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
   }, [selectedIds]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" data-test-id="tasks-board">
       {error ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">
+        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm" data-test-id="tasks-error-message">
           {error}
         </div>
       ) : null}
@@ -141,12 +141,13 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
       <FiltersBar filters={filters} activities={activities} onChange={setFilters} />
 
       {!loading && totalTasks === 0 ? (
-        <div role="note" className="rounded-md border border-muted/60 bg-muted/20 text-muted-foreground p-3 text-sm">
+        <div role="note" className="rounded-md border border-muted/60 bg-muted/20 text-muted-foreground p-3 text-sm" data-test-id="tasks-empty-state">
           Brak zadań spełniających kryteria. 
           <button
             type="button"
             className="ml-2 inline-flex h-7 items-center justify-center rounded-md border bg-background px-2 text-xs hover:bg-accent"
             onClick={() => setFilters({ status: undefined, activityId: undefined })}
+            data-test-id="tasks-reset-filters-button"
           >
             Reset filtrów
           </button>
@@ -178,6 +179,7 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
             onClick={loadMore}
             className="inline-flex h-9 items-center justify-center rounded-md border bg-background px-3 text-sm hover:bg-accent"
             disabled={loading}
+            data-test-id="tasks-load-more-button"
           >
             {loading ? "Ładowanie…" : "Załaduj więcej"}
           </button>

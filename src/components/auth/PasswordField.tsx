@@ -32,6 +32,7 @@ export default function PasswordField({ register, error, disabled, showToggle = 
           aria-invalid={error ? "true" : undefined}
           aria-describedby={[error ? errorId : undefined, ...additionalDescribedByIds].filter(Boolean).join(" ") || undefined}
           disabled={disabled}
+          data-test-id={`auth-${id}-input`}
           {...register}
         />
         {showToggle ? (
@@ -41,7 +42,7 @@ export default function PasswordField({ register, error, disabled, showToggle = 
             size="sm"
             onClick={() => setShowPassword((v) => !v)}
             aria-pressed={showPassword}
-            aria-label={showPassword ? "Ukryj hasło" : "Pokaż hasło"}
+            aria-label={showPassword ? "Ukryj" : "Pokaż"}
             disabled={disabled}
           >
             {showPassword ? "Ukryj" : "Pokaż"}

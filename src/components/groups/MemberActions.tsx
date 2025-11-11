@@ -21,6 +21,7 @@ export function MemberActions({ canPromote, canRemove, isSelf, onPromote, onRemo
         disabled={!canPromote}
         aria-disabled={!canPromote}
         title={!canPromote ? promoteDisabledReason || "Brak uprawnień (tylko administrator)" : undefined}
+        data-test-id="members-promote-button"
       >
         Promuj do admina
       </Button>
@@ -32,6 +33,7 @@ export function MemberActions({ canPromote, canRemove, isSelf, onPromote, onRemo
         aria-disabled={!canRemove}
         title={!canRemove ? removeDisabledReason || "Brak uprawnień" : undefined}
         aria-label={isSelf ? "Opuść grupę" : "Usuń członka"}
+        data-test-id="members-remove-button"
       >
         {isSelf ? "Opuść" : "Usuń"}
       </Button>

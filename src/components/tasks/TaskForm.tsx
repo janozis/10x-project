@@ -93,7 +93,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
   const status = watch("status") as TaskStatus | undefined;
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6" data-test-id="task-form">
       {submitError ? (
         <div
           ref={alertRef}
@@ -101,6 +101,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
           role="alert"
           aria-live="assertive"
           className="rounded-md border border-red-600/30 bg-red-50 px-3 py-2 text-sm text-red-700"
+          data-test-id="task-form-error-message"
         >
           {submitError}
         </div>
@@ -108,7 +109,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="title">Tytuł</Label>
-          <Input id="title" {...register("title")} disabled={!canEdit} />
+          <Input id="title" {...register("title")} disabled={!canEdit} data-test-id="task-form-title-input" />
           {formState.errors.title ? (
             <p role="alert" className="text-xs text-red-600">{formState.errors.title.message as string}</p>
           ) : null}
@@ -122,6 +123,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
             value={(watch("due_date") ?? "") as string}
             onChange={(e) => setValue("due_date", e.target.value || null, { shouldDirty: true, shouldValidate: true })}
             disabled={!canEdit}
+            data-test-id="task-form-due-date-input"
           />
           {formState.errors.due_date ? (
             <p role="alert" className="text-xs text-red-600">{formState.errors.due_date.message as string}</p>
@@ -131,7 +133,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
 
       <div className="space-y-2">
         <Label htmlFor="description">Opis</Label>
-        <Textarea id="description" rows={5} {...register("description")} disabled={!canEdit} />
+        <Textarea id="description" rows={5} {...register("description")} disabled={!canEdit} data-test-id="task-form-description-input" />
         {formState.errors.description ? (
           <p role="alert" className="text-xs text-red-600">{formState.errors.description.message as string}</p>
         ) : null}
@@ -162,9 +164,9 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
         {canEdit ? (
           <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
             <DialogTrigger asChild>
-              <Button type="button" variant="destructive">Usuń</Button>
+              <Button type="button" variant="destructive" data-test-id="task-form-delete-button">Usuń</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent data-test-id="task-delete-dialog">
               <DialogHeader>
                 <DialogTitle>Usuń zadanie</DialogTitle>
                 <DialogDescription>
@@ -172,7 +174,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
-                <Button type="button" variant="secondary" onClick={() => setConfirmOpen(false)}>Anuluj</Button>
+                <Button type="button" variant="secondary" onClick={() => setConfirmOpen(false)} data-test-id="task-delete-cancel-button">Anuluj</Button>
                 <Button
                   type="button"
                   variant="destructive"
@@ -180,6 +182,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
                     setConfirmOpen(false);
                     await onDelete();
                   }}
+                  data-test-id="task-delete-confirm-button"
                 >
                   Usuń
                 </Button>
@@ -187,7 +190,7 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
             </DialogContent>
           </Dialog>
         ) : null}
-        <Button type="submit" disabled={disableSave}>
+        <Button type="submit" disabled={disableSave} data-test-id="task-form-submit-button">
           Zapisz zmiany
         </Button>
       </div>

@@ -35,25 +35,27 @@ export function MembersToolbar({ filters, sort, count, onChangeFilters, onChange
           onChange={(e) => onChangeFilters({ q: e.target.value })}
           aria-label="Szukaj"
           className="max-w-sm"
+          data-test-id="members-search-input"
         />
         <select
           aria-label="Filtruj po roli"
           className="h-9 rounded-md border bg-background px-2 text-sm shadow-xs"
           value={filters.role ?? "all"}
           onChange={(e) => onChangeFilters({ role: e.target.value as MembersFiltersVM["role"] })}
+          data-test-id="members-role-filter"
         >
           <option value="all">Wszyscy</option>
           <option value="admin">Admini</option>
           <option value="editor">Edytorzy</option>
           <option value="member">Członkowie</option>
         </select>
-        <Button variant="outline" onClick={toggleSort}>
+        <Button variant="outline" onClick={toggleSort} data-test-id="members-sort-button">
           Sortuj: {sort.direction === "asc" ? "rosnąco" : "malejąco"}
         </Button>
       </div>
       <div className="flex items-center gap-2">
-        <Badge variant="secondary">{count} wyników</Badge>
-        <Button variant="ghost" onClick={() => onChangeFilters({ q: "", role: "all" })}>Wyczyść</Button>
+        <Badge variant="secondary" data-test-id="members-count-badge">{count} wyników</Badge>
+        <Button variant="ghost" onClick={() => onChangeFilters({ q: "", role: "all" })} data-test-id="members-clear-button">Wyczyść</Button>
       </div>
     </div>
   );
