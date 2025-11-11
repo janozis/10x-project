@@ -25,11 +25,21 @@ export function ColumnsConfigurator({ state, onToggle, onReset }: ColumnsConfigu
 
   return (
     <div ref={containerRef} className="relative inline-block text-left">
-      <Button type="button" variant="outline" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-haspopup="dialog">
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+      >
         Kolumny
       </Button>
       {open ? (
-        <div role="dialog" aria-label="Konfiguracja kolumn" className="absolute right-0 mt-2 w-64 rounded-md border bg-background p-2 shadow-lg z-50">
+        <div
+          role="dialog"
+          aria-label="Konfiguracja kolumn"
+          className="absolute right-0 mt-2 w-64 rounded-md border bg-background p-2 shadow-lg z-50"
+        >
           <div className="flex flex-col gap-2">
             {Object.keys(state).map((key) => {
               const k = key as keyof ColumnVisibilityState;
@@ -41,7 +51,15 @@ export function ColumnsConfigurator({ state, onToggle, onReset }: ColumnsConfigu
               );
             })}
             <div className="flex justify-end">
-              <Button type="button" variant="outline" className="h-8 px-2" onClick={() => { onReset(); setOpen(false); }}>
+              <Button
+                type="button"
+                variant="outline"
+                className="h-8 px-2"
+                onClick={() => {
+                  onReset();
+                  setOpen(false);
+                }}
+              >
                 Resetuj
               </Button>
             </div>
@@ -68,5 +86,3 @@ function labelForColumn(id: keyof ColumnVisibilityState): string {
       return String(id);
   }
 }
-
-

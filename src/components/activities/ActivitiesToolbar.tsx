@@ -22,7 +22,15 @@ interface ActivitiesToolbarProps {
   onCreateClick?: () => void;
 }
 
-export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = true, right, canCreate, onCreateClick }: ActivitiesToolbarProps): JSX.Element {
+export function ActivitiesToolbar({
+  value,
+  onChange,
+  disabled,
+  showAssigned = true,
+  right,
+  canCreate,
+  onCreateClick,
+}: ActivitiesToolbarProps): JSX.Element {
   const [searchLocal, setSearchLocal] = React.useState<string>(value.search || "");
   const debounced = useDebouncedValue(searchLocal, 300);
 
@@ -40,7 +48,9 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
   return (
     <div className="flex items-center gap-3 flex-wrap">
       <div className="flex items-center gap-2">
-        <Label htmlFor="search" className="sr-only">Szukaj</Label>
+        <Label htmlFor="search" className="sr-only">
+          Szukaj
+        </Label>
         <Input
           id="search"
           placeholder="Szukaj w tytułach i celach…"
@@ -53,7 +63,9 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
       </div>
 
       <div className="flex items-center gap-2">
-        <Label htmlFor="status" className="text-sm text-muted-foreground">Status</Label>
+        <Label htmlFor="status" className="text-sm text-muted-foreground">
+          Status
+        </Label>
         <select
           id="status"
           value={value.status || ""}
@@ -85,7 +97,13 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
 
       <div className="ml-auto flex items-center gap-2">
         {canCreate ? (
-          <Button type="button" size="sm" onClick={onCreateClick} disabled={disabled} data-test-id="activities-create-button">
+          <Button
+            type="button"
+            size="sm"
+            onClick={onCreateClick}
+            disabled={disabled}
+            data-test-id="activities-create-button"
+          >
             <Plus className="h-4 w-4 mr-1" />
             Dodaj aktywność
           </Button>
@@ -95,5 +113,3 @@ export function ActivitiesToolbar({ value, onChange, disabled, showAssigned = tr
     </div>
   );
 }
-
-

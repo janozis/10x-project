@@ -46,5 +46,3 @@ function Field({ label, value, multiline }: { label: string; value: string; mult
     </div>
   );
 }
-
-

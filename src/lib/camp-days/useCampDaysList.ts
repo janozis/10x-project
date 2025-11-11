@@ -1,11 +1,5 @@
 import * as React from "react";
-import type {
-  ApiError,
-  ApiList,
-  ActivityScheduleDTO,
-  CampDayDTO,
-  UUID,
-} from "@/types";
+import type { ApiError, ApiList, ActivityScheduleDTO, CampDayDTO, UUID } from "@/types";
 import { minutesBetween } from "@/lib/camp-days/types";
 
 export interface UseCampDaysListResult {
@@ -97,7 +91,7 @@ export function useCampDaysList(groupId: UUID | null | undefined): UseCampDaysLi
         return;
       }
 
-      const entries: Array<[string, CampDayMetrics]> = [];
+      const entries: [string, CampDayMetrics][] = [];
 
       await Promise.all(
         campDayList.map(async (day) => {
@@ -220,10 +214,7 @@ export function useCampDaysList(groupId: UUID | null | undefined): UseCampDaysLi
   return { campDays, metrics, loading, error, notFound, lastFetchedAt, refetch };
 }
 
-function shallowCompareMetrics(
-  prev: Map<string, CampDayMetrics>,
-  next: Map<string, CampDayMetrics>
-): boolean {
+function shallowCompareMetrics(prev: Map<string, CampDayMetrics>, next: Map<string, CampDayMetrics>): boolean {
   if (prev.size !== next.size) return false;
   for (const [key, value] of next.entries()) {
     const other = prev.get(key);
@@ -270,10 +261,7 @@ async function fetchCampDaysMetricsAggregate(
   }
 }
 
-async function fetchSchedulesForCampDay(
-  campDayId: UUID,
-  signal: AbortSignal
-): Promise<ActivityScheduleDTO[] | null> {
+async function fetchSchedulesForCampDay(campDayId: UUID, signal: AbortSignal): Promise<ActivityScheduleDTO[] | null> {
   try {
     const res = await fetch(`/api/camp-days/${campDayId}/schedules`, { signal });
     if (!res.ok) {

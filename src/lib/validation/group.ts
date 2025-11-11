@@ -33,8 +33,14 @@ export const groupUpdateSchema = z
     name: z.string().trim().min(1).max(200).optional(),
     description: z.string().trim().min(1).max(2000).optional(),
     lore_theme: z.string().trim().min(1).max(200).optional(),
-    start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-    end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+    start_date: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
+    end_date: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
     max_members: z.number().int().min(1).max(500).optional(),
     status: z.enum(["planning", "active", "archived"]).optional(),
   })

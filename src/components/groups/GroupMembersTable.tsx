@@ -4,7 +4,10 @@ import { RoleBadge } from "./RoleBadge";
 import { RoleSelect } from "./RoleSelect";
 import { MemberActions } from "./MemberActions";
 
-export type MembersSort = { by: "joined_at"; direction: "asc" | "desc" };
+export interface MembersSort {
+  by: "joined_at";
+  direction: "asc" | "desc";
+}
 
 export interface MemberRowVM {
   userId: UUID;
@@ -27,7 +30,15 @@ export interface GroupMembersTableProps {
   onRemove: (row: MemberRowVM) => void | Promise<void>;
 }
 
-export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChangeRole, onPromote, onRemove }: GroupMembersTableProps): JSX.Element {
+export function GroupMembersTable({
+  rows,
+  isLoading,
+  sort,
+  onSortChange,
+  onChangeRole,
+  onPromote,
+  onRemove,
+}: GroupMembersTableProps): JSX.Element {
   function toggleSort(): void {
     const next = sort.direction === "asc" ? "desc" : "asc";
     onSortChange({ direction: next });
@@ -40,7 +51,13 @@ export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChang
             <th className="px-4 py-2 font-medium">Użytkownik</th>
             <th className="px-4 py-2 font-medium">Rola</th>
             <th className="px-4 py-2 font-medium">
-              <button type="button" className="underline-offset-2 hover:underline" onClick={toggleSort} aria-label="Sortuj po dacie dołączenia" data-test-id="members-table-sort-button">
+              <button
+                type="button"
+                className="underline-offset-2 hover:underline"
+                onClick={toggleSort}
+                aria-label="Sortuj po dacie dołączenia"
+                data-test-id="members-table-sort-button"
+              >
                 Dołączył {sort.direction === "asc" ? "↑" : "↓"}
               </button>
             </th>
@@ -51,15 +68,25 @@ export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChang
           {isLoading && rows.length === 0 ? (
             Array.from({ length: 5 }).map((_, i) => (
               <tr key={`sk-${i}`} className="animate-pulse">
-                <td className="px-4 py-3"><div className="h-4 w-40 rounded bg-muted" /></td>
-                <td className="px-4 py-3"><div className="h-4 w-24 rounded bg-muted" /></td>
-                <td className="px-4 py-3"><div className="h-4 w-24 rounded bg-muted" /></td>
-                <td className="px-4 py-3"><div className="ml-auto h-8 w-28 rounded bg-muted" /></td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-40 rounded bg-muted" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-24 rounded bg-muted" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-24 rounded bg-muted" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="ml-auto h-8 w-28 rounded bg-muted" />
+                </td>
               </tr>
             ))
           ) : rows.length === 0 ? (
             <tr>
-              <td className="px-4 py-6 text-center text-muted-foreground" colSpan={4}>Brak członków spełniających kryteria</td>
+              <td className="px-4 py-6 text-center text-muted-foreground" colSpan={4}>
+                Brak członków spełniających kryteria
+              </td>
             </tr>
           ) : (
             rows.map((row) => (
@@ -70,8 +97,16 @@ export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChang
                   <RoleSelect
                     value={row.role}
                     disabled={!row.canEditRole}
-                    title={!row.canEditRole ? (row.isLastAdmin && row.role === "admin" ? "Nie można zdegradować ostatniego administratora" : "Brak uprawnień (tylko administrator)") : undefined}
-                    onChange={(r) => { if (row.canEditRole) void onChangeRole(row, r); }}
+                    title={
+                      !row.canEditRole
+                        ? row.isLastAdmin && row.role === "admin"
+                          ? "Nie można zdegradować ostatniego administratora"
+                          : "Brak uprawnień (tylko administrator)"
+                        : undefined
+                    }
+                    onChange={(r) => {
+                      if (row.canEditRole) void onChangeRole(row, r);
+                    }}
                   />
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">{new Date(row.joinedAt).toLocaleString()}</td>
@@ -80,10 +115,26 @@ export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChang
                     canPromote={row.canPromote}
                     canRemove={row.canRemove}
                     isSelf={row.isSelf}
-                    promoteDisabledReason={!row.canPromote ? (row.role === "admin" ? "Użytkownik już jest administratorem" : "Brak uprawnień (tylko administrator)") : undefined}
-                    removeDisabledReason={!row.canRemove ? (row.isLastAdmin ? "Nie można usunąć ostatniego administratora" : "Brak uprawnień") : undefined}
-                    onPromote={() => { if (row.canPromote) void onPromote(row); }}
-                    onRemove={() => { if (row.canRemove) void onRemove(row); }}
+                    promoteDisabledReason={
+                      !row.canPromote
+                        ? row.role === "admin"
+                          ? "Użytkownik już jest administratorem"
+                          : "Brak uprawnień (tylko administrator)"
+                        : undefined
+                    }
+                    removeDisabledReason={
+                      !row.canRemove
+                        ? row.isLastAdmin
+                          ? "Nie można usunąć ostatniego administratora"
+                          : "Brak uprawnień"
+                        : undefined
+                    }
+                    onPromote={() => {
+                      if (row.canPromote) void onPromote(row);
+                    }}
+                    onRemove={() => {
+                      if (row.canRemove) void onRemove(row);
+                    }}
                   />
                 </td>
               </tr>
@@ -94,5 +145,3 @@ export function GroupMembersTable({ rows, isLoading, sort, onSortChange, onChang
     </div>
   );
 }
-
-

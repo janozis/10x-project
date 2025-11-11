@@ -22,10 +22,7 @@ export interface TasksListOptions {
   cursor?: string;
 }
 
-export function listGroupTasks(
-  groupId: UUID,
-  options?: TasksListOptions
-): Promise<ApiListResponse<GroupTaskDTO>> {
+export function listGroupTasks(groupId: UUID, options?: TasksListOptions): Promise<ApiListResponse<GroupTaskDTO>> {
   const params = new URLSearchParams();
   if (options?.status) params.set("status", options.status);
   if (options?.activityId) params.set("activity_id", options.activityId);
@@ -36,10 +33,7 @@ export function listGroupTasks(
   return fetchJson<ApiListResponse<GroupTaskDTO>>(url, { method: "GET" });
 }
 
-export function createGroupTask(
-  groupId: UUID,
-  payload: GroupTaskCreateInput
-): Promise<ApiResponse<GroupTaskDTO>> {
+export function createGroupTask(groupId: UUID, payload: GroupTaskCreateInput): Promise<ApiResponse<GroupTaskDTO>> {
   return fetchJson<ApiResponse<GroupTaskDTO>>(`/api/groups/${groupId}/tasks`, {
     method: "POST",
     body: JSON.stringify(payload),
@@ -50,10 +44,7 @@ export function getTask(taskId: UUID): Promise<ApiResponse<GroupTaskDTO>> {
   return fetchJson<ApiResponse<GroupTaskDTO>>(`/api/tasks/${taskId}`, { method: "GET" });
 }
 
-export function patchTask(
-  taskId: UUID,
-  payload: GroupTaskUpdateInput
-): Promise<ApiResponse<GroupTaskDTO>> {
+export function patchTask(taskId: UUID, payload: GroupTaskUpdateInput): Promise<ApiResponse<GroupTaskDTO>> {
   return fetchJson<ApiResponse<GroupTaskDTO>>(`/api/tasks/${taskId}`, {
     method: "PATCH",
     body: JSON.stringify(payload),
@@ -89,5 +80,3 @@ export async function patchTaskWithIfMatch(
   const etag = res.headers.get("ETag") || res.headers.get("etag") || undefined;
   return { data: (body as any).data as GroupTaskDTO, _meta: etag ? { etag } : undefined };
 }
-
-

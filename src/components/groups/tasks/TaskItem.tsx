@@ -10,9 +10,7 @@ interface TaskItemProps {
 }
 
 export function TaskItem({ task, canEdit, activities, onSelectChange }: TaskItemProps): JSX.Element {
-  const activityTitle = task.activityId
-    ? activities.find((a) => a.id === task.activityId)?.title
-    : null;
+  const activityTitle = task.activityId ? activities.find((a) => a.id === task.activityId)?.title : null;
 
   return (
     <div className="relative rounded-md border p-3 hover:bg-accent/50 transition-colors">
@@ -28,12 +26,10 @@ export function TaskItem({ task, canEdit, activities, onSelectChange }: TaskItem
             onClick={(e) => e.stopPropagation()}
           />
         ) : null}
-        
+
         <a href={`/tasks/${task.id}?from=tasks`} className="flex-1 min-w-0 block">
           {/* Title */}
-          <div className="font-medium text-sm mb-2 truncate">
-            {task.title}
-          </div>
+          <div className="font-medium text-sm mb-2 truncate">{task.title}</div>
 
           {/* Metadata badges */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -70,9 +66,7 @@ export function TaskItem({ task, canEdit, activities, onSelectChange }: TaskItem
 
           {/* Description preview (if exists) */}
           {task.description ? (
-            <div className="mt-2 text-xs text-muted-foreground line-clamp-2">
-              {task.description}
-            </div>
+            <div className="mt-2 text-xs text-muted-foreground line-clamp-2">{task.description}</div>
           ) : null}
         </a>
       </div>

@@ -73,7 +73,10 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
     return done;
   }, [validateBasics, validateContent, validateLogistics]);
 
-  const canGoNext = React.useMemo(() => completedSteps.includes(state.step) || state.step === "summary", [completedSteps, state.step]);
+  const canGoNext = React.useMemo(
+    () => completedSteps.includes(state.step) || state.step === "summary",
+    [completedSteps, state.step]
+  );
 
   const onStepClick = React.useCallback(
     (id: StepId) => {
@@ -89,21 +92,18 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
     [stepIndex, completedSteps]
   );
 
-  const handleFieldChange = React.useCallback(
-    (field: keyof ActivityCreateVM, value: string | number) => {
-      setState((s) => {
-        const nextErrors: FieldErrors = { ...s.errors };
-        delete nextErrors[field as string];
-        return {
-          ...s,
-          values: { ...s.values, [field]: value },
-          errors: nextErrors,
-          autosave: { ...s.autosave, isDirty: true },
-        };
-      });
-    },
-    []
-  );
+  const handleFieldChange = React.useCallback((field: keyof ActivityCreateVM, value: string | number) => {
+    setState((s) => {
+      const nextErrors: FieldErrors = { ...s.errors };
+      delete nextErrors[field as string];
+      return {
+        ...s,
+        values: { ...s.values, [field]: value },
+        errors: nextErrors,
+        autosave: { ...s.autosave, isDirty: true },
+      };
+    });
+  }, []);
 
   const goBack = React.useCallback(() => {
     if (stepIndex > 0) setState((s) => ({ ...s, step: STEP_ORDER[stepIndex - 1] }));
@@ -147,7 +147,13 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
       setState((s) => ({
         ...s,
         createdActivityId: activityId,
-        autosave: { ...s.autosave, enabled: true, isDirty: false, lastSavedAt: new Date().toISOString(), error: undefined },
+        autosave: {
+          ...s.autosave,
+          enabled: true,
+          isDirty: false,
+          lastSavedAt: new Date().toISOString(),
+          error: undefined,
+        },
       }));
       toast.success("Aktywność utworzona.");
 
@@ -165,7 +171,18 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
     } finally {
       setSubmitting(false);
     }
-  }, [isLastStep, stepIndex, state.step, validateBasics, validateContent, validateLogistics, validateAll, create, assign, state.values]);
+  }, [
+    isLastStep,
+    stepIndex,
+    state.step,
+    validateBasics,
+    validateContent,
+    validateLogistics,
+    validateAll,
+    create,
+    assign,
+    state.values,
+  ]);
 
   // Guard against accidental navigation when there are unsaved changes before the first save
   useLeaveGuard(state.autosave.isDirty && !state.createdActivityId);
@@ -261,5 +278,3 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
     </Card>
   );
 }
-
-

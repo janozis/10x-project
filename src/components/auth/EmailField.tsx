@@ -35,5 +35,3 @@ export default function EmailField({ register, error, disabled, autoFocus }: Ema
     </div>
   );
 }
-
-

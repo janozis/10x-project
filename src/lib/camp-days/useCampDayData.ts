@@ -90,10 +90,11 @@ function detectLocalConflicts(slots: SlotVM[]): ConflictMessage[] {
     const prev = byStart[i - 1];
     const curr = byStart[i];
     if (curr.startTime < prev.endTime) {
-      messages.push({ type: "overlap", detail: `Nakładanie czasów między slotami ${prev.orderInDay} i ${curr.orderInDay}` });
+      messages.push({
+        type: "overlap",
+        detail: `Nakładanie czasów między slotami ${prev.orderInDay} i ${curr.orderInDay}`,
+      });
     }
   }
   return messages;
 }
-
-

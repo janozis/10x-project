@@ -40,5 +40,3 @@ export interface QuickTaskFormState {
   isSubmitting: boolean;
   error?: string;
 }
-
-

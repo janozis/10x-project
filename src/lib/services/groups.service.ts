@@ -1,6 +1,11 @@
 import type { SupabaseClient } from "../../db/supabase.client";
 import type { GroupDTO, ApiResponse, GroupCreateCommand, ApiListResponse, UUID, GroupStatus } from "../../types";
-import { groupCreateSchema, groupUpdateSchema, type GroupCreateInput, type GroupUpdateInput } from "../validation/group";
+import {
+  groupCreateSchema,
+  groupUpdateSchema,
+  type GroupCreateInput,
+  type GroupUpdateInput,
+} from "../validation/group";
 import { mapGroupRowToDTO } from "../mappers/group.mapper";
 import { errors } from "../errors";
 import { parseGroupCursor, nextGroupCursorFromPage } from "../utils";
@@ -16,15 +21,15 @@ export async function createGroup(
   input: unknown
 ): Promise<ApiResponse<GroupDTO>> {
   const debugEnabled = import.meta.env.ENABLE_DEBUG_LOGS === "true";
-  
+
   // TEMP AUTH FALLBACK: until proper auth/session implemented we fallback to DEFAULT_USER_ID
   const effectiveUserId = userId || DEFAULT_USER_ID;
-  
+
   if (debugEnabled) {
     console.log("[createGroup] Starting with userId:", effectiveUserId);
     console.log("[createGroup] Input:", input);
   }
-  
+
   // 1. Schema validation
   const parsed = groupCreateSchema.safeParse(input);
   if (!parsed.success) {
@@ -46,18 +51,18 @@ export async function createGroup(
     .select("id", { count: "exact", head: true })
     .eq("created_by", effectiveUserId)
     .is("deleted_at", null);
-    
+
   if (debugEnabled) {
     console.log("[createGroup] Existing groups count:", existingCount, "error:", countErr);
   }
-  
+
   if (countErr) {
     if (debugEnabled) {
       console.error("[createGroup] Count error details:", {
         message: countErr.message,
         code: countErr.code,
         details: countErr.details,
-        hint: countErr.hint
+        hint: countErr.hint,
       });
     }
     return errors.internal("Failed to verify group limit");
@@ -68,7 +73,7 @@ export async function createGroup(
 
   // 4. Insert group using RPC function (workaround for RLS issue)
   const inviteCode = generateInviteCode(); // Auto-generate invite code on creation
-  
+
   if (debugEnabled) {
     console.log("[createGroup] Calling create_group_with_membership RPC with:", {
       name: data.name,
@@ -82,7 +87,7 @@ export async function createGroup(
   }
 
   // Call RPC function that bypasses RLS using SECURITY DEFINER
-  const { data: groupData, error: rpcErr } = await supabase.rpc('create_group_with_membership', {
+  const { data: groupData, error: rpcErr } = await supabase.rpc("create_group_with_membership", {
     p_name: data.name,
     p_description: data.description,
     p_lore_theme: data.lore_theme,
@@ -98,12 +103,12 @@ export async function createGroup(
         message: rpcErr.message,
         code: rpcErr.code,
         details: rpcErr.details,
-        hint: rpcErr.hint
+        hint: rpcErr.hint,
       });
     }
     return errors.internal("Failed to create group (RPC)");
   }
-  
+
   if (!groupData) {
     if (debugEnabled) {
       console.error("[createGroup] RPC returned empty result");
@@ -129,23 +134,21 @@ export async function listGroups(
   options?: { deleted?: boolean; limit?: number; cursor?: string }
 ): Promise<ApiListResponse<GroupDTO>> {
   const debugEnabled = import.meta.env.ENABLE_DEBUG_LOGS === "true";
-  
+
   if (debugEnabled) {
     console.log("[listGroups] Starting with options:", options);
   }
-  
+
   // Get list of group IDs where user is a member
   // Note: We rely on RLS policy to filter by auth.uid() automatically
   // The RLS policy allows users to see their own memberships (user_id = auth.uid())
-  const { data: memberships, error: membershipErr } = await supabase
-    .from("group_memberships")
-    .select("group_id");
+  const { data: memberships, error: membershipErr } = await supabase.from("group_memberships").select("group_id");
 
   if (debugEnabled) {
-    console.log("[listGroups] Memberships query result:", { 
-      memberships, 
+    console.log("[listGroups] Memberships query result:", {
+      memberships,
       error: membershipErr,
-      count: memberships?.length 
+      count: memberships?.length,
     });
   }
 
@@ -155,7 +158,7 @@ export async function listGroups(
         message: membershipErr.message,
         code: membershipErr.code,
         details: membershipErr.details,
-        hint: membershipErr.hint
+        hint: membershipErr.hint,
       });
     }
     return errors.internal("Failed to fetch user memberships");
@@ -191,9 +194,7 @@ export async function listGroups(
     if (parsed) {
       const { created_at, id } = parsed;
       // created_at < cursor.created_at OR (created_at = cursor.created_at AND id < cursor.id)
-      query = query.or(
-        `created_at.lt.${created_at},and(created_at.eq.${created_at},id.lt.${id})`
-      );
+      query = query.or(`created_at.lt.${created_at},and(created_at.eq.${created_at},id.lt.${id})`);
     }
   }
 
@@ -204,21 +205,21 @@ export async function listGroups(
   }
 
   const { data: rows, error: listErr } = await query;
-  
+
   if (debugEnabled) {
-    console.log("[listGroups] Groups query result:", { 
-      rows: rows?.length, 
-      error: listErr 
+    console.log("[listGroups] Groups query result:", {
+      rows: rows?.length,
+      error: listErr,
     });
   }
-  
+
   if (listErr) {
     if (debugEnabled) {
       console.error("[listGroups] Groups error details:", {
         message: listErr.message,
         code: listErr.code,
         details: listErr.details,
-        hint: listErr.hint
+        hint: listErr.hint,
       });
     }
     return errors.internal("Failed to list groups");
@@ -273,11 +274,7 @@ export async function restoreGroupById(
   groupId: UUID
 ): Promise<ApiResponse<GroupDTO>> {
   const effectiveUserId = userId || DEFAULT_USER_ID;
-  const { data: groupRows, error: findErr } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .limit(1);
+  const { data: groupRows, error: findErr } = await supabase.from("groups").select("*").eq("id", groupId).limit(1);
   if (findErr) return errors.internal("Failed to lookup group");
   const row = groupRows?.[0];
   if (!row) return errors.notFound("Group");
@@ -325,11 +322,7 @@ export async function joinGroupByCode(
   }
   const code = parsed.data.code.toLowerCase();
   // Find group by invite code
-  const { data: groups, error: findErr } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("invite_code", code)
-    .limit(1);
+  const { data: groups, error: findErr } = await supabase.from("groups").select("*").eq("invite_code", code).limit(1);
   if (findErr) return errors.internal("Failed to find invite");
   const group = groups?.[0];
   if (!group) return errors.notFound("Group");
@@ -353,12 +346,12 @@ export async function joinGroupByCode(
     .eq("user_id", effectiveUserId)
     .limit(1);
   if (memErr) return errors.internal("Failed to check membership");
-  
+
   // If user is already a member, return error
   if (membership && membership.length > 0) {
     return errors.badRequest("Already a member of this group", { code: "ALREADY_MEMBER" });
   }
-  
+
   // Add new membership
   const { error: insertMemErr } = await supabase.from("group_memberships").insert({
     group_id: group.id,
@@ -448,11 +441,7 @@ export async function rotateGroupInvite(
 ): Promise<ApiResponse<GroupDTO>> {
   const effectiveUserId = userId || DEFAULT_USER_ID;
   // Verify admin membership
-  const { data: row, error } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .maybeSingle();
+  const { data: row, error } = await supabase.from("groups").select("*").eq("id", groupId).maybeSingle();
   if (error) return errors.internal("Failed to fetch group");
   if (!row) return errors.notFound("Group");
   const { data: permRow, error: roleErr } = await supabase

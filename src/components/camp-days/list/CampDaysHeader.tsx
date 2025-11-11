@@ -14,9 +14,7 @@ export function CampDaysHeader({ canManageDays, hasCampDays, createHref }: CampD
     <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">Dni obozu</h1>
-        <p className="text-sm text-muted-foreground">
-          Przeglądaj harmonogram dni obozu i zarządzaj ich zawartością.
-        </p>
+        <p className="text-sm text-muted-foreground">Przeglądaj harmonogram dni obozu i zarządzaj ich zawartością.</p>
       </div>
 
       {canManageDays ? (
@@ -32,5 +30,3 @@ export function CampDaysHeader({ canManageDays, hasCampDays, createHref }: CampD
     </header>
   );
 }
-
-

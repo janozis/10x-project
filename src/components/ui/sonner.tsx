@@ -5,5 +5,3 @@ export type { ExternalToast };
 export function Toaster(): JSX.Element {
   return <SonnerToaster richColors position="top-right" />;
 }
-
-

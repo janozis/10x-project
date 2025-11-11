@@ -30,5 +30,3 @@ export function EditorsList({ editors, loading }: EditorsListProps) {
     </ul>
   );
 }
-
-

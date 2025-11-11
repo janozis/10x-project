@@ -42,5 +42,3 @@ function formatMinutes(minutes: number): string {
 
   return `${hours} h ${rest} min`;
 }
-
-

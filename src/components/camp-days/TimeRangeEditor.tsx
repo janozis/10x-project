@@ -51,5 +51,3 @@ export const TimeRangeEditor = ({ start, end, disabled, onChange }: TimeRangeEdi
     </div>
   );
 };
-
-

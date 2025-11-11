@@ -49,7 +49,9 @@ export function useSchedulesDndController(
           const out = (await res.json()) as ApiSingle<ActivityScheduleDTO>;
           // Sync order if server adjusted values
           applyLocalSlots(
-            (prevRef.current = prevRef.current.map((p) => (p.id === out.data.id ? { ...p, orderInDay: out.data.order_in_day } : p)))
+            (prevRef.current = prevRef.current.map((p) =>
+              p.id === out.data.id ? { ...p, orderInDay: out.data.order_in_day } : p
+            ))
           );
         }
         onAnyChangeState("saved");
@@ -64,5 +66,3 @@ export function useSchedulesDndController(
 
   return { handleDragEnd } as const;
 }
-
-

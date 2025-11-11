@@ -34,5 +34,3 @@ export interface GroupsListState {
 }
 
 export type { ApiListResponse, ApiResponse };
-
-

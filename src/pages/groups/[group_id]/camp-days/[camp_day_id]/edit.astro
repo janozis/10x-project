@@ -37,7 +37,7 @@ let permissionsWarning: string | null = null;
 // Call services directly instead of helper functions that use fetch
 const [campDayResult, permissionsResult] = await Promise.all([
   getCampDay(supabase, userId, campDayId),
-  getGroupPermissions(supabase, groupId, userId!),
+  getGroupPermissions(supabase, groupId, userId),
 ]);
 
 // Handle camp day result
@@ -73,16 +73,12 @@ const { data: membership } = await supabase
   .from("group_memberships")
   .select("user_id")
   .eq("group_id", groupId)
-  .eq("user_id", userId!)
+  .eq("user_id", userId)
   .maybeSingle();
 
 if (membership) {
-  const { data: groupRow } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .maybeSingle();
-  
+  const { data: groupRow } = await supabase.from("groups").select("*").eq("id", groupId).maybeSingle();
+
   if (groupRow) {
     groupDto = {
       id: groupRow.id,
@@ -110,11 +106,13 @@ const groupDateRange =
 <Layout title="Edycja dnia obozowego">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-3xl space-y-6">
-      <Breadcrumb items={[
-        { label: "Lista grup", href: "/groups" },
-        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
-        { label: "Dni obozu", href: `/groups/${groupId}/camp-days` }
-      ]} />
+      <Breadcrumb
+        items={[
+          { label: "Lista grup", href: "/groups" },
+          { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
+          { label: "Dni obozu", href: `/groups/${groupId}/camp-days` },
+        ]}
+      />
       <header class="space-y-1">
         <h1 class="text-2xl font-semibold tracking-tight">Edytuj dzień obozowy</h1>
         <p class="text-sm text-muted-foreground">

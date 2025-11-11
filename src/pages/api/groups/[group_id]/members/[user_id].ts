@@ -7,18 +7,18 @@ import { statusForErrorCode } from "../../../../../lib/http/status";
 export const ALL: APIRoute = async (context) => {
   const method = context.request.method.toUpperCase();
   if (!["PATCH", "DELETE"].includes(method)) {
-    return new Response(JSON.stringify(errors.internal("Method not supported")), { 
+    return new Response(JSON.stringify(errors.internal("Method not supported")), {
       status: 405,
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
   }
   const { group_id, user_id } = context.params;
   const supabase = context.locals.supabase;
   const user = context.locals.user;
   if (!supabase) {
-    return new Response(JSON.stringify(errors.internal()), { 
+    return new Response(JSON.stringify(errors.internal()), {
       status: 500,
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
   }
 
@@ -31,33 +31,33 @@ export const ALL: APIRoute = async (context) => {
     }
     const result = await changeMemberRole(supabase, user?.id, group_id || "", user_id || "", body);
     if ("error" in result) {
-      return new Response(JSON.stringify(result), { 
+      return new Response(JSON.stringify(result), {
         status: statusForErrorCode(result.error.code),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
     }
-    return new Response(JSON.stringify(result), { 
+    return new Response(JSON.stringify(result), {
       status: 200,
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
   }
 
   if (method === "DELETE") {
     const result = await removeMember(supabase, user?.id, group_id || "", user_id || "");
     if ("error" in result) {
-      return new Response(JSON.stringify(result), { 
+      return new Response(JSON.stringify(result), {
         status: statusForErrorCode(result.error.code),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
     }
-    return new Response(JSON.stringify(result), { 
+    return new Response(JSON.stringify(result), {
       status: 200,
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
   }
 
-  return new Response(JSON.stringify(errors.internal("Unhandled method")), { 
+  return new Response(JSON.stringify(errors.internal("Unhandled method")), {
     status: 500,
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
   });
 };

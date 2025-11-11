@@ -16,5 +16,3 @@ export function DirtyPrompt({ active }: DirtyPromptProps): JSX.Element | null {
   }, [active]);
   return null;
 }
-
-

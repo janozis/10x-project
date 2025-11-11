@@ -51,7 +51,7 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
   } else if (!isPublicPath) {
     // Check if this is an API request
     const isApiRequest = url.pathname.startsWith("/api/");
-    
+
     if (isApiRequest) {
       // For API requests, don't redirect - let the endpoint handle auth
       // The endpoint will return proper JSON error response

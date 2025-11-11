@@ -26,12 +26,13 @@ export function EditorsAvatarGroup({ userIds }: EditorsAvatarGroupProps): JSX.El
         </div>
       ))}
       {rest > 0 ? (
-        <div className="inline-flex h-6 w-6 items-center justify-center rounded-full border bg-muted text-[10px] font-medium" aria-label={`+${rest}`}>
+        <div
+          className="inline-flex h-6 w-6 items-center justify-center rounded-full border bg-muted text-[10px] font-medium"
+          aria-label={`+${rest}`}
+        >
           +{rest}
         </div>
       ) : null}
     </div>
   );
 }
-
-

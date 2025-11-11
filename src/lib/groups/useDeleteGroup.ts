@@ -27,5 +27,3 @@ export function useDeleteGroup() {
 
   return { remove, loading, error } as const;
 }
-
-

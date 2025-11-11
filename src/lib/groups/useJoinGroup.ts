@@ -29,5 +29,3 @@ export function useJoinGroup() {
 
   return { join: submit, loading, error, joined } as const;
 }
-
-

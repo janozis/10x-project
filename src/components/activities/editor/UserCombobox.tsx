@@ -2,19 +2,8 @@ import * as React from "react";
 import type { UUID } from "@/types";
 import type { MemberOption } from "@/lib/groups/useGroupMembersForPicker";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -67,17 +56,10 @@ export function UserCombobox({
                     setOpen(false);
                   }}
                 >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === member.userId ? "opacity-100" : "opacity-0"
-                    )}
-                  />
+                  <Check className={cn("mr-2 h-4 w-4", value === member.userId ? "opacity-100" : "opacity-0")} />
                   <div className="flex flex-col">
                     <span>{member.email}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {member.role}
-                    </span>
+                    <span className="text-xs text-muted-foreground">{member.role}</span>
                   </div>
                 </CommandItem>
               ))}
@@ -88,4 +70,3 @@ export function UserCombobox({
     </Popover>
   );
 }
-

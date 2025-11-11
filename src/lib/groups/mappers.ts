@@ -15,5 +15,3 @@ export function mapGroupToCardVM(group: GroupDTO): GroupCardVM {
     isArchived: group.status === "archived",
   };
 }
-
-

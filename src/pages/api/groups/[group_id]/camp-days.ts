@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { createCampDay, listCampDays } from "../../../../lib/services/camp-days.service";
 import { errors } from "../../../../lib/errors";
-import type { ApiResponse, ApiListResponse, CampDayDTO } from "../../../../types";
+import type { ApiResponse, ApiListResponse } from "../../../../types";
 
 export const prerender = false;
 

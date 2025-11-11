@@ -53,5 +53,3 @@ export function GroupDashboardTilesClient({ groupId, initialVm, permissions }: P
     </div>
   );
 }
-
-

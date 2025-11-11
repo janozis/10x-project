@@ -5,12 +5,12 @@ export const prerender = false;
 
 /**
  * GET /api/groups/{group_id}/permissions
- * 
+ *
  * Returns current user's effective permissions within the group.
  * Queries the user_group_permissions view which aggregates role and permission flags.
- * 
+ *
  * Authorization: User must be a member of the group.
- * 
+ *
  * Response 200: { "data": { "group_id": "uuid", "role": "editor", "can_edit_all": false, "can_edit_assigned_only": true } }
  * Response 400: Invalid group_id format
  * Response 401: Not authenticated
@@ -38,11 +38,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
   }
 
   // Call service
-  const result = await getGroupPermissions(
-    locals.supabase,
-    group_id!,
-    userId
-  );
+  const result = await getGroupPermissions(locals.supabase, group_id, userId);
 
   // Handle errors
   if ("error" in result) {
@@ -54,7 +50,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
       INTERNAL_ERROR: 500,
     };
     const status = statusMap[result.error.code] || 500;
-    
+
     return new Response(JSON.stringify(result), {
       status,
       headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -67,4 +63,3 @@ export const GET: APIRoute = async ({ params, locals }) => {
     headers: { "Content-Type": "application/json; charset=utf-8" },
   });
 };
-

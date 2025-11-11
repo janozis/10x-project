@@ -70,5 +70,3 @@ export function FiltersBar({ filters, activities, onChange }: FiltersBarProps): 
     </div>
   );
 }
-
-

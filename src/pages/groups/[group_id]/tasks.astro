@@ -6,7 +6,7 @@ import type { GroupDTO } from "@/types";
 
 export const prerender = false;
 
-const groupId = Astro.params.group_id!;
+const groupId = Astro.params.group_id || "";
 const supabase = Astro.locals.supabase;
 const userId = Astro.locals.user?.id;
 const url = new URL(Astro.request.url);
@@ -29,16 +29,12 @@ const { data: membership } = await supabase
   .from("group_memberships")
   .select("user_id")
   .eq("group_id", groupId)
-  .eq("user_id", userId!)
+  .eq("user_id", userId)
   .maybeSingle();
 
 if (membership) {
-  const { data: groupRow } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .maybeSingle();
-  
+  const { data: groupRow } = await supabase.from("groups").select("*").eq("id", groupId).maybeSingle();
+
   if (groupRow) {
     groupDto = {
       id: groupRow.id,
@@ -61,15 +57,14 @@ if (membership) {
 <Layout title="Zadania grupy">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-6xl">
-      <Breadcrumb items={[
-        { label: "Lista grup", href: "/groups" },
-        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` }
-      ]} />
+      <Breadcrumb
+        items={[
+          { label: "Lista grup", href: "/groups" },
+          { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
+        ]}
+      />
       <h1 class="mb-4 text-2xl font-semibold tracking-tight">Zadania</h1>
       <TasksBoard client:load groupId={groupId} defaultActivityId={defaultActivityId} />
     </div>
   </main>
 </Layout>
-
-
-

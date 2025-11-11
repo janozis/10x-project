@@ -11,5 +11,3 @@ export function useLeaveGuard(shouldGuard: boolean) {
     return () => window.removeEventListener("beforeunload", beforeUnload);
   }, [shouldGuard]);
 }
-
-

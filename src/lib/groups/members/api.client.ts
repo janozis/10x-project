@@ -15,11 +15,7 @@ export function listMembers(groupId: UUID): Promise<ApiListResponse<GroupMemberD
   return fetchJson<ApiListResponse<GroupMemberDTO>>(`/api/groups/${groupId}/members`, { method: "GET" });
 }
 
-export function changeMemberRole(
-  groupId: UUID,
-  userId: UUID,
-  role: GroupRole
-): Promise<ApiResponse<GroupMemberDTO>> {
+export function changeMemberRole(groupId: UUID, userId: UUID, role: GroupRole): Promise<ApiResponse<GroupMemberDTO>> {
   return fetchJson<ApiResponse<GroupMemberDTO>>(`/api/groups/${groupId}/members/${userId}`, {
     method: "PATCH",
     body: JSON.stringify({ role }),
@@ -41,5 +37,3 @@ export function getPermissions(groupId: UUID): Promise<ApiResponse<GroupPermissi
   // Convenience passthrough to existing endpoint for callers that prefer single module import
   return fetchJson<ApiResponse<GroupPermissionsDTO>>(`/api/groups/${groupId}/permissions`, { method: "GET" });
 }
-
-

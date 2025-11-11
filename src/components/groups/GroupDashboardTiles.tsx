@@ -17,7 +17,9 @@ export function GroupDashboardTiles({ vm }: GroupDashboardTilesProps): JSX.Eleme
           <CardTitle className="text-sm font-medium text-muted-foreground">Zajęcia łącznie</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-semibold" aria-label="Liczba zajęć">{vm.totalActivities}</div>
+          <div className="text-3xl font-semibold" aria-label="Liczba zajęć">
+            {vm.totalActivities}
+          </div>
         </CardContent>
       </Card>
 
@@ -26,7 +28,9 @@ export function GroupDashboardTiles({ vm }: GroupDashboardTilesProps): JSX.Eleme
           <CardTitle className="text-sm font-medium text-muted-foreground">Ocenione zajęcia</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-semibold" aria-label="Liczba ocenionych zajęć">{vm.evaluatedActivities}</div>
+          <div className="text-3xl font-semibold" aria-label="Liczba ocenionych zajęć">
+            {vm.evaluatedActivities}
+          </div>
         </CardContent>
       </Card>
 
@@ -36,9 +40,18 @@ export function GroupDashboardTiles({ vm }: GroupDashboardTilesProps): JSX.Eleme
         </CardHeader>
         <CardContent>
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-semibold" aria-label="Procent powyżej 7">{pct}%</div>
+            <div className="text-3xl font-semibold" aria-label="Procent powyżej 7">
+              {pct}%
+            </div>
           </div>
-          <div className="mt-3 h-2 w-full rounded-full bg-muted" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Udział ocen powyżej 7">
+          <div
+            className="mt-3 h-2 w-full rounded-full bg-muted"
+            role="progressbar"
+            aria-valuenow={pct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Udział ocen powyżej 7"
+          >
             <div className="h-2 rounded-full bg-primary transition-all" style={{ width: `${pct}%` }} />
           </div>
         </CardContent>
@@ -50,11 +63,15 @@ export function GroupDashboardTiles({ vm }: GroupDashboardTilesProps): JSX.Eleme
         </CardHeader>
         <CardContent>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-semibold" aria-label="Zadania oczekujące">{vm.tasksPending}</span>
+            <span className="text-3xl font-semibold" aria-label="Zadania oczekujące">
+              {vm.tasksPending}
+            </span>
             <span className="text-sm text-muted-foreground">oczekujące</span>
           </div>
           <div className="mt-1 text-sm">
-            <span className="font-medium" aria-label="Zadania ukończone">{vm.tasksDone}</span>
+            <span className="font-medium" aria-label="Zadania ukończone">
+              {vm.tasksDone}
+            </span>
             <span className="text-muted-foreground"> ukończone</span>
           </div>
           {vm.canCreateTasks ? (
@@ -71,5 +88,3 @@ export function GroupDashboardTiles({ vm }: GroupDashboardTilesProps): JSX.Eleme
     </section>
   );
 }
-
-

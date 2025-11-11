@@ -18,12 +18,15 @@ export function SortableSlot({ id, children }: SortableSlotProps): JSX.Element {
 
   return (
     <div ref={setNodeRef} style={style} className="relative">
-      <div className="absolute left-2 top-1/2 -translate-y-1/2 cursor-grab text-muted-foreground" {...attributes} {...listeners} aria-label="Przeciągnij">
+      <div
+        className="absolute left-2 top-1/2 -translate-y-1/2 cursor-grab text-muted-foreground"
+        {...attributes}
+        {...listeners}
+        aria-label="Przeciągnij"
+      >
         <GripVertical className="size-4" />
       </div>
       <div className="pl-8">{children}</div>
     </div>
   );
 }
-
-

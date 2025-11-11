@@ -1,11 +1,5 @@
 import * as React from "react";
-import type {
-  ActivityWithEditorsDTO,
-  ApiResponse,
-  UUID,
-  ActivityCreateCommand,
-  ApiError,
-} from "@/types";
+import type { ActivityWithEditorsDTO, ApiResponse, UUID, ActivityCreateCommand, ApiError } from "@/types";
 import { activityCreateSchema, type ActivityCreateInput, zodErrorToDetails } from "@/lib/validation/activity";
 import type { ActivityCreateVM, FieldErrors } from "../types";
 
@@ -30,7 +24,10 @@ export function useCreateActivity(groupId: UUID) {
         title: values.title.trim(),
         objective: values.objective.trim(),
         tasks: values.tasks.trim(),
-        duration_minutes: typeof values.duration_minutes === "number" ? values.duration_minutes : parseInt(values.duration_minutes || "0", 10),
+        duration_minutes:
+          typeof values.duration_minutes === "number"
+            ? values.duration_minutes
+            : parseInt(values.duration_minutes || "0", 10),
         location: values.location.trim(),
         materials: values.materials.trim(),
         responsible: values.responsible.trim(),
@@ -71,5 +68,3 @@ export function useCreateActivity(groupId: UUID) {
 
   return { isSubmitting, create } as const;
 }
-
-

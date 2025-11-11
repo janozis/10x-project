@@ -9,7 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { StatusSelect } from "@/components/tasks/StatusSelect";
 import { ActivitySelect } from "@/components/tasks/ActivitySelect";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export interface TaskFormProps {
   task: GroupTaskDTO;
@@ -17,20 +25,17 @@ export interface TaskFormProps {
   canEdit: boolean;
   onSubmit: (
     payload: GroupTaskUpdateInput
-  ) => Promise<
-    | { ok: true }
-    | { ok: false; code?: string; details?: Record<string, unknown>; message?: string }
-  >;
+  ) => Promise<{ ok: true } | { ok: false; code?: string; details?: Record<string, unknown>; message?: string }>;
   onDelete: () => Promise<void> | void;
 }
 
-type TaskFormValues = {
+interface TaskFormValues {
   title?: string;
   description?: string;
   due_date?: string | null;
   status?: TaskStatus;
   activity_id?: string | null;
-};
+}
 
 export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFormProps): JSX.Element {
   const [submitError, setSubmitError] = React.useState<string | undefined>(undefined);
@@ -111,7 +116,9 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
           <Label htmlFor="title">Tytuł</Label>
           <Input id="title" {...register("title")} disabled={!canEdit} data-test-id="task-form-title-input" />
           {formState.errors.title ? (
-            <p role="alert" className="text-xs text-red-600">{formState.errors.title.message as string}</p>
+            <p role="alert" className="text-xs text-red-600">
+              {formState.errors.title.message as string}
+            </p>
           ) : null}
         </div>
 
@@ -126,16 +133,26 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
             data-test-id="task-form-due-date-input"
           />
           {formState.errors.due_date ? (
-            <p role="alert" className="text-xs text-red-600">{formState.errors.due_date.message as string}</p>
+            <p role="alert" className="text-xs text-red-600">
+              {formState.errors.due_date.message as string}
+            </p>
           ) : null}
         </div>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="description">Opis</Label>
-        <Textarea id="description" rows={5} {...register("description")} disabled={!canEdit} data-test-id="task-form-description-input" />
+        <Textarea
+          id="description"
+          rows={5}
+          {...register("description")}
+          disabled={!canEdit}
+          data-test-id="task-form-description-input"
+        />
         {formState.errors.description ? (
-          <p role="alert" className="text-xs text-red-600">{formState.errors.description.message as string}</p>
+          <p role="alert" className="text-xs text-red-600">
+            {formState.errors.description.message as string}
+          </p>
         ) : null}
       </div>
 
@@ -148,7 +165,9 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
             disabled={!canEdit}
           />
           {formState.errors.status ? (
-            <p role="alert" className="text-xs text-red-600">{formState.errors.status.message as string}</p>
+            <p role="alert" className="text-xs text-red-600">
+              {formState.errors.status.message as string}
+            </p>
           ) : null}
         </div>
 
@@ -164,7 +183,9 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
         {canEdit ? (
           <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
             <DialogTrigger asChild>
-              <Button type="button" variant="destructive" data-test-id="task-form-delete-button">Usuń</Button>
+              <Button type="button" variant="destructive" data-test-id="task-form-delete-button">
+                Usuń
+              </Button>
             </DialogTrigger>
             <DialogContent data-test-id="task-delete-dialog">
               <DialogHeader>
@@ -174,7 +195,14 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
-                <Button type="button" variant="secondary" onClick={() => setConfirmOpen(false)} data-test-id="task-delete-cancel-button">Anuluj</Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setConfirmOpen(false)}
+                  data-test-id="task-delete-cancel-button"
+                >
+                  Anuluj
+                </Button>
                 <Button
                   type="button"
                   variant="destructive"
@@ -197,5 +225,3 @@ export function TaskForm({ task, groupId, canEdit, onSubmit, onDelete }: TaskFor
     </form>
   );
 }
-
-

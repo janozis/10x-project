@@ -12,7 +12,9 @@ export interface RoleSelectProps {
 export function RoleSelect({ value, disabled, onChange, title }: RoleSelectProps): JSX.Element {
   return (
     <div className="flex items-center gap-2">
-      <Label htmlFor="role-select" className="sr-only">Rola</Label>
+      <Label htmlFor="role-select" className="sr-only">
+        Rola
+      </Label>
       <select
         id="role-select"
         className="h-9 rounded-md border bg-background px-2 text-sm shadow-xs disabled:cursor-not-allowed disabled:opacity-50"
@@ -31,5 +33,3 @@ export function RoleSelect({ value, disabled, onChange, title }: RoleSelectProps
     </div>
   );
 }
-
-

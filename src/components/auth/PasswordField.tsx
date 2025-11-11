@@ -14,7 +14,17 @@ interface PasswordFieldProps {
   additionalDescribedByIds?: string[];
 }
 
-export default function PasswordField({ register, error, disabled, showToggle = true, id = "password", label = "Hasło", autoComplete = "current-password", autoFocus, additionalDescribedByIds = [] }: PasswordFieldProps) {
+export default function PasswordField({
+  register,
+  error,
+  disabled,
+  showToggle = true,
+  id = "password",
+  label = "Hasło",
+  autoComplete = "current-password",
+  autoFocus,
+  additionalDescribedByIds = [],
+}: PasswordFieldProps) {
   const errorId = useId();
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -30,7 +40,9 @@ export default function PasswordField({ register, error, disabled, showToggle = 
           autoFocus={autoFocus}
           className="h-9 rounded-md border px-3 py-2 text-sm outline-none focus-visible:border-ring flex-1"
           aria-invalid={error ? "true" : undefined}
-          aria-describedby={[error ? errorId : undefined, ...additionalDescribedByIds].filter(Boolean).join(" ") || undefined}
+          aria-describedby={
+            [error ? errorId : undefined, ...additionalDescribedByIds].filter(Boolean).join(" ") || undefined
+          }
           disabled={disabled}
           data-test-id={`auth-${id}-input`}
           {...register}
@@ -57,5 +69,3 @@ export default function PasswordField({ register, error, disabled, showToggle = 
     </div>
   );
 }
-
-

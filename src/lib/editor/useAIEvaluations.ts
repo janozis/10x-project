@@ -22,7 +22,9 @@ export function useAIEvaluations(activityId: UUID) {
     }
   }, [activityId]);
 
-  React.useEffect(() => { void refresh(); }, [refresh]);
+  React.useEffect(() => {
+    void refresh();
+  }, [refresh]);
 
   const request = React.useCallback(async () => {
     setRequesting(true);
@@ -35,5 +37,3 @@ export function useAIEvaluations(activityId: UUID) {
 
   return { items, loading, error, refresh, request, requesting } as const;
 }
-
-

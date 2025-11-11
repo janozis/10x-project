@@ -13,8 +13,7 @@ export default function RegisterCard() {
         <RegisterForm />
         <nav aria-label="Pomocnicze linki" className="flex items-center justify-center text-sm">
           <span className="text-neutral-600 dark:text-neutral-400">
-            Masz już konto?
-            {" "}
+            Masz już konto?{" "}
             <a className="text-primary hover:underline" href="/auth/login" data-test-id="auth-register-login-link">
               Zaloguj się
             </a>
@@ -24,4 +23,3 @@ export default function RegisterCard() {
     </div>
   );
 }
-

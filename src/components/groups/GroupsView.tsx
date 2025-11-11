@@ -15,7 +15,10 @@ import { toast } from "sonner";
 
 export default function GroupsView(): JSX.Element {
   const [tab, setTab] = React.useState<"active" | "deleted">("active");
-  const { loading, error, errorCode, errorStatus, items, refresh, mutate, hasMore, loadMore, loadingMore } = useGroups({ showDeleted: tab === "deleted", limit: 12 });
+  const { loading, error, errorCode, errorStatus, items, refresh, mutate, hasMore, loadMore, loadingMore } = useGroups({
+    showDeleted: tab === "deleted",
+    limit: 12,
+  });
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openJoin, setOpenJoin] = React.useState(false);
@@ -47,13 +50,16 @@ export default function GroupsView(): JSX.Element {
 
   const handleOpenCreate = React.useCallback(() => setOpenCreate(true), []);
   const handleOpenJoin = React.useCallback(() => setOpenJoin(true), []);
-  const handleTabChange = React.useCallback((t: "active" | "deleted") => {
-    setTab(t);
-    if (t === "active" && restoredRecent) {
-      mutate((prev) => (prev.some((g) => g.id === restoredRecent.id) ? prev : [restoredRecent, ...prev]));
-      setRestoredRecent(null);
-    }
-  }, [mutate, restoredRecent]);
+  const handleTabChange = React.useCallback(
+    (t: "active" | "deleted") => {
+      setTab(t);
+      if (t === "active" && restoredRecent) {
+        mutate((prev) => (prev.some((g) => g.id === restoredRecent.id) ? prev : [restoredRecent, ...prev]));
+        setRestoredRecent(null);
+      }
+    },
+    [mutate, restoredRecent]
+  );
   const handleCopyInvite = React.useCallback(() => setSuccess("Skopiowano kod zaproszenia."), []);
   const handleRequestDelete = React.useCallback((id: string) => setConfirm({ type: "delete", id }), []);
   const handleRequestRestore = React.useCallback((id: string) => setConfirm({ type: "restore", id }), []);
@@ -86,12 +92,22 @@ export default function GroupsView(): JSX.Element {
         ) : null}
         {error ? (
           errorCode === "UNAUTHORIZED" || errorStatus === 401 ? (
-            <div role="alert" className="rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-700 p-3 text-sm" data-test-id="groups-unauthorized-error">
+            <div
+              role="alert"
+              className="rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-700 p-3 text-sm"
+              data-test-id="groups-unauthorized-error"
+            >
               Aby zobaczyć swoje grupy, zaloguj się.
-              <a href="/auth/login?redirect=/groups" className="ml-2 underline" data-test-id="groups-login-link">Zaloguj się</a>
+              <a href="/auth/login?redirect=/groups" className="ml-2 underline" data-test-id="groups-login-link">
+                Zaloguj się
+              </a>
             </div>
           ) : (
-            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm" data-test-id="groups-error-message">
+            <div
+              role="alert"
+              className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm"
+              data-test-id="groups-error-message"
+            >
               Wystąpił błąd podczas ładowania listy grup. Spróbuj ponownie.
               <button
                 type="button"
@@ -140,7 +156,9 @@ export default function GroupsView(): JSX.Element {
           <button
             type="button"
             className="mt-2 px-4 py-2 text-sm rounded-md border hover:bg-accent hover:text-accent-foreground"
-            onClick={() => { void loadMore(); }}
+            onClick={() => {
+              void loadMore();
+            }}
             data-test-id="groups-load-more-button"
           >
             Załaduj więcej
@@ -175,7 +193,11 @@ export default function GroupsView(): JSX.Element {
         open={!!confirm}
         onOpenChange={(v) => !v && setConfirm(null)}
         title={confirm?.type === "delete" ? "Usuń grupę" : "Przywróć grupę"}
-        description={confirm?.type === "delete" ? "Czy na pewno chcesz usunąć tę grupę?" : "Czy na pewno chcesz przywrócić tę grupę?"}
+        description={
+          confirm?.type === "delete"
+            ? "Czy na pewno chcesz usunąć tę grupę?"
+            : "Czy na pewno chcesz przywrócić tę grupę?"
+        }
         confirmText={confirm?.type === "delete" ? "Usuń" : "Przywróć"}
         variant={confirm?.type === "delete" ? "destructive" : "default"}
         loading={confirm?.type === "delete" ? removing : restoring}
@@ -212,13 +234,14 @@ export default function GroupsView(): JSX.Element {
         }}
       />
 
-      {(removeError || restoreError) ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">
+      {removeError || restoreError ? (
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm"
+        >
           {removeError || restoreError}
         </div>
       ) : null}
     </section>
   );
 }
-
-

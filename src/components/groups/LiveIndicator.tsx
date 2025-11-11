@@ -2,7 +2,8 @@ import * as React from "react";
 import type { RealtimeStatus } from "@/lib/dashboard/activity-feed.types";
 
 export function LiveIndicator({ status }: { status: RealtimeStatus }): JSX.Element {
-  const color = status === "live" ? "bg-emerald-500" : status === "reconnecting" ? "bg-amber-500" : "bg-muted-foreground/50";
+  const color =
+    status === "live" ? "bg-emerald-500" : status === "reconnecting" ? "bg-amber-500" : "bg-muted-foreground/50";
   const label = status === "live" ? "LIVE" : status === "reconnecting" ? "RECONNECTING" : "OFF";
   return (
     <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
@@ -11,5 +12,3 @@ export function LiveIndicator({ status }: { status: RealtimeStatus }): JSX.Eleme
     </span>
   );
 }
-
-

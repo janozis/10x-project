@@ -23,13 +23,13 @@ export function useGroupMembersForPicker(groupId: UUID | undefined) {
     try {
       const res: ApiListResponse<GroupMemberDTO> = await listMembers(groupId);
       console.log("[useGroupMembersForPicker] API response:", res);
-      
+
       if ("error" in res) {
         throw new Error(res.error.message);
       }
-      
+
       console.log("[useGroupMembersForPicker] Raw data:", res.data);
-      
+
       const options = res.data
         .filter((m) => m.user_email) // Only include members with email
         .map((m) => ({
@@ -37,7 +37,7 @@ export function useGroupMembersForPicker(groupId: UUID | undefined) {
           email: m.user_email!,
           role: m.role,
         }));
-      
+
       console.log("[useGroupMembersForPicker] Mapped options:", options);
       setMembers(options);
     } catch (e: any) {
@@ -54,4 +54,3 @@ export function useGroupMembersForPicker(groupId: UUID | undefined) {
 
   return { members, loading, error, refresh: fetch } as const;
 }
-

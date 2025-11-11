@@ -8,8 +8,8 @@ import { getCampDay } from "@/lib/services/camp-days.service";
 
 export const prerender = false;
 
-const groupId = Astro.params.group_id!;
-const campDayId = Astro.params.camp_day_id!;
+const groupId = Astro.params.group_id || "";
+const campDayId = Astro.params.camp_day_id || "";
 const supabase = Astro.locals.supabase;
 const userId = Astro.locals.user?.id;
 
@@ -57,12 +57,8 @@ const { data: membership } = await supabase
 
 if (membership) {
   // User is a member, fetch group
-  const { data: groupRow } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .maybeSingle();
-  
+  const { data: groupRow } = await supabase.from("groups").select("*").eq("id", groupId).maybeSingle();
+
   if (groupRow) {
     groupDto = {
       id: groupRow.id,
@@ -85,13 +81,15 @@ if (membership) {
 <Layout title="Plan dnia">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-5xl">
-      <Breadcrumb items={[
-        { label: "Lista grup", href: "/groups" },
-        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
-        { label: "Dni obozu", href: `/groups/${groupId}/camp-days` }
-      ]} />
+      <Breadcrumb
+        items={[
+          { label: "Lista grup", href: "/groups" },
+          { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
+          { label: "Dni obozu", href: `/groups/${groupId}/camp-days` },
+        ]}
+      />
       <h1 class="mb-4 text-2xl font-semibold tracking-tight">
-        {campDayDto ? `Dzień ${campDayDto.day_number}: ${campDayDto.theme || 'Plan dnia'}` : 'Plan dnia'}
+        {campDayDto ? `Dzień ${campDayDto.day_number}: ${campDayDto.theme || "Plan dnia"}` : "Plan dnia"}
       </h1>
 
       {

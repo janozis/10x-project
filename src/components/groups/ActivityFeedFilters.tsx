@@ -41,12 +41,12 @@ export function ActivityFeedFilters({ value, onChange, availableTypes }: Activit
           </Button>
         );
       })}
-      <Badge variant="outline" className="ml-1 text-[10px]">{activeCount}</Badge>
+      <Badge variant="outline" className="ml-1 text-[10px]">
+        {activeCount}
+      </Badge>
       {activeCount === 0 ? (
         <span className="text-xs text-amber-600">Brak wyników — włącz przynajmniej jeden typ</span>
       ) : null}
     </div>
   );
 }
-
-

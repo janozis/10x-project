@@ -33,14 +33,14 @@ function mapErrorCodeToHttpStatus(code: string): number {
 export const GET: APIRoute = async (context) => {
   const groupId = context.params.group_id;
   const userId = context.locals.user?.id || DEFAULT_USER_ID;
-  
+
   if (!groupId) {
     return new Response(JSON.stringify(errors.badRequest("Missing group_id")), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   const supabase = context.locals.supabase;
   if (!supabase) {
     return new Response(JSON.stringify(errors.internal("Supabase client not available")), {
@@ -48,7 +48,7 @@ export const GET: APIRoute = async (context) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   // First, verify user is a member of this group
   const { data: membership, error: membershipError } = await supabase
     .from("group_memberships")
@@ -56,14 +56,14 @@ export const GET: APIRoute = async (context) => {
     .eq("group_id", groupId)
     .eq("user_id", userId)
     .maybeSingle();
-  
+
   if (membershipError) {
     return new Response(JSON.stringify(errors.internal("Failed to verify membership")), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   // If user is not a member, return 404 (don't reveal group existence)
   if (!membership) {
     return new Response(JSON.stringify(errors.notFound("Group")), {
@@ -71,32 +71,28 @@ export const GET: APIRoute = async (context) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   // User is a member, now fetch the group
-  const { data: row, error } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .maybeSingle();
-    
+  const { data: row, error } = await supabase.from("groups").select("*").eq("id", groupId).maybeSingle();
+
   if (error) {
     return new Response(JSON.stringify(errors.internal("Failed to fetch group")), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   if (!row) {
     return new Response(JSON.stringify(errors.notFound("Group")), {
       status: 404,
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   const dto = mapGroupRowToDTO(row as any);
-  return new Response(JSON.stringify({ data: dto }), { 
-    status: 200, 
-    headers: { "Content-Type": "application/json" } 
+  return new Response(JSON.stringify({ data: dto }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
   });
 };
 
@@ -152,5 +148,3 @@ export const PATCH: APIRoute = async (context) => {
   }
   return new Response(JSON.stringify(result), { status: 200, headers: { "Content-Type": "application/json" } });
 };
-
-

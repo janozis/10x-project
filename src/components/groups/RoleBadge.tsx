@@ -19,7 +19,9 @@ function variantFor(role: GroupRole): "default" | "secondary" | "destructive" | 
 }
 
 export function RoleBadge({ role }: RoleBadgeProps): JSX.Element {
-  return <Badge variant={variantFor(role)} className="capitalize">{role}</Badge>;
+  return (
+    <Badge variant={variantFor(role)} className="capitalize">
+      {role}
+    </Badge>
+  );
 }
-
-

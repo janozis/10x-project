@@ -12,7 +12,12 @@ export interface CampDaysFiltersProps {
   onReset: () => void;
 }
 
-export function CampDaysFilters({ filters, disabled = false, onChange, onReset }: CampDaysFiltersProps): React.ReactElement {
+export function CampDaysFilters({
+  filters,
+  disabled = false,
+  onChange,
+  onReset,
+}: CampDaysFiltersProps): React.ReactElement {
   const handleCheckboxChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange({ ...filters, withoutActivities: event.target.checked });
@@ -78,5 +83,3 @@ export function CampDaysFilters({ filters, disabled = false, onChange, onReset }
     </form>
   );
 }
-
-

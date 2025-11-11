@@ -31,5 +31,3 @@ export function useCreateGroup() {
 
   return { create: submit, loading, error, created } as const;
 }
-
-

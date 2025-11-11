@@ -64,7 +64,10 @@ export const GET: APIRoute = async ({ locals, params }) => {
   const { data: metrics, error: metricsError } = await supabase
     .from("activity_schedules")
     .select("camp_day_id, start_time, end_time")
-    .in("camp_day_id", campDays.map((cd) => cd.id));
+    .in(
+      "camp_day_id",
+      campDays.map((cd) => cd.id)
+    );
 
   if (metricsError) {
     console.error("[camp-days/metrics] Error fetching metrics:", metricsError);
@@ -85,7 +88,7 @@ export const GET: APIRoute = async ({ locals, params }) => {
       const existing = aggregateMap.get(schedule.camp_day_id);
       if (existing) {
         existing.slots_count += 1;
-        
+
         // Calculate duration in minutes
         const duration = calculateMinutesBetween(schedule.start_time, schedule.end_time);
         existing.total_minutes += duration;
@@ -111,10 +114,9 @@ export const GET: APIRoute = async ({ locals, params }) => {
 function calculateMinutesBetween(start: string, end: string): number {
   const [startHour, startMin] = start.split(":").map(Number);
   const [endHour, endMin] = end.split(":").map(Number);
-  
+
   const startMinutes = startHour * 60 + startMin;
   const endMinutes = endHour * 60 + endMin;
-  
+
   return Math.max(0, endMinutes - startMinutes);
 }
-

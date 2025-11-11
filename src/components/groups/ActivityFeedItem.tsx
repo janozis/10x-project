@@ -11,9 +11,7 @@ export function ActivityFeedItem({ item }: ActivityFeedItemProps): JSX.Element {
     <li className="rounded-md border p-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm">
-          <span aria-hidden>
-            {item.icon === "plus" ? "📝" : item.icon === "edit" ? "✏️" : "•"}
-          </span>
+          <span aria-hidden>{item.icon === "plus" ? "📝" : item.icon === "edit" ? "✏️" : "•"}</span>
           {item.href ? (
             <a href={item.href} className="font-medium hover:underline">
               {item.title}
@@ -31,9 +29,7 @@ export function ActivityFeedItem({ item }: ActivityFeedItemProps): JSX.Element {
           {formatTime(item.at)}
         </time>
       </div>
-      {item.subtitle ? (
-        <div className="mt-1 text-xs text-muted-foreground">{item.subtitle}</div>
-      ) : null}
+      {item.subtitle ? <div className="mt-1 text-xs text-muted-foreground">{item.subtitle}</div> : null}
     </li>
   );
 }
@@ -45,5 +41,3 @@ function formatTime(d: Date): string {
     return d.toISOString();
   }
 }
-
-

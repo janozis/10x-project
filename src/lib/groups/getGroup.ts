@@ -19,7 +19,7 @@ export async function getGroupResource(
   baseUrl?: URL | string
 ): Promise<ResourceResult<GroupDTO>> {
   const url = baseUrl ? new URL(`/api/groups/${groupId}`, baseUrl) : `/api/groups/${groupId}`;
-  
+
   // Merge init with default headers
   const fetchInit: RequestInit = {
     method: "GET",
@@ -27,7 +27,7 @@ export async function getGroupResource(
     credentials: "same-origin", // Important for SSR to pass cookies
     ...init,
   };
-  
+
   const response = await fetch(url, fetchInit);
 
   const status = response.status;
@@ -59,5 +59,3 @@ export async function getGroupResource(
     data: parsed.data,
   } satisfies ResourceSuccess<GroupDTO>;
 }
-
-
