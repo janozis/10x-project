@@ -1,12 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {
-  GroupsListPage,
-  CreateGroupDialog,
-  CampDaysPage,
-  ActivitiesListPage,
-  ActivityFormPage,
-  type CampDayData,
-} from "./page-objects";
+import { GroupsListPage, CreateGroupDialog, CampDaysPage, ActivitiesListPage, ActivityFormPage } from "./page-objects";
 import { generateGroupData, generateActivityData, getFutureDate } from "./test-helpers";
 import { cleanupTestData } from "./test-cleanup-helper";
 
@@ -81,7 +74,7 @@ test.describe("Camp Days Structure", () => {
     await campDaysPage.waitForLoad();
 
     // Get day count - should match the date range (7 days)
-    const dayCount = await campDaysPage.getDayCount();
+    await campDaysPage.getDayCount();
 
     // May vary based on implementation - could be 7, 8, or 0 (if manual creation required)
     // For now, just verify no error
@@ -350,7 +343,6 @@ test.describe("Camp Days Structure", () => {
     const endDate = getFutureDate(10);
 
     const startDateInput = page.locator('[data-filter-start-date], input[name*="start"], input[placeholder*="start"]');
-    const endDateInput = page.locator('[data-filter-end-date], input[name*="end"], input[placeholder*="end"]');
 
     const hasDateFilters = await startDateInput.isVisible().catch(() => false);
 

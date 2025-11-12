@@ -44,7 +44,7 @@ export function useRealtimeTasks(groupId: UUID, onEvent: (payload: TaskRealtimeP
           onEvent(evt);
         }
       )
-      .subscribe((status) => {
+      .subscribe(() => {
         // no-op; could log status if needed
       });
 

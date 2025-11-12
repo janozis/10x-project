@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "../../db/supabase.client";
-import type { GroupDTO, ApiResponse, GroupCreateCommand, ApiListResponse, UUID, GroupStatus } from "../../types";
+import type { GroupDTO, ApiResponse, ApiListResponse, UUID, GroupStatus } from "../../types";
 import {
   groupCreateSchema,
   groupUpdateSchema,

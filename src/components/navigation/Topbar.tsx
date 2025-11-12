@@ -29,7 +29,7 @@ export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: To
         toast.error("Nie udało się wylogować");
         setIsLoggingOut(false);
       }
-    } catch (error) {
+    } catch {
       toast.error("Błąd połączenia");
       setIsLoggingOut(false);
     }
@@ -45,12 +45,13 @@ export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: To
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isActive = (path: string) => {
-    if (path === "/") {
-      return currentPath === "/" || currentPath === "";
-    }
-    return currentPath.startsWith(path);
-  };
+  // Helper function to check if path is active
+  // const isActive = (path: string) => {
+  //   if (path === "/") {
+  //     return currentPath === "/" || currentPath === "";
+  //   }
+  //   return currentPath.startsWith(path);
+  // };
 
   const navItems = [
     { href: "/", label: "Start", icon: "🏠", exact: true },

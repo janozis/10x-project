@@ -39,8 +39,6 @@ export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Elem
     return () => clearInterval(id);
   }, [cooldownUntil]);
 
-  const canManage = React.useMemo(() => permissions?.role === "admin", [permissions]);
-
   if (loading) {
     return (
       <div className="space-y-4" aria-busy>
@@ -129,7 +127,7 @@ export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Elem
         <InviteCard
           groupId={group.id}
           invite={group.invite}
-          canManage
+          canManage={permissions?.role === "admin"}
           onRequestRotate={() => {
             setConfirmAction("rotate");
             setConfirmOpen(true);

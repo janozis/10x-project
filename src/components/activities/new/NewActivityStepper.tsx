@@ -49,7 +49,7 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
   const [submitting, setSubmitting] = React.useState(false);
 
   const { validateBasics, validateContent, validateLogistics, validateAll } = useStepValidation(state.values);
-  const { isSubmitting, create } = useCreateActivity(groupId);
+  const { create } = useCreateActivity(groupId);
   const { assign } = useAssignSelfOnCreate();
   const [permissionsWarning, setPermissionsWarning] = React.useState<string | undefined>(undefined);
 
@@ -95,11 +95,13 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
   const handleFieldChange = React.useCallback((field: keyof ActivityCreateVM, value: string | number) => {
     setState((s) => {
       const nextErrors: FieldErrors = { ...s.errors };
-      delete nextErrors[field as string];
+      // Remove the field from errors (safer than delete)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [field as string]: _unused, ...restErrors } = nextErrors;
       return {
         ...s,
+        errors: restErrors,
         values: { ...s.values, [field]: value },
-        errors: nextErrors,
         autosave: { ...s.autosave, isDirty: true },
       };
     });

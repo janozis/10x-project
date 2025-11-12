@@ -1,5 +1,5 @@
 import { test, expect } from "./fixtures"; // Auto-cleanup after each test
-import { DashboardPage, GroupsListPage, ActivitiesListPage } from "./page-objects";
+import { DashboardPage } from "./page-objects";
 
 /**
  * Performance Tests
@@ -29,21 +29,21 @@ test.describe("Performance", () => {
     expect(loadTime).toBeLessThan(5000);
   });
 
-  test("activities list with 100+ items", async ({ page }) => {
+  test("activities list with 100+ items", async () => {
     // Would require seeding database with test data
     test.skip();
   });
 
-  test("members list with 50+ members", async ({ page }) => {
+  test("members list with 50+ members", async () => {
     test.skip();
   });
 
-  test("AI evaluation generation time", async ({ page }) => {
+  test("AI evaluation generation time", async () => {
     // AI operations are expected to be longer (10-30s)
     test.skip();
   });
 
-  test("performance budget FCP < 1.8s", async ({ page }) => {
+  test("performance budget FCP < 1.8s", async () => {
     // Requires Lighthouse integration
     test.skip();
   });

@@ -29,11 +29,13 @@ const SlotsListComponent = ({
   onDuplicateSlot,
   groupId,
 }: SlotsListProps): JSX.Element => {
+  // Hooks must be called before any conditional returns
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+  const { handleDragEnd } = useSchedulesDndController(slots, (next) => onReorder(next), onAnyChangeState);
+
   if (!slots.length) {
     return <div className="text-sm text-muted-foreground">Brak slotów na ten dzień.</div>;
   }
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
-  const { handleDragEnd } = useSchedulesDndController(slots, (next) => onReorder(next), onAnyChangeState);
 
   return (
     <div className="space-y-2" aria-live="polite">

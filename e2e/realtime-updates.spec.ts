@@ -87,23 +87,23 @@ test.describe("Realtime Updates", () => {
     await userBPage.close();
   });
 
-  test("user A edits activity, user B sees changes", async ({ page, context }) => {
+  test("user A edits activity, user B sees changes", async () => {
     test.skip(); // Similar pattern to above
   });
 
-  test("user A generates AI evaluation, user B sees it", async ({ page, context }) => {
+  test("user A generates AI evaluation, user B sees it", async () => {
     test.skip();
   });
 
-  test("user A changes task status, user B sees update", async ({ page, context }) => {
+  test("user A changes task status, user B sees update", async () => {
     test.skip();
   });
 
-  test("user A adds member, user B sees them", async ({ page, context }) => {
+  test("user A adds member, user B sees them", async () => {
     test.skip();
   });
 
-  test("user A deletes activity, user B sees removal", async ({ page, context }) => {
+  test("user A deletes activity, user B sees removal", async () => {
     test.skip();
   });
 });

@@ -97,27 +97,27 @@ test.describe("Activity Details", () => {
     expect(canEdit).toBe(true);
   });
 
-  test("edit button visible for assigned editors", async ({ page }) => {
+  test("edit button visible for assigned editors", async () => {
     test.skip();
   });
 
-  test("read-only view for other editors", async ({ page }) => {
+  test("read-only view for other editors", async () => {
     test.skip();
   });
 
-  test("display list of assigned editors", async ({ page }) => {
+  test("display list of assigned editors", async () => {
     test.skip();
   });
 
-  test("display activity status", async ({ page }) => {
+  test("display activity status", async () => {
     test.skip();
   });
 
-  test("link to related tasks", async ({ page }) => {
+  test("link to related tasks", async () => {
     test.skip();
   });
 
-  test("display activity change history", async ({ page }) => {
+  test("display activity change history", async () => {
     test.skip();
   });
 });

@@ -26,7 +26,7 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
   const [status, setStatus] = React.useState<"idle" | "loading" | "error" | "ready">("idle");
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(undefined);
   const [errorStatus, setErrorStatus] = React.useState<number | undefined>(undefined);
-  const [permissions, setPermissions] = React.useState<GroupPermissionsDTO | null>(null);
+  const [, setPermissions] = React.useState<GroupPermissionsDTO | null>(null);
   const [events, setEvents] = React.useState<ActivityFeedEventVM[]>([]);
   const [realtimeStatus, setRealtimeStatus] = React.useState<RealtimeStatus>("off");
   const [loadingMore, setLoadingMore] = React.useState(false);
@@ -96,7 +96,7 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
   }, [groupId]);
 
   // Realtime subscription (activities only in MVP)
-  const { isRealtimeConnected, connectionStatus } = useDashboardRealtime(groupId, {
+  const { connectionStatus } = useDashboardRealtime(groupId, {
     onEvent: (ev) => {
       if (ev.type !== "activity_created" && ev.type !== "activity_updated") return;
       setEvents((prev) => {

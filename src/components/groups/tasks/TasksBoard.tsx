@@ -231,17 +231,18 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
   );
 }
 
-function labelForStatus(status: TaskStatus): string {
-  switch (status) {
-    case "pending":
-      return "Oczekujące";
-    case "in_progress":
-      return "W toku";
-    case "done":
-      return "Zrobione";
-    case "canceled":
-      return "Anulowane";
-    default:
-      return status;
-  }
-}
+// Commented out - not currently used
+// function labelForStatus(status: TaskStatus): string {
+//   switch (status) {
+//     case "pending":
+//       return "Oczekujące";
+//     case "in_progress":
+//       return "W toku";
+//     case "done":
+//       return "Zrobione";
+//     case "canceled":
+//       return "Anulowane";
+//     default:
+//       return status;
+//   }
+// }

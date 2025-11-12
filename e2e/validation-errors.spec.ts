@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { GroupsListPage, CreateGroupDialog, ActivitiesListPage, ActivityFormPage, TasksPage } from "./page-objects";
-import { generateGroupData, getPastDate, getFutureDate } from "./test-helpers";
+import { GroupsListPage, CreateGroupDialog, ActivitiesListPage, ActivityFormPage } from "./page-objects";
+import { generateGroupData, getFutureDate } from "./test-helpers";
 import { cleanupTestData } from "./test-cleanup-helper";
 
 /**
@@ -85,31 +85,31 @@ test.describe("Validation Errors", () => {
     expect(canProceed).toBe(false);
   });
 
-  test("task form - empty title", async ({ page }) => {
+  test("task form - empty title", async () => {
     test.skip(); // Quick skip for brevity
   });
 
-  test("activity form - too long description", async ({ page }) => {
+  test("activity form - too long description", async () => {
     test.skip();
   });
 
-  test("task form - invalid date format", async ({ page }) => {
+  test("task form - invalid date format", async () => {
     test.skip();
   });
 
-  test("camp day - time slot conflict", async ({ page }) => {
+  test("camp day - time slot conflict", async () => {
     test.skip();
   });
 
-  test("form - too long values in text fields", async ({ page }) => {
+  test("form - too long values in text fields", async () => {
     test.skip();
   });
 
-  test("join group - invalid email format", async ({ page }) => {
+  test("join group - invalid email format", async () => {
     test.skip();
   });
 
-  test("validation messages under fields", async ({ page }) => {
+  test("validation messages under fields", async () => {
     test.skip();
   });
 });

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { groupCreateSchema, groupUpdateSchema } from "./group";
+import { groupCreateSchema } from "./group";
 
 describe("group validation", () => {
   describe("groupCreateSchema", () => {

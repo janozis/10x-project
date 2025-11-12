@@ -89,7 +89,7 @@ export function ActivityEditorForm({
     async (values: ActivityFormValues) => {
       setSaving(true);
       try {
-        const res = await patchActivity(activityId, values);
+        await patchActivity(activityId, values);
         toast.success("Zapisano zmiany");
         onValuesChange(values);
         await onRefresh();
@@ -101,7 +101,9 @@ export function ActivityEditorForm({
             Object.entries(details).forEach(([k, msg]) => {
               try {
                 form.setError(k as keyof ActivityFormValues, { type: "server", message: String(msg) });
-              } catch {}
+              } catch {
+                // Ignore errors for invalid field names
+              }
             });
             toast.error("Popraw błędy formularza");
             return;

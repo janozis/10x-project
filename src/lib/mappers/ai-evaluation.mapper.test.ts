@@ -77,7 +77,7 @@ describe("ai-evaluation.mapper", () => {
         { suggestions: { key: "value" }, description: "object" },
       ];
 
-      testCases.forEach(({ suggestions, description }) => {
+      testCases.forEach(({ suggestions }) => {
         // Act
         const row: Tables<"ai_evaluations"> = {
           ...baseMockRow,

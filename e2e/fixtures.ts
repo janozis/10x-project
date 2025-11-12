@@ -21,7 +21,7 @@ interface TestFixtures {
 
 // Extend base test with auto-cleanup fixture
 export const test = base.extend<TestFixtures>({
-  // eslint-disable-next-line @typescript-eslint/no-empty-pattern
+  // eslint-disable-next-line no-empty-pattern
   skipCleanup: async ({}, use, testInfo) => {
     let shouldSkip = false;
     await use(() => {
@@ -36,7 +36,7 @@ export const test = base.extend<TestFixtures>({
 
   // Auto-cleanup fixture that runs after each test
   autoCleanup: [
-    // eslint-disable-next-line @typescript-eslint/no-empty-pattern
+    // eslint-disable-next-line no-empty-pattern
     async ({}, use, testInfo) => {
       // Setup (runs before test)
       await use();

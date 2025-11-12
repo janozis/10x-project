@@ -266,31 +266,6 @@ function JoinStatus(props: JoinStatusProps) {
 }
 
 // =====================
-// InlineAlert (generic; used via direct markup in JoinForm for now)
-// =====================
-interface InlineAlertProps {
-  variant: "error" | "info" | "success";
-  title?: string;
-  description?: string;
-}
-
-function InlineAlert(props: InlineAlertProps) {
-  const base = "rounded-md p-3 text-sm";
-  const tone =
-    props.variant === "error"
-      ? "border border-destructive/30 bg-destructive/5 text-destructive"
-      : props.variant === "success"
-        ? "border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300"
-        : "border border-neutral-300/50 bg-neutral-50 dark:bg-neutral-900/20 text-neutral-700 dark:text-neutral-300";
-  return (
-    <div role={props.variant === "error" ? "alert" : "status"} aria-live="polite" className={`${base} ${tone}`}>
-      {props.title ? <div className="font-medium">{props.title}</div> : null}
-      {props.description ? <div>{props.description}</div> : null}
-    </div>
-  );
-}
-
-// =====================
 // CopyDeepLink
 // =====================
 interface CopyDeepLinkProps {

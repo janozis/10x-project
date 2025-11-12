@@ -2,7 +2,6 @@
 import Layout from "@/layouts/Layout.astro";
 import type { GroupDashboardDTO, GroupPermissionsDTO, GroupStatus, GroupDTO } from "@/types";
 import { ArchivedBanner } from "@/components/groups/ArchivedBanner";
-import { GroupDashboardTiles } from "@/components/groups/GroupDashboardTiles";
 import { GroupDashboardTilesClient } from "@/components/groups/GroupDashboardTilesClient";
 import type { DashboardTilesVM } from "@/lib/dashboard/types";
 import { mapDashboardToTilesVM } from "@/lib/mappers/dashboard-tiles.mapper";
@@ -82,7 +81,7 @@ try {
     const { data } = await supabase.from("groups").select("status").eq("id", groupId).maybeSingle();
     groupStatus = (data?.status as GroupStatus) ?? undefined;
   }
-} catch (e) {
+} catch {
   // non-fatal, ignore
 }
 

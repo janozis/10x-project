@@ -36,10 +36,10 @@
               - generic [ref=e30]: Lista grup
             - generic [ref=e31]: /
           - listitem [ref=e32]:
-            - link "Test Group 1762956518821" [ref=e33] [cursor=pointer]:
-              - /url: /groups/ab7865ea-b2c4-45b7-88c7-b0b47bac8268/dashboard
+            - link "Test Group 1762963781536" [ref=e33] [cursor=pointer]:
+              - /url: /groups/7d1a9aa7-6cc4-4dc4-931e-3d70c424c960/dashboard
               - img [ref=e34]
-              - generic [ref=e36]: Test Group 1762956518821
+              - generic [ref=e36]: Test Group 1762963781536
       - generic [ref=e38]:
         - generic [ref=e41]:
           - heading "Aktywności" [level=1] [ref=e42]
@@ -73,20 +73,20 @@
             - columnheader "Edytorzy" [ref=e64]
             - columnheader "Aktualizacja" [ref=e65]
           - generic [ref=e66]:
-            - row "Zaznacz aktywność Test Activity 1762956523479 ⋯ Cel testowej aktywności Brak oceny 11/12/25" [ref=e67] [cursor=pointer]:
-              - cell "Zaznacz aktywność Test Activity 1762956523479 ⋯" [ref=e68]:
+            - row "Zaznacz aktywność Test Activity 1762963786091 ⋯ Cel testowej aktywności Brak oceny 11/12/25" [ref=e67] [cursor=pointer]:
+              - cell "Zaznacz aktywność Test Activity 1762963786091 ⋯" [ref=e68]:
                 - checkbox "Zaznacz aktywność" [ref=e69]
-                - generic [ref=e70]: Test Activity 1762956523479
+                - generic [ref=e70]: Test Activity 1762963786091
                 - button "⋯" [ref=e73]
               - cell "Cel testowej aktywności" [ref=e74]
               - cell "Brak oceny" [ref=e75]:
                 - generic [ref=e76]: Brak oceny
               - cell [ref=e77]
               - cell "11/12/25" [ref=e78]
-            - row "Zaznacz aktywność Test Activity 1762956523479 ⋯ Cel testowej aktywności Brak oceny a04ccb88-15f1-49a8-b3c0-f07b7bb226e5 11/12/25" [ref=e79] [cursor=pointer]:
-              - cell "Zaznacz aktywność Test Activity 1762956523479 ⋯" [ref=e80]:
+            - row "Zaznacz aktywność Test Activity 1762963786091 ⋯ Cel testowej aktywności Brak oceny a04ccb88-15f1-49a8-b3c0-f07b7bb226e5 11/12/25" [ref=e79] [cursor=pointer]:
+              - cell "Zaznacz aktywność Test Activity 1762963786091 ⋯" [ref=e80]:
                 - checkbox "Zaznacz aktywność" [ref=e81]
-                - generic [ref=e82]: Test Activity 1762956523479
+                - generic [ref=e82]: Test Activity 1762963786091
                 - button "⋯" [ref=e85]
               - cell "Cel testowej aktywności" [ref=e86]
               - cell "Brak oceny" [ref=e87]:
@@ -94,10 +94,10 @@
               - cell "a04ccb88-15f1-49a8-b3c0-f07b7bb226e5" [ref=e89]:
                 - generic "a04ccb88-15f1-49a8-b3c0-f07b7bb226e5" [ref=e91]: A0
               - cell "11/12/25" [ref=e92]
-            - row "Zaznacz aktywność Test Activity 1762956523479 ⋯ Cel testowej aktywności Brak oceny a04ccb88-15f1-49a8-b3c0-f07b7bb226e5 11/12/25" [ref=e93] [cursor=pointer]:
-              - cell "Zaznacz aktywność Test Activity 1762956523479 ⋯" [ref=e94]:
+            - row "Zaznacz aktywność Test Activity 1762963786091 ⋯ Cel testowej aktywności Brak oceny a04ccb88-15f1-49a8-b3c0-f07b7bb226e5 11/12/25" [ref=e93] [cursor=pointer]:
+              - cell "Zaznacz aktywność Test Activity 1762963786091 ⋯" [ref=e94]:
                 - checkbox "Zaznacz aktywność" [ref=e95]
-                - generic [ref=e96]: Test Activity 1762956523479
+                - generic [ref=e96]: Test Activity 1762963786091
                 - button "⋯" [ref=e99]
               - cell "Cel testowej aktywności" [ref=e100]
               - cell "Brak oceny" [ref=e101]:

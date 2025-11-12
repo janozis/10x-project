@@ -1,12 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {
-  GroupsListPage,
-  CreateGroupDialog,
-  TasksPage,
-  ActivitiesListPage,
-  ActivityFormPage,
-  type TaskData,
-} from "./page-objects";
+import { GroupsListPage, CreateGroupDialog, TasksPage, ActivitiesListPage, ActivityFormPage } from "./page-objects";
 import { generateGroupData, generateActivityData, generateTaskData, getFutureDate } from "./test-helpers";
 
 /**

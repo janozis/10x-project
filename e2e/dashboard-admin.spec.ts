@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { DashboardPage, GroupsListPage, CreateGroupDialog } from "./page-objects";
 import { generateGroupData } from "./test-helpers";
 import { cleanupTestData } from "./test-cleanup-helper";
@@ -32,7 +32,7 @@ test.describe("Dashboard Admin", () => {
     await dashboardPage.goto();
 
     const progressIndicator = page.locator('[data-progress], [data-test-id*="progress"]');
-    const hasProgress = await progressIndicator.isVisible().catch(() => false);
+    await progressIndicator.isVisible().catch(() => false);
     // Progress UI depends on implementation
   });
 
@@ -40,27 +40,27 @@ test.describe("Dashboard Admin", () => {
     const dashboardPage = new DashboardPage(page);
     await dashboardPage.goto();
 
-    const tasksList = page.locator('[data-tasks-list], [data-test-id*="tasks"]');
+    page.locator('[data-tasks-list], [data-test-id*="tasks"]');
     // Tasks list implementation dependent
   });
 
-  test("should display recent activities timeline", async ({ page }) => {
+  test("should display recent activities timeline", async () => {
     test.skip();
   });
 
-  test("dashboard updates after adding activity", async ({ page }) => {
+  test("dashboard updates after adding activity", async () => {
     test.skip();
   });
 
-  test("statistics update after AI evaluation", async ({ page }) => {
+  test("statistics update after AI evaluation", async () => {
     test.skip();
   });
 
-  test("click task navigates to details", async ({ page }) => {
+  test("click task navigates to details", async () => {
     test.skip();
   });
 
-  test("click activity navigates to details", async ({ page }) => {
+  test("click activity navigates to details", async () => {
     test.skip();
   });
 });

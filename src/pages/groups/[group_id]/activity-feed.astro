@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import type { GroupDTO } from "@/types";
+import ActivityFeedView from "@/components/groups/ActivityFeedView";
 
 export const prerender = false;
 
@@ -68,7 +69,3 @@ if (membership) {
     </div>
   </main>
 </Layout>
-
---- /** Inline import keeps SSR clean; component fetches data on client */ import ActivityFeedView from
-"@/components/groups/ActivityFeedView";
-

@@ -14,7 +14,8 @@ interface Props {
 export function InviteCard({ invite, canManage, onRequestRotate, cooldownMs }: Props): JSX.Element | null {
   // Hooks must be called before any conditional returns
   const [show, setShow] = React.useState(false);
-  const [busy, setBusy] = React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setBusy] = React.useState(false);
 
   if (!canManage) return null;
   if (!invite) return null;

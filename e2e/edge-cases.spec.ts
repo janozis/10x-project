@@ -1,6 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { GroupsListPage, CreateGroupDialog } from "./page-objects";
-import { generateGroupData, generateActivityData } from "./test-helpers";
+import { generateGroupData } from "./test-helpers";
 
 /**
  * Edge Cases Tests
@@ -22,39 +22,39 @@ test.describe("Edge Cases", () => {
     await createDialog.submit();
 
     // Should either accept or show validation error
-    const hasError = await createDialog.hasError();
+    await createDialog.hasError();
     // Accept either outcome - depends on validation limits
   });
 
-  test("very long activity description", async ({ page }) => {
+  test("very long activity description", async () => {
     test.skip();
   });
 
-  test("group with maximum members", async ({ page }) => {
+  test("group with maximum members", async () => {
     test.skip();
   });
 
-  test("activity with maximum editors", async ({ page }) => {
+  test("activity with maximum editors", async () => {
     test.skip();
   });
 
-  test("empty group without members", async ({ page }) => {
+  test("empty group without members", async () => {
     test.skip();
   });
 
-  test("group without activities", async ({ page }) => {
+  test("group without activities", async () => {
     test.skip();
   });
 
-  test("activity without assigned editors", async ({ page }) => {
+  test("activity without assigned editors", async () => {
     test.skip();
   });
 
-  test("camp day without activities", async ({ page }) => {
+  test("camp day without activities", async () => {
     test.skip();
   });
 
-  test("multiple concurrent requests", async ({ page }) => {
+  test("multiple concurrent requests", async () => {
     test.skip();
   });
 });

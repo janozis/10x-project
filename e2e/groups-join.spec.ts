@@ -1,7 +1,6 @@
 import { test, expect } from "./fixtures"; // Auto-cleanup after each test
 import {
   LoginPage,
-  RegisterPage,
   GroupsListPage,
   CreateGroupDialog,
   JoinGroupDialog,
@@ -37,7 +36,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       if (response.ok()) {
         console.log(`🧹 Cleaned up test group: ${groupId}`);
       }
-    } catch (e) {
+    } catch {
       // Ignore cleanup errors
     } finally {
       await page.close();

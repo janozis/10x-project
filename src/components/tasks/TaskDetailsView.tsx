@@ -49,7 +49,7 @@ export function TaskDetailsView({ taskId }: TaskDetailsViewProps): JSX.Element {
         } else {
           setPermissions(permsRes.data);
         }
-      } catch (e: any) {
+      } catch {
         // Non-fatal for the details view; defaults to read-only
         setPermissions(null);
       }

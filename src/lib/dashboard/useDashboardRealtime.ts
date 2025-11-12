@@ -100,7 +100,7 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
       triggerInvalidate();
     });
 
-    const subscription = channel.subscribe((status) => {
+    channel.subscribe((status) => {
       const isLive = status === "SUBSCRIBED";
       setIsRealtimeConnected(isLive);
       if (status === "SUBSCRIBED") {
