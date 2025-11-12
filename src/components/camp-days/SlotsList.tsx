@@ -5,7 +5,6 @@ import { DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SortableSlot } from "@/components/camp-days/SortableSlot";
 import { useSchedulesDndController } from "@/lib/camp-days/useSchedulesDndController";
-import { Button } from "@/components/ui/button";
 
 export interface SlotsListProps {
   slots: SlotVM[];

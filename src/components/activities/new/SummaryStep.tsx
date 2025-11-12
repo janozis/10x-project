@@ -8,7 +8,7 @@ export interface SummaryStepProps {
   isSubmitting?: boolean;
 }
 
-export default function SummaryStep({ values, errors, onBack }: SummaryStepProps) {
+export default function SummaryStep({ values, errors }: SummaryStepProps) {
   return (
     <div className="grid gap-4">
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2">

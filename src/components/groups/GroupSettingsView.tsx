@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { GroupDTO, GroupPermissionsDTO, UUID } from "@/types";
+import type { UUID } from "@/types";
 import { useGroupSettings } from "@/lib/useGroupSettings";
 import { ArchivedBanner } from "@/components/groups/ArchivedBanner";
 import { GroupDetailsForm } from "@/components/groups/GroupDetailsForm";

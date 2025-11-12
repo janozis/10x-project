@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { ActivityWithEditorsDTO, GroupRole, UUID } from "@/types";
+import type { ActivityWithEditorsDTO, UUID } from "@/types";
 import { useGroupPermissions } from "@/lib/groups/useGroupPermissions";
 import { useColumnPreferences, type ColumnId } from "@/lib/groups/useColumnPreferences";
 import { supabaseClient, DEFAULT_USER_ID } from "@/db/supabase.client";

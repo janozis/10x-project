@@ -26,7 +26,6 @@ export const SlotRow = ({
   onAnyChangeState,
   onDelete,
   onDuplicate,
-  groupId,
 }: SlotRowProps): JSX.Element => {
   const { queue } = useAutosaveSchedule(slot.id, {
     onStateChange: onAnyChangeState,

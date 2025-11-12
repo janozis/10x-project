@@ -12,7 +12,7 @@ export interface GroupCardProps {
   focusMe?: boolean;
 }
 
-function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }: GroupCardProps): JSX.Element {
+function GroupCardComponent({ item, onRestore, onCopyInvite, focusMe }: GroupCardProps): JSX.Element {
   const canRestore = item.isArchived;
   const inviteCode = item.inviteCode ?? undefined;
 

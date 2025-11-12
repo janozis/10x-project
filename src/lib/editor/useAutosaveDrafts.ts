@@ -52,7 +52,7 @@ export function useAutosaveDrafts(activityId: UUID) {
     try {
       localStorage.setItem(keyFor(activityId), JSON.stringify(next));
       setError(null);
-    } catch (e) {
+    } catch {
       setError("Przekroczono limit pamięci przeglądarki dla szkiców.");
     }
   }

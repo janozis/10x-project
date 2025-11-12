@@ -1,6 +1,5 @@
 import * as React from "react";
-import { z } from "zod";
-import type { GroupDTO, GroupUpdateCommand, UUID } from "@/types";
+import type { GroupDTO, GroupUpdateCommand } from "@/types";
 import { groupUpdateSchema } from "@/lib/validation/group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

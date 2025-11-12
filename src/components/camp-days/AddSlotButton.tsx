@@ -84,7 +84,8 @@ export function AddSlotButton({ groupId, campDayId, slots, canEdit, onCreated }:
         <Button
           disabled={!canEdit}
           size="sm"
-          onClick={(e) => {
+          onClick={() => {
+            // eslint-disable-next-line no-console
             console.log("[AddSlotButton] Clicked, canEdit:", canEdit);
           }}
         >

@@ -10,12 +10,7 @@ interface CreateActivityDialogProps {
   onSuccess?: () => void;
 }
 
-export function CreateActivityDialog({
-  open,
-  onOpenChange,
-  groupId,
-  onSuccess,
-}: CreateActivityDialogProps): JSX.Element {
+export function CreateActivityDialog({ open, onOpenChange, groupId }: CreateActivityDialogProps): JSX.Element {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">

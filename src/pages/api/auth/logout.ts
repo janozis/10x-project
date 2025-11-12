@@ -14,6 +14,7 @@ export const POST: APIRoute = async ({ locals, cookies }) => {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
+      // eslint-disable-next-line no-console
       console.error("[logout] Supabase signOut error:", error);
       return new Response(
         JSON.stringify({
@@ -45,6 +46,7 @@ export const POST: APIRoute = async ({ locals, cookies }) => {
       }
     } catch (cookieError) {
       // Ignore cookie deletion errors - the main signOut should have cleared them
+      // eslint-disable-next-line no-console
       console.debug("[logout] Cookie cleanup error (non-critical):", cookieError);
     }
 
@@ -53,6 +55,7 @@ export const POST: APIRoute = async ({ locals, cookies }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("[logout] Unexpected error:", error);
 
     return new Response(

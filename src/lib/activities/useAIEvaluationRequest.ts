@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { ActivityDTO, ActivityEditorDTO, GroupPermissionsDTO, UUID } from "@/types";
+import type { UUID } from "@/types";
 import { requestActivityAIEvaluation } from "./api.client";
 
 interface State {
