@@ -18,12 +18,17 @@ export function TaskMeta({ createdAt, updatedAt, groupId, activityId }: TaskMeta
         <span className="font-medium text-foreground">Zaktualizowano:</span> {formatDateTime(updatedAt)}
       </div>
       <div>
-        <span className="font-medium text-foreground">Grupa:</span> <a className="underline" href={`/groups/${groupId}`}>{groupId}</a>
+        <span className="font-medium text-foreground">Grupa:</span>{" "}
+        <a className="underline" href={`/groups/${groupId}`}>
+          {groupId}
+        </a>
       </div>
       <div>
         <span className="font-medium text-foreground">Aktywność:</span>{" "}
         {activityId ? (
-          <a className="underline" href={`/activities/${activityId}`}>{activityId}</a>
+          <a className="underline" href={`/activities/${activityId}`}>
+            {activityId}
+          </a>
         ) : (
           <span>—</span>
         )}
@@ -40,5 +45,3 @@ function formatDateTime(iso: string): string {
     return iso;
   }
 }
-
-

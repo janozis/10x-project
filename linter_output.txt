@@ -1,0 +1,513 @@
+
+> 10x-project@0.0.1 lint
+> eslint .
+
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/e2e/groups-join.spec.ts
+   30:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   57:29  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+   57:56  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+   86:30  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+   86:57  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  109:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  192:30  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  192:57  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  216:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  301:30  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  301:57  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  325:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  409:30  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  409:57  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  433:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  520:30  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  520:57  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  544:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  633:30  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  633:57  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  657:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/AIChips.tsx
+  28:110  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  35:110  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/ActivitiesTable.tsx
+  71:11  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+  71:11  warning  Elements with the 'row' interactive role must be focusable                                      jsx-a11y/interactive-supports-focus
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/ActivitiesToolbar.tsx
+  41:5  warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/editor/AIEvaluationPanel.tsx
+  45:5  warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/editor/ActivityEditorForm.tsx
+   76:5   warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
+   85:5   warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
+   96:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  165:17  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  216:32  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  289:26  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  289:47  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  305:25  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/editor/ActivityForm.tsx
+   39:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+   57:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+   75:9   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+   94:9   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  114:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  131:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  151:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  168:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  187:9   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  206:9   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  225:9   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/editor/ConflictDiffModal.tsx
+   31:6   warning  React Hook React.useEffect has a missing dependency: 'fields'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+   86:52  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+   87:53  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  103:53  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  104:52  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/editor/EditorsManager.tsx
+  36:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/new/AddToScheduleDialog.tsx
+  119:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/new/NewActivityStepper.tsx
+  148:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/new/StepIndicator.tsx
+  35:5  warning  Elements with the 'tablist' interactive role must be focusable  jsx-a11y/interactive-supports-focus
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/new/hooks/useAssignSelfOnCreate.ts
+  29:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/new/hooks/useAutosave.ts
+  58:6   warning  React Hook React.useEffect has a missing dependency: 'values'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  89:19  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/new/hooks/useCreateActivity.ts
+  59:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/ActivityBadge.tsx
+  12:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/AddSlotButton.tsx
+  26:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/ApplyTemplateButton.tsx
+   59:7   warning  Unexpected console statement  no-console
+  148:11  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/CampDayCreateForm.tsx
+  117:17  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  118:11  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  320:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/CampDayEditForm.tsx
+  233:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  290:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  328:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  329:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/CampDayView.tsx
+  112:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/DeleteCampDayButton.tsx
+   37:7   warning  Unexpected console statement              no-console
+  112:11  warning  Unexpected console statement              no-console
+  149:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  149:74  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/SlotRow.tsx
+  82:7  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+  82:7  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/camp-days/TimeRangeEditor.tsx
+  25:5  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+  25:5  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/ActivityFeedView.tsx
+  292:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/CreateGroupDialog.tsx
+  54:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/DashboardInviteCard.tsx
+  48:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/GroupDetailsForm.tsx
+   74:5   warning  The attribute aria-disabled is not supported by the role form. This role is implicit on the element form  jsx-a11y/role-supports-aria-props
+  149:65  warning  Unexpected any. Specify a different type                                                                  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/GroupMembersView.tsx
+  30:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  78:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/GroupsView.tsx
+  227:61  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  227:85  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/JoinGroupDialog.tsx
+  48:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/QuickTaskForm.tsx
+   81:19  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  109:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  119:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  130:9   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  140:9   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/tasks/QuickAdd.tsx
+  71:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/groups/tasks/TasksBoard.tsx
+  85:18  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  89:5   warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/tasks/TaskDetailsView.tsx
+   36:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   37:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   42:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   56:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   74:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   75:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   88:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  117:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/tasks/TaskForm.tsx
+  101:34  warning  Ref values (the `current` property) may not be accessed during render. (https://react.dev/reference/react/useRef)  react-compiler/react-compiler
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/ui/card.tsx
+  23:5  warning  Headings must have content and the content must be accessible by a screen reader  jsx-a11y/heading-has-content
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/ui/command.tsx
+  24:11  warning  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/ui/input.tsx
+  4:18  warning  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/ui/label.tsx
+  4:18  warning  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+  7:3   warning  A form label must be associated with a control                    jsx-a11y/label-has-associated-control
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/ui/textarea.tsx
+  4:18  warning  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/activities/api.client.ts
+  56:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  92:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/activities/useAIEvaluationRequest.ts
+  45:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/activities/useActivityDetails.ts
+   59:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   62:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/activities/useInfiniteActivities.ts
+   92:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/activities/useRealtimeActivities.ts
+  26:7   warning  Unexpected console statement              no-console
+  36:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  49:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  80:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  87:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  95:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/camp-days/useAutosaveSchedule.ts
+  51:5  warning  React Hook React.useCallback has missing dependencies: 'opts' and 'setStateBoth'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/camp-days/useCampDayData.ts
+  57:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/camp-days/useCampDaysList.ts
+  187:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/camp-days/useGroupPermissions.ts
+  94:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/camp-days/useRealtimeCampDay.ts
+  8:7  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/dashboard/useDashboardRealtime.ts
+  36:7   warning  Unexpected console statement              no-console
+  57:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  79:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/editor/useAIEvaluations.ts
+  18:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/editor/useActivity.ts
+  62:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/editor/useAutosaveDrafts.ts
+  73:5  warning  React Hook React.useCallback has a missing dependency: 'persist'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  90:6  warning  React Hook React.useCallback has a missing dependency: 'persist'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/editor/useEditors.ts
+  22:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/tasks/api.client.ts
+  66:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  81:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/tasks/useGroupTasks.ts
+  153:36  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  181:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  181:55  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  182:27  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  186:36  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  197:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  197:55  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  198:27  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  202:36  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  213:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  213:55  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  216:36  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                @typescript-eslint/no-explicit-any
+  311:5   warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/tasks/useRealtimeTasks.ts
+  29:7   warning  Unexpected console statement              no-console
+  38:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useColumnPreferences.ts
+  33:62  warning  Forbidden non-null assertion                                                                                                                                                                                                                            @typescript-eslint/no-non-null-assertion
+  33:72  warning  Forbidden non-null assertion                                                                                                                                                                                                                            @typescript-eslint/no-non-null-assertion
+  49:5   warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
+  56:52  warning  Forbidden non-null assertion                                                                                                                                                                                                                            @typescript-eslint/no-non-null-assertion
+  56:62  warning  Forbidden non-null assertion                                                                                                                                                                                                                            @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useCreateGroup.ts
+  23:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useDeleteGroup.ts
+  19:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useGroupMembers.ts
+  103:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  104:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  106:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  129:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  146:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  166:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useGroupMembersForPicker.ts
+  25:7   warning  Unexpected console statement              no-console
+  31:7   warning  Unexpected console statement              no-console
+  37:18  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  41:7   warning  Unexpected console statement              no-console
+  43:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:7   warning  Unexpected console statement              no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useGroupPermissions.ts
+  35:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useGroups.ts
+  37:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  73:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useJoinGroup.ts
+  21:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/groups/useRestoreGroup.ts
+  10:88  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/hooks/useIntersection.ts
+  20:6  warning  React Hook React.useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/mappers/ai-evaluation.mapper.test.ts
+  55:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  84:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/mappers/dashboard.mapper.test.ts
+  141:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/services/group-memberships.service.ts
+   24:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   39:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   52:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   54:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   74:3   warning  Unexpected console statement              no-console
+   75:3   warning  Unexpected console statement              no-console
+   83:3   warning  Unexpected console statement              no-console
+   88:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  109:3   warning  Unexpected console statement              no-console
+  114:3   warning  Unexpected console statement              no-console
+  126:5   warning  Unexpected console statement              no-console
+  146:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  147:3   warning  Unexpected console statement              no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/services/groups.service.ts
+   29:5   warning  Unexpected console statement              no-console
+   30:5   warning  Unexpected console statement              no-console
+   37:7   warning  Unexpected console statement              no-console
+   56:5   warning  Unexpected console statement              no-console
+   61:7   warning  Unexpected console statement              no-console
+   78:5   warning  Unexpected console statement              no-console
+  102:7   warning  Unexpected console statement              no-console
+  114:7   warning  Unexpected console statement              no-console
+  120:5   warning  Unexpected console statement              no-console
+  139:5   warning  Unexpected console statement              no-console
+  148:5   warning  Unexpected console statement              no-console
+  157:7   warning  Unexpected console statement              no-console
+  170:5   warning  Unexpected console statement              no-console
+  187:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  210:5   warning  Unexpected console statement              no-console
+  218:7   warning  Unexpected console statement              no-console
+  229:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  465:5   warning  Unexpected console statement              no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/services/permissions.service.ts
+  62:5  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/useGroupSettings.ts
+   49:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/useJoinGroup.ts
+  46:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/lib/utils.test.ts
+  94:44  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/activities/[activity_id].astro
+  11:20  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  38:3   warning  Unexpected console statement  no-console
+  68:9   warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/activities/[activity_id]/edit.astro
+  12:20  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  39:3   warning  Unexpected console statement  no-console
+  42:3   warning  Unexpected console statement  no-console
+  63:7   warning  Unexpected console statement  no-console
+  68:7   warning  Unexpected console statement  no-console
+  72:9   warning  Unexpected console statement  no-console
+  75:9   warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/camp-days/[camp_day_id].ts
+   7:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  86:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  87:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups.ts
+   30:5  warning  Unexpected console statement  no-console
+   31:5  warning  Unexpected console statement  no-console
+   38:7  warning  Unexpected console statement  no-console
+   55:7  warning  Unexpected console statement  no-console
+   66:5  warning  Unexpected console statement  no-console
+   85:5  warning  Unexpected console statement  no-console
+   86:5  warning  Unexpected console statement  no-console
+   98:7  warning  Unexpected console statement  no-console
+  114:5  warning  Unexpected console statement  no-console
+  126:7  warning  Unexpected console statement  no-console
+  133:5  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups/[group_id].ts
+  92:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups/[group_id]/camp-days.ts
+  33:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups/[group_id]/camp-days/metrics.ts
+  54:5  warning  Unexpected console statement  no-console
+  73:5  warning  Unexpected console statement  no-console
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups/[group_id]/invite.ts
+  49:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups/[group_id]/permissions.ts
+  41:61  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/api/groups/join.ts
+  47:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/activities.astro
+  30:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/activities/new.astro
+  31:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/activity-feed.astro
+   9:17  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  30:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/camp-days.astro
+  30:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/camp-days/[camp_day_id]/edit.astro
+  40:42  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  76:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/camp-days/[camp_day_id]/index.astro
+  11:17  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  12:19  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  34:42  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  55:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/dashboard.astro
+  19:17  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  41:42  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  62:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/members.astro
+  30:18  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
+  64:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/settings.astro
+   9:17  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  30:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/groups/[group_id]/tasks.astro
+   9:17  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  32:18  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/pages/tasks/[task_id].astro
+  9:16  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/Users/jkosmala/Documents/git-repos/private/10x-project/src/test/setup.ts
+  30:3   warning  Useless constructor                       @typescript-eslint/no-useless-constructor
+  30:17  warning  Unexpected empty constructor              @typescript-eslint/no-empty-function
+  31:16  warning  Unexpected empty method 'disconnect'      @typescript-eslint/no-empty-function
+  32:13  warning  Unexpected empty method 'observe'         @typescript-eslint/no-empty-function
+  36:15  warning  Unexpected empty method 'unobserve'       @typescript-eslint/no-empty-function
+  37:6   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:3   warning  Useless constructor                       @typescript-eslint/no-useless-constructor
+  41:17  warning  Unexpected empty constructor              @typescript-eslint/no-empty-function
+  42:16  warning  Unexpected empty method 'disconnect'      @typescript-eslint/no-empty-function
+  43:13  warning  Unexpected empty method 'observe'         @typescript-eslint/no-empty-function
+  44:15  warning  Unexpected empty method 'unobserve'       @typescript-eslint/no-empty-function
+  45:6   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 308 problems (0 errors, 308 warnings)
+

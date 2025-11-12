@@ -17,7 +17,7 @@ export interface UseLlmChatOptions {
   };
   /** Structured output configuration (JSON Schema) */
   response_format?: {
-    type: 'json_schema';
+    type: "json_schema";
     json_schema: {
       name: string;
       strict: true;
@@ -57,21 +57,21 @@ export interface UseLlmChatState {
 
 /**
  * Custom React hook for LLM chat completions (non-streaming)
- * 
+ *
  * @example
  * ```tsx
  * const { data, loading, error, send } = useLlmChat({
  *   model: 'anthropic/claude-3.5-sonnet',
  *   params: { temperature: 0.7 }
  * });
- * 
+ *
  * const handleSubmit = async () => {
  *   await send([
  *     { role: 'system', content: 'You are a helpful assistant.' },
  *     { role: 'user', content: 'Hello!' }
  *   ]);
  * };
- * 
+ *
  * if (loading) return <div>Loading...</div>;
  * if (error) return <div>Error: {error.message}</div>;
  * if (data) return <div>{data.content}</div>;
@@ -90,8 +90,8 @@ export function useLlmChat(options?: UseLlmChatOptions): UseLlmChatState {
     // Guard: Validate messages
     if (!messages || messages.length === 0) {
       const error: LlmChatError = {
-        code: 'LLM_VALIDATION_ERROR',
-        message: 'Messages array cannot be empty',
+        code: "LLM_VALIDATION_ERROR",
+        message: "Messages array cannot be empty",
         statusCode: 400,
       };
       setError(error);
@@ -104,9 +104,9 @@ export function useLlmChat(options?: UseLlmChatOptions): UseLlmChatState {
     setData(null);
 
     try {
-      const response = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages,
           options: {
@@ -122,8 +122,8 @@ export function useLlmChat(options?: UseLlmChatOptions): UseLlmChatState {
       if (!response.ok || !json.ok) {
         // API returned an error
         const error: LlmChatError = {
-          code: json.error?.code || 'LLM_UPSTREAM_ERROR',
-          message: json.error?.message || 'An error occurred',
+          code: json.error?.code || "LLM_UPSTREAM_ERROR",
+          message: json.error?.message || "An error occurred",
           statusCode: response.status,
         };
         setError(error);
@@ -138,8 +138,8 @@ export function useLlmChat(options?: UseLlmChatOptions): UseLlmChatState {
     } catch (err) {
       // Network or parsing error
       const error: LlmChatError = {
-        code: 'LLM_UPSTREAM_ERROR',
-        message: err instanceof Error ? err.message : 'Network error',
+        code: "LLM_UPSTREAM_ERROR",
+        message: err instanceof Error ? err.message : "Network error",
         statusCode: 0,
       };
       setError(error);
@@ -159,20 +159,20 @@ export function useLlmChat(options?: UseLlmChatOptions): UseLlmChatState {
 
 /**
  * Custom React hook for LLM chat streaming
- * 
+ *
  * @example
  * ```tsx
  * const { content, loading, error, stream } = useLlmChatStream({
  *   model: 'anthropic/claude-3.5-sonnet'
  * });
- * 
+ *
  * const handleSubmit = async () => {
  *   await stream([
  *     { role: 'system', content: 'You are a helpful assistant.' },
  *     { role: 'user', content: 'Tell me a story.' }
  *   ]);
  * };
- * 
+ *
  * if (loading) return <div>Streaming...</div>;
  * if (error) return <div>Error: {error.message}</div>;
  * return <div>{content}</div>;
@@ -209,7 +209,7 @@ export interface UseLlmChatStreamState {
 }
 
 export function useLlmChatStream(options?: UseLlmChatStreamOptions): UseLlmChatStreamState {
-  const [content, setContent] = React.useState('');
+  const [content, setContent] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<LlmChatError | null>(null);
 
@@ -220,8 +220,8 @@ export function useLlmChatStream(options?: UseLlmChatStreamOptions): UseLlmChatS
     // Guard: Validate messages
     if (!messages || messages.length === 0) {
       const error: LlmChatError = {
-        code: 'LLM_VALIDATION_ERROR',
-        message: 'Messages array cannot be empty',
+        code: "LLM_VALIDATION_ERROR",
+        message: "Messages array cannot be empty",
         statusCode: 400,
       };
       setError(error);
@@ -231,12 +231,12 @@ export function useLlmChatStream(options?: UseLlmChatStreamOptions): UseLlmChatS
 
     setLoading(true);
     setError(null);
-    setContent('');
+    setContent("");
 
     try {
-      const response = await fetch('/api/ai/chat-stream', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ai/chat-stream", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages,
           options: {
@@ -250,8 +250,8 @@ export function useLlmChatStream(options?: UseLlmChatStreamOptions): UseLlmChatS
         // Try to parse error JSON
         const json = await response.json().catch(() => null);
         const error: LlmChatError = {
-          code: json?.error?.code || 'LLM_UPSTREAM_ERROR',
-          message: json?.error?.message || 'Streaming request failed',
+          code: json?.error?.code || "LLM_UPSTREAM_ERROR",
+          message: json?.error?.message || "Streaming request failed",
           statusCode: response.status,
         };
         setError(error);
@@ -263,24 +263,24 @@ export function useLlmChatStream(options?: UseLlmChatStreamOptions): UseLlmChatS
       // Process SSE stream
       const reader = response.body?.getReader();
       if (!reader) {
-        throw new Error('Response body is null');
+        throw new Error("Response body is null");
       }
 
       const decoder = new TextDecoder();
-      let accumulated = '';
+      let accumulated = "";
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
+        const lines = chunk.split("\n");
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
+          if (line.startsWith("data: ")) {
             const data = line.slice(6);
-            
-            if (data === '[DONE]') {
+
+            if (data === "[DONE]") {
               // Stream finished
               optionsRef.current?.onComplete?.(accumulated);
               break;
@@ -301,8 +301,8 @@ export function useLlmChatStream(options?: UseLlmChatStreamOptions): UseLlmChatS
       }
     } catch (err) {
       const error: LlmChatError = {
-        code: 'LLM_UPSTREAM_ERROR',
-        message: err instanceof Error ? err.message : 'Streaming error',
+        code: "LLM_UPSTREAM_ERROR",
+        message: err instanceof Error ? err.message : "Streaming error",
         statusCode: 0,
       };
       setError(error);
@@ -313,10 +313,9 @@ export function useLlmChatStream(options?: UseLlmChatStreamOptions): UseLlmChatS
   }, []);
 
   const reset = React.useCallback(() => {
-    setContent('');
+    setContent("");
     setError(null);
   }, []);
 
   return { content, loading, error, stream, reset };
 }
-

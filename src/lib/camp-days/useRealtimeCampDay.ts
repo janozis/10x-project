@@ -12,8 +12,8 @@ export function useRealtimeCampDay(campDayId: string, onExternalChange: () => vo
     const channel = supabaseClient
       .channel(`camp-day-${campDayId}`)
       .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'activity_schedules', filter: `camp_day_id=eq.${campDayId}` },
+        "postgres_changes",
+        { event: "*", schema: "public", table: "activity_schedules", filter: `camp_day_id=eq.${campDayId}` },
         () => {
           onExternalChange();
         }
@@ -25,5 +25,3 @@ export function useRealtimeCampDay(campDayId: string, onExternalChange: () => vo
     };
   }, [campDayId, onExternalChange]);
 }
-
-

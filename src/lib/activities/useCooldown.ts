@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export function useCooldown(startTimestamp?: string, windowSec: number = 300) {
+export function useCooldown(startTimestamp?: string, windowSec = 300) {
   const compute = React.useCallback(() => {
     if (!startTimestamp) return 0;
     const start = new Date(startTimestamp).getTime();
@@ -25,5 +25,3 @@ export function useCooldown(startTimestamp?: string, windowSec: number = 300) {
 
   return remainingSec;
 }
-
-

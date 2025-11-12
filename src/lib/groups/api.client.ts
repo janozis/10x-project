@@ -17,7 +17,11 @@ async function fetchJson<T>(input: RequestInfo | URL, init?: RequestInit): Promi
   return body as T;
 }
 
-export function listGroups(options?: { showDeleted?: boolean; limit?: number; cursor?: string }): Promise<ApiListResponse<GroupDTO>> {
+export function listGroups(options?: {
+  showDeleted?: boolean;
+  limit?: number;
+  cursor?: string;
+}): Promise<ApiListResponse<GroupDTO>> {
   const params = new URLSearchParams();
   if (options?.showDeleted) params.set("deleted", "1");
   if (options?.limit) params.set("limit", String(options.limit));
@@ -38,7 +42,10 @@ export function deleteGroup(groupId: UUID): Promise<ApiResponse<unknown>> {
 
 export function restoreGroup(groupId: UUID): Promise<ApiResponse<GroupDTO>> {
   // Endpoint may not exist yet on backend; kept for forward compatibility
-  return fetchJson<ApiResponse<GroupDTO>>(`/api/groups/${groupId}/restore`, { method: "POST", body: JSON.stringify({}) });
+  return fetchJson<ApiResponse<GroupDTO>>(`/api/groups/${groupId}/restore`, {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
 }
 
 export function joinGroup(code: string): Promise<ApiResponse<unknown>> {
@@ -59,7 +66,8 @@ export function patchGroup(groupId: UUID, payload: GroupUpdateCommand): Promise<
 }
 
 export function rotateInvite(groupId: UUID): Promise<ApiResponse<GroupDTO>> {
-  return fetchJson<ApiResponse<GroupDTO>>(`/api/groups/${groupId}/invite`, { method: "POST", body: JSON.stringify({}) });
+  return fetchJson<ApiResponse<GroupDTO>>(`/api/groups/${groupId}/invite`, {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
 }
-
-

@@ -5,7 +5,6 @@ import { DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SortableSlot } from "@/components/camp-days/SortableSlot";
 import { useSchedulesDndController } from "@/lib/camp-days/useSchedulesDndController";
-import { Button } from "@/components/ui/button";
 
 export interface SlotsListProps {
   slots: SlotVM[];
@@ -19,16 +18,24 @@ export interface SlotsListProps {
   groupId?: string;
 }
 
-const SlotsListComponent = ({ slots, canEdit, onAnyChangeState, onLocalUpdate, onServerApplied, onDeleteSlot, onReorder, onDuplicateSlot, groupId }: SlotsListProps): JSX.Element => {
+const SlotsListComponent = ({
+  slots,
+  canEdit,
+  onAnyChangeState,
+  onLocalUpdate,
+  onServerApplied,
+  onDeleteSlot,
+  onReorder,
+  onDuplicateSlot,
+  groupId,
+}: SlotsListProps): JSX.Element => {
+  // Hooks must be called before any conditional returns
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+  const { handleDragEnd } = useSchedulesDndController(slots, (next) => onReorder(next), onAnyChangeState);
+
   if (!slots.length) {
     return <div className="text-sm text-muted-foreground">Brak slotów na ten dzień.</div>;
   }
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
-  const { handleDragEnd } = useSchedulesDndController(
-    slots,
-    (next) => onReorder(next),
-    onAnyChangeState
-  );
 
   return (
     <div className="space-y-2" aria-live="polite">
@@ -56,5 +63,3 @@ const SlotsListComponent = ({ slots, canEdit, onAnyChangeState, onLocalUpdate, o
 };
 
 export const SlotsList = React.memo(SlotsListComponent);
-
-

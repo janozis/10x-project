@@ -171,4 +171,3 @@ export const PATCH: APIRoute = async ({ locals, request }) => {
     }
   );
 };
-

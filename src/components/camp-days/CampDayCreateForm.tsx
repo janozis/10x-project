@@ -508,12 +508,7 @@ export default function CampDayCreateForm({
             {submitting && submitModeRef.current === "detail" ? <Loader2 className="animate-spin" /> : null}
             Utwórz i przejdź do dnia
           </Button>
-          <Button
-            type="submit"
-            variant="secondary"
-            disabled={submitting}
-            onClick={() => selectRedirectMode("list")}
-          >
+          <Button type="submit" variant="secondary" disabled={submitting} onClick={() => selectRedirectMode("list")}>
             {submitting && submitModeRef.current === "list" ? <Loader2 className="animate-spin" /> : null}
             Utwórz i wróć do listy
           </Button>

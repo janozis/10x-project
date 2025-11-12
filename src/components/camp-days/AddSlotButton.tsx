@@ -81,10 +81,11 @@ export function AddSlotButton({ groupId, campDayId, slots, canEdit, onCreated }:
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button 
-          disabled={!canEdit} 
+        <Button
+          disabled={!canEdit}
           size="sm"
-          onClick={(e) => {
+          onClick={() => {
+            // eslint-disable-next-line no-console
             console.log("[AddSlotButton] Clicked, canEdit:", canEdit);
           }}
         >
@@ -108,17 +109,19 @@ export function AddSlotButton({ groupId, campDayId, slots, canEdit, onCreated }:
                       <div className="text-sm font-medium">{a.title}</div>
                       <div className="text-xs text-muted-foreground">{a.status}</div>
                     </div>
-                    <Button size="sm" onClick={() => createWithActivity(a.id)} disabled={loading}>Wybierz</Button>
+                    <Button size="sm" onClick={() => createWithActivity(a.id)} disabled={loading}>
+                      Wybierz
+                    </Button>
                   </li>
                 ))}
               </ul>
             )}
           </div>
-          <div className="text-xs text-muted-foreground">Domyślny czas: {defaultStartEnd.start}–{defaultStartEnd.end}</div>
+          <div className="text-xs text-muted-foreground">
+            Domyślny czas: {defaultStartEnd.start}–{defaultStartEnd.end}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
   );
 }
-
-

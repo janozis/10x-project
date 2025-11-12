@@ -44,8 +44,13 @@ export function ActivityEditorForm({
 }: ActivityEditorFormProps): JSX.Element {
   const [saving, setSaving] = React.useState(false);
   const [requestingAI, setRequestingAI] = React.useState(false);
-  const { conflict, open: conflictOpen, setOpen: setConflictOpen, reportConflict, reset: resetConflict } =
-    useConflictDetection<ActivityFormValues>();
+  const {
+    conflict,
+    open: conflictOpen,
+    setOpen: setConflictOpen,
+    reportConflict,
+    reset: resetConflict,
+  } = useConflictDetection<ActivityFormValues>();
   const [lastSavedAt, setLastSavedAt] = React.useState<Date | undefined>(undefined);
   const { saveDraft, drafts, error: autosaveError } = useAutosaveDrafts(activityId);
   const [aiRequestTrigger, setAiRequestTrigger] = React.useState<number | undefined>(undefined);
@@ -84,7 +89,7 @@ export function ActivityEditorForm({
     async (values: ActivityFormValues) => {
       setSaving(true);
       try {
-        const res = await patchActivity(activityId, values);
+        await patchActivity(activityId, values);
         toast.success("Zapisano zmiany");
         onValuesChange(values);
         await onRefresh();
@@ -96,7 +101,9 @@ export function ActivityEditorForm({
             Object.entries(details).forEach(([k, msg]) => {
               try {
                 form.setError(k as keyof ActivityFormValues, { type: "server", message: String(msg) });
-              } catch {}
+              } catch {
+                // Ignore errors for invalid field names
+              }
             });
             toast.error("Popraw błędy formularza");
             return;
@@ -231,7 +238,9 @@ export function ActivityEditorForm({
             }}
           />
         }
-        editors={<EditorsManager activityId={activityId} groupId={vm.group_id} canManage={permissions?.role === "admin"} />}
+        editors={
+          <EditorsManager activityId={activityId} groupId={vm.group_id} canManage={permissions?.role === "admin"} />
+        }
         ai={
           <AIEvaluationPanel
             activityId={activityId}
@@ -313,4 +322,3 @@ function diffFields(local: Record<string, unknown>, server: Record<string, unkno
   const keys = Array.from(new Set([...Object.keys(local), ...Object.keys(server)]));
   return keys.filter((k) => JSON.stringify(local[k]) !== JSON.stringify(server[k]));
 }
-

@@ -2,7 +2,6 @@
 import Layout from "@/layouts/Layout.astro";
 import type { GroupDashboardDTO, GroupPermissionsDTO, GroupStatus, GroupDTO } from "@/types";
 import { ArchivedBanner } from "@/components/groups/ArchivedBanner";
-import { GroupDashboardTiles } from "@/components/groups/GroupDashboardTiles";
 import { GroupDashboardTilesClient } from "@/components/groups/GroupDashboardTilesClient";
 import type { DashboardTilesVM } from "@/lib/dashboard/types";
 import { mapDashboardToTilesVM } from "@/lib/mappers/dashboard-tiles.mapper";
@@ -68,12 +67,8 @@ if (!membership) {
   errorMessage = "Group not found";
 } else {
   // User is a member, fetch group
-  const { data: groupRow } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .maybeSingle();
-  
+  const { data: groupRow } = await supabase.from("groups").select("*").eq("id", groupId).maybeSingle();
+
   if (groupRow) {
     groupDto = mapGroupRowToDTO(groupRow);
   }
@@ -83,18 +78,16 @@ if (!membership) {
 let groupStatus: GroupStatus | undefined = undefined;
 try {
   if (supabase && groupDto) {
-    const { data } = await supabase
-      .from("groups")
-      .select("status")
-      .eq("id", groupId)
-      .maybeSingle();
+    const { data } = await supabase.from("groups").select("status").eq("id", groupId).maybeSingle();
     groupStatus = (data?.status as GroupStatus) ?? undefined;
   }
-} catch (e) {
+} catch {
   // non-fatal, ignore
 }
 
-const tilesVm: DashboardTilesVM | null = dashboardDto ? mapDashboardToTilesVM(dashboardDto, permissionsDto ?? undefined) : null;
+const tilesVm: DashboardTilesVM | null = dashboardDto
+  ? mapDashboardToTilesVM(dashboardDto, permissionsDto ?? undefined)
+  : null;
 ---
 
 <Layout title="Pulpit grupy">
@@ -105,49 +98,56 @@ const tilesVm: DashboardTilesVM | null = dashboardDto ? mapDashboardToTilesVM(da
 
       <ArchivedBanner status={groupStatus} />
 
-      {errorMessage ? (
-        <div role="alert" class="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">
-          {errorMessage}
-        </div>
-      ) : null}
+      {
+        errorMessage ? (
+          <div
+            role="alert"
+            class="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm"
+          >
+            {errorMessage}
+          </div>
+        ) : null
+      }
 
-      {tilesVm ? (
-        <GroupDashboardTilesClient client:load groupId={groupId} initialVm={tilesVm} permissions={permissionsDto} />
-      ) : (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div class="h-28 rounded-md bg-muted animate-pulse" key={i} />
-          ))}
-        </div>
-      )}
+      {
+        tilesVm ? (
+          <GroupDashboardTilesClient client:load groupId={groupId} initialVm={tilesVm} permissions={permissionsDto} />
+        ) : (
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div class="h-28 rounded-md bg-muted animate-pulse" key={i} />
+            ))}
+          </div>
+        )
+      }
 
       <DashboardShortcuts groupId={groupId} permissions={permissionsDto} />
 
-      {groupDto && permissionsDto ? (
-        <DashboardInviteCard
-          client:load
-          groupId={groupId}
-          group={groupDto}
-          canManage={permissionsDto.role === "admin"}
-        />
-      ) : null}
+      {
+        groupDto && permissionsDto ? (
+          <DashboardInviteCard
+            client:load
+            groupId={groupId}
+            group={groupDto}
+            canManage={permissionsDto.role === "admin"}
+          />
+        ) : null
+      }
 
-      {permissionsDto ? (
-        <QuickTaskForm
-          client:load
-          groupId={groupId}
-          canCreate={permissionsDto.role === "admin" || permissionsDto.role === "editor"}
-          onCreated={() => {
-            // Realtime/refetch will be added in the next iteration
-          }}
-        />
-      ) : null}
+      {
+        permissionsDto ? (
+          <QuickTaskForm
+            client:load
+            groupId={groupId}
+            canCreate={permissionsDto.role === "admin" || permissionsDto.role === "editor"}
+            onCreated={() => {
+              // Realtime/refetch will be added in the next iteration
+            }}
+          />
+        ) : null
+      }
 
-      {dashboardDto ? (
-        <RecentActivityFeed groupId={groupId} initialItems={dashboardDto.recent_activity} />
-      ) : null}
+      {dashboardDto ? <RecentActivityFeed groupId={groupId} initialItems={dashboardDto.recent_activity} /> : null}
     </div>
   </main>
 </Layout>
-
-

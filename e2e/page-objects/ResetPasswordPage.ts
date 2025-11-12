@@ -1,8 +1,8 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Reset Password Page
- * 
+ *
  * Encapsulates reset password page interactions following AAA pattern:
  * - Arrange: Initialize page and locators
  * - Act: Perform actions (reset password, navigate)
@@ -20,15 +20,15 @@ export class ResetPasswordPage {
 
   constructor(page: Page) {
     this.page = page;
-    
+
     // Use data-test-id attributes for stable selectors
-    this.passwordInput = page.getByTestId('auth-password-input');
-    this.submitButton = page.getByTestId('auth-reset-submit-button');
-    this.errorMessage = page.getByTestId('auth-reset-error-message');
-    this.tokenErrorMessage = page.getByTestId('auth-reset-token-error-message');
-    this.successMessage = page.getByTestId('auth-reset-success-message');
-    this.loginLink = page.getByTestId('auth-reset-login-link');
-    this.forgotLink = page.getByTestId('auth-reset-forgot-link');
+    this.passwordInput = page.getByTestId("auth-password-input");
+    this.submitButton = page.getByTestId("auth-reset-submit-button");
+    this.errorMessage = page.getByTestId("auth-reset-error-message");
+    this.tokenErrorMessage = page.getByTestId("auth-reset-token-error-message");
+    this.successMessage = page.getByTestId("auth-reset-success-message");
+    this.loginLink = page.getByTestId("auth-reset-login-link");
+    this.forgotLink = page.getByTestId("auth-reset-forgot-link");
   }
 
   /**
@@ -42,7 +42,7 @@ export class ResetPasswordPage {
    * Navigate to reset password page without token
    */
   async gotoWithoutToken() {
-    await this.page.goto('/auth/reset-password');
+    await this.page.goto("/auth/reset-password");
   }
 
   /**
@@ -71,7 +71,7 @@ export class ResetPasswordPage {
    * Get error message text
    */
   async getErrorMessage(): Promise<string> {
-    return await this.errorMessage.textContent() || '';
+    return (await this.errorMessage.textContent()) || "";
   }
 
   /**
@@ -85,7 +85,7 @@ export class ResetPasswordPage {
    * Get token error message text
    */
   async getTokenErrorMessage(): Promise<string> {
-    return await this.tokenErrorMessage.textContent() || '';
+    return (await this.tokenErrorMessage.textContent()) || "";
   }
 
   /**
@@ -99,7 +99,7 @@ export class ResetPasswordPage {
    * Get success message text
    */
   async getSuccessMessage(): Promise<string> {
-    return await this.successMessage.textContent() || '';
+    return (await this.successMessage.textContent()) || "";
   }
 
   /**
@@ -113,7 +113,6 @@ export class ResetPasswordPage {
    * Wait for success message to appear
    */
   async waitForSuccess() {
-    await this.successMessage.waitFor({ state: 'visible' });
+    await this.successMessage.waitFor({ state: "visible" });
   }
 }
-

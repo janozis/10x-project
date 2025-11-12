@@ -193,16 +193,20 @@ export async function listActivities(
   const aiEvaluationsMap: Record<string, LatestAIEvaluationRow> = {};
   if (activityIds.length) {
     // Try to use optimized RPC function first (uses DISTINCT ON at database level)
-    const { data: rpcData, error: rpcErr } = await supabase.rpc('get_latest_ai_evaluations', {
-      p_activity_ids: activityIds
+    const { data: rpcData, error: rpcErr } = await supabase.rpc("get_latest_ai_evaluations", {
+      p_activity_ids: activityIds,
     });
-    
+
     if (!rpcErr && rpcData) {
       // RPC succeeded - use the results
       rpcData.forEach((r: LatestAIEvaluationRow) => {
         aiEvaluationsMap[r.activity_id] = r;
       });
-    } else if (rpcErr?.code === '42883' || rpcErr?.message?.includes('function') || rpcErr?.message?.includes('does not exist')) {
+    } else if (
+      rpcErr?.code === "42883" ||
+      rpcErr?.message?.includes("function") ||
+      rpcErr?.message?.includes("does not exist")
+    ) {
       // RPC function doesn't exist (old migration) - fallback to client-side deduplication
       // This still only fetches evaluations for activities in current page (activityIds)
       const { data: aiEvalRows, error: aiEvalErr } = await supabase
@@ -211,9 +215,9 @@ export async function listActivities(
         .in("activity_id", activityIds)
         .order("activity_id")
         .order("version", { ascending: false });
-      
+
       if (aiEvalErr) return internal(aiEvalErr.message);
-      
+
       // Keep only the first (highest version) evaluation for each activity_id
       (aiEvalRows || []).forEach((r) => {
         if (!aiEvaluationsMap[r.activity_id]) {

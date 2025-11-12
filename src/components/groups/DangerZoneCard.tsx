@@ -18,16 +18,18 @@ export function DangerZoneCard({ isDeleted, canManage, onDelete, onRestore }: Pr
       {isDeleted ? (
         <div className="flex items-center justify-between">
           <p className="text-sm">Grupa jest usunięta. Możesz ją przywrócić.</p>
-          <Button type="button" variant="default" onClick={onRestore}>Przywróć grupę</Button>
+          <Button type="button" variant="default" onClick={onRestore}>
+            Przywróć grupę
+          </Button>
         </div>
       ) : (
         <div className="flex items-center justify-between">
           <p className="text-sm">Usunięcie spowoduje ukrycie grupy dla użytkowników. Możliwe będzie przywrócenie.</p>
-          <Button type="button" variant="destructive" onClick={onDelete}>Usuń grupę</Button>
+          <Button type="button" variant="destructive" onClick={onDelete}>
+            Usuń grupę
+          </Button>
         </div>
       )}
     </div>
   );
 }
-
-

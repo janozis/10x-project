@@ -145,5 +145,3 @@ function redirectToLogin(): void {
   params.set("redirect", redirectTarget);
   window.location.assign(`/login?${params.toString()}`);
 }
-
-

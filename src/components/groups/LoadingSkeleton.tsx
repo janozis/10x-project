@@ -12,5 +12,3 @@ export function LoadingSkeleton({ rows = 4 }: { rows?: number }): JSX.Element {
     </ul>
   );
 }
-
-

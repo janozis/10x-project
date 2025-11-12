@@ -35,11 +35,13 @@ export function mapActivityRow(
     created_at: row.created_at,
     updated_at: row.updated_at,
     editors: editorDTOs,
-    latest_ai_evaluation: latestAIEvaluation ? {
-      lore_score: latestAIEvaluation.lore_score,
-      scouting_values_score: latestAIEvaluation.scouting_values_score,
-      version: latestAIEvaluation.version,
-      created_at: latestAIEvaluation.created_at as TimestampISO,
-    } : null,
+    latest_ai_evaluation: latestAIEvaluation
+      ? {
+          lore_score: latestAIEvaluation.lore_score,
+          scouting_values_score: latestAIEvaluation.scouting_values_score,
+          version: latestAIEvaluation.version,
+          created_at: latestAIEvaluation.created_at as TimestampISO,
+        }
+      : null,
   };
 }

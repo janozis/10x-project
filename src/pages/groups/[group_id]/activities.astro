@@ -31,12 +31,8 @@ const { data: membership } = await supabase
   .maybeSingle();
 
 if (membership) {
-  const { data: groupRow } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", group_id)
-    .maybeSingle();
-  
+  const { data: groupRow } = await supabase.from("groups").select("*").eq("id", group_id).maybeSingle();
+
   if (groupRow) {
     groupDto = {
       id: groupRow.id,
@@ -59,13 +55,13 @@ if (membership) {
 <Layout title="Aktywności">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-6xl">
-      <Breadcrumb items={[
-        { label: "Lista grup", href: "/groups" },
-        { label: groupDto?.name || "Grupa", href: `/groups/${group_id}/dashboard` }
-      ]} />
+      <Breadcrumb
+        items={[
+          { label: "Lista grup", href: "/groups" },
+          { label: groupDto?.name || "Grupa", href: `/groups/${group_id}/dashboard` },
+        ]}
+      />
       <ActivitiesListShell groupId={group_id} client:load />
     </div>
   </main>
 </Layout>
-
-

@@ -15,7 +15,7 @@ export function DashboardInviteCard({ groupId, group, canManage }: DashboardInvi
   const [show, setShow] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
-  const [confirmAction, setConfirmAction] = React.useState<"generate" | "rotate" | undefined>(undefined);
+  const [, setConfirmAction] = React.useState<"generate" | "rotate" | undefined>(undefined);
   const [joinLink, setJoinLink] = React.useState<string>("");
 
   const invite = group.invite;
@@ -61,9 +61,7 @@ export function DashboardInviteCard({ groupId, group, canManage }: DashboardInvi
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm font-medium">Kod zaproszenia</div>
-            <div className="text-xs text-muted-foreground mt-1">
-              Wygeneruj kod, aby zaprosić członków do grupy
-            </div>
+            <div className="text-xs text-muted-foreground mt-1">Wygeneruj kod, aby zaprosić członków do grupy</div>
           </div>
           <Button
             type="button"
@@ -181,4 +179,3 @@ function formatDateTime(iso: string): string {
   const d = new Date(iso);
   return d.toLocaleString();
 }
-

@@ -12,7 +12,7 @@ export interface GroupCardProps {
   focusMe?: boolean;
 }
 
-function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }: GroupCardProps): JSX.Element {
+function GroupCardComponent({ item, onRestore, onCopyInvite, focusMe }: GroupCardProps): JSX.Element {
   const canRestore = item.isArchived;
   const inviteCode = item.inviteCode ?? undefined;
 
@@ -40,19 +40,22 @@ function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }
     }
   }, [focusMe]);
 
-  const handleCardClick = React.useCallback((e: React.MouseEvent) => {
-    // Prevent navigation if clicking on a button
-    const target = e.target as HTMLElement;
-    if (target.closest('button')) {
-      return;
-    }
-    // Navigate to group dashboard
-    window.location.href = `/groups/${item.id}/dashboard`;
-  }, [item.id]);
+  const handleCardClick = React.useCallback(
+    (e: React.MouseEvent) => {
+      // Prevent navigation if clicking on a button
+      const target = e.target as HTMLElement;
+      if (target.closest("button")) {
+        return;
+      }
+      // Navigate to group dashboard
+      window.location.href = `/groups/${item.id}/dashboard`;
+    },
+    [item.id]
+  );
 
   return (
-    <Card 
-      ref={cardRef} 
+    <Card
+      ref={cardRef}
       tabIndex={focusMe ? -1 : undefined}
       className="cursor-pointer transition-colors hover:bg-accent/40"
       onClick={handleCardClick}
@@ -85,7 +88,7 @@ function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }
           ) : null}
         </dl>
       </CardContent>
-      {(inviteCode || canRestore) ? (
+      {inviteCode || canRestore ? (
         <CardFooter className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             {inviteCode ? (
@@ -109,9 +112,9 @@ function GroupCardComponent({ item, onDelete, onRestore, onCopyInvite, focusMe }
           </div>
           <div className="flex items-center gap-2">
             {canRestore ? (
-              <Button 
-                variant="secondary" 
-                size="sm" 
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
                   onRestore?.(item.id);

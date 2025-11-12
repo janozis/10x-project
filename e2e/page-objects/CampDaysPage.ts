@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Data interface for camp day editing
@@ -11,7 +11,7 @@ export interface CampDayData {
 
 /**
  * Page Object Model for Camp Days Page
- * 
+ *
  * Encapsulates camp days structure and scheduling interactions following AAA pattern:
  * - Arrange: Initialize page and locators
  * - Act: Perform actions (view days, schedule activities, edit days)
@@ -19,28 +19,28 @@ export interface CampDayData {
  */
 export class CampDaysPage {
   readonly page: Page;
-  
+
   // Page container and messages
   readonly campDaysPage: Locator;
   readonly errorMessage: Locator;
   readonly retryButton: Locator;
   readonly noResults: Locator;
   readonly clearFiltersButton: Locator;
-  
+
   // Camp day cards
   readonly campDayCards: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    
+
     // Use accessible selector instead of data-test-id since React hydration is slow
     // The element exists with aria-label immediately, test-id may come later
     this.campDaysPage = page.locator('section[aria-label="Zarządzanie dniami obozu"]');
-    this.errorMessage = page.getByTestId('camp-days-error-message');
-    this.retryButton = page.getByTestId('camp-days-retry-button');
-    this.noResults = page.getByTestId('camp-days-no-results');
-    this.clearFiltersButton = page.getByTestId('camp-days-clear-filters-button');
-    
+    this.errorMessage = page.getByTestId("camp-days-error-message");
+    this.retryButton = page.getByTestId("camp-days-retry-button");
+    this.noResults = page.getByTestId("camp-days-no-results");
+    this.clearFiltersButton = page.getByTestId("camp-days-clear-filters-button");
+
     // Camp day cards
     this.campDayCards = page.locator('[data-test-id="camp-day-card"]');
   }
@@ -50,7 +50,7 @@ export class CampDaysPage {
    */
   async goto(groupId: string) {
     await this.page.goto(`/groups/${groupId}/camp-days`);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
     // Wait for React hydration (component uses client:load)
     await this.page.waitForTimeout(1000);
   }
@@ -92,13 +92,13 @@ export class CampDaysPage {
     // Click on the time slot
     const slot = this.page.locator(`[data-time-slot="${timeSlot}"]`);
     await slot.click();
-    
+
     // Select activity from dropdown or dialog
-    const activitySelect = this.page.locator('[data-activity-select]');
+    const activitySelect = this.page.locator("[data-activity-select]");
     await activitySelect.selectOption(activityId);
-    
+
     // Confirm
-    await this.page.getByRole('button', { name: /dodaj|add/i }).click();
+    await this.page.getByRole("button", { name: /dodaj|add/i }).click();
   }
 
   /**
@@ -107,9 +107,9 @@ export class CampDaysPage {
   async removeActivity(scheduleId: string) {
     const removeButton = this.page.locator(`[data-schedule-id="${scheduleId}"] [data-remove-button]`);
     await removeButton.click();
-    
+
     // Confirm if dialog appears
-    const confirmButton = this.page.getByRole('button', { name: /potwierdź|confirm/i });
+    const confirmButton = this.page.getByRole("button", { name: /potwierdź|confirm/i });
     if (await confirmButton.isVisible()) {
       await confirmButton.click();
     }
@@ -122,22 +122,22 @@ export class CampDaysPage {
     // Open edit dialog/form
     const editButton = this.page.locator(`[data-day-id="${dayId}"] [data-edit-button]`);
     await editButton.click();
-    
+
     // Fill form fields
     if (data.name) {
       await this.page.getByLabel(/nazwa|name/i).fill(data.name);
     }
-    
+
     if (data.date) {
       await this.page.getByLabel(/data|date/i).fill(data.date);
     }
-    
+
     if (data.description) {
       await this.page.getByLabel(/opis|description/i).fill(data.description);
     }
-    
+
     // Submit
-    await this.page.getByRole('button', { name: /zapisz|save/i }).click();
+    await this.page.getByRole("button", { name: /zapisz|save/i }).click();
   }
 
   /**
@@ -165,7 +165,7 @@ export class CampDaysPage {
    * Get error message text
    */
   async getErrorMessage(): Promise<string> {
-    return await this.errorMessage.textContent() || '';
+    return (await this.errorMessage.textContent()) || "";
   }
 
   /**
@@ -181,13 +181,13 @@ export class CampDaysPage {
   async waitForLoad() {
     // First wait for ANY sign the page loaded (breadcrumb or main content)
     try {
-      await this.page.locator('main').waitFor({ state: 'visible', timeout: 5000 });
-    } catch (e) {
-      console.log('Warning: main element not visible');
+      await this.page.locator("main").waitFor({ state: "visible", timeout: 5000 });
+    } catch {
+      console.log("Warning: main element not visible");
     }
-    
+
     // Then wait specifically for our component with generous timeout
-    await this.campDaysPage.waitFor({ state: 'visible', timeout: 20000 });
+    await this.campDaysPage.waitFor({ state: "visible", timeout: 20000 });
   }
 
   /**
@@ -196,14 +196,14 @@ export class CampDaysPage {
   async getDayNames(): Promise<string[]> {
     const cards = await this.campDayCards.all();
     const names: string[] = [];
-    
+
     for (const card of cards) {
       const text = await card.textContent();
       if (text) {
         names.push(text.trim());
       }
     }
-    
+
     return names;
   }
 
@@ -219,11 +219,10 @@ export class CampDaysPage {
    * Filter camp days by date range
    */
   async filterByDateRange(startDate: string, endDate: string) {
-    const startDateInput = this.page.locator('[data-filter-start-date]');
-    const endDateInput = this.page.locator('[data-filter-end-date]');
-    
+    const startDateInput = this.page.locator("[data-filter-start-date]");
+    const endDateInput = this.page.locator("[data-filter-end-date]");
+
     await startDateInput.fill(startDate);
     await endDateInput.fill(endDate);
   }
 }
-

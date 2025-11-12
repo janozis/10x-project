@@ -14,24 +14,32 @@ export function DashboardShortcuts({ groupId, permissions }: DashboardShortcutsP
   return (
     <nav aria-label="Skróty" className="my-4 flex flex-wrap gap-2">
       <a href={`/groups/${groupId}/members`}>
-        <Button variant="outline" size="sm">Członkowie</Button>
+        <Button variant="outline" size="sm">
+          Członkowie
+        </Button>
       </a>
       <a href={`/groups/${groupId}/activities`}>
-        <Button variant="outline" size="sm">Zajęcia</Button>
+        <Button variant="outline" size="sm">
+          Zajęcia
+        </Button>
       </a>
       <a href={`/groups/${groupId}/tasks`}>
-        <Button variant="outline" size="sm">Zadania</Button>
+        <Button variant="outline" size="sm">
+          Zadania
+        </Button>
       </a>
       <a href={`/groups/${groupId}/camp-days`}>
-        <Button variant="outline" size="sm">Struktura dnia</Button>
+        <Button variant="outline" size="sm">
+          Struktura dnia
+        </Button>
       </a>
       {canManage ? (
         <a href={`/groups/${groupId}/settings`}>
-          <Button variant="secondary" size="sm">Ustawienia</Button>
+          <Button variant="secondary" size="sm">
+            Ustawienia
+          </Button>
         </a>
       ) : null}
     </nav>
   );
 }
-
-

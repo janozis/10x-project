@@ -254,7 +254,15 @@ export interface VersionDTO {
 /** GROUP CREATE */
 export type GroupCreateCommand = Pick<
   TablesInsert<"groups">,
-  "name" | "description" | "lore_theme" | "start_date" | "end_date" | "max_members" | "invite_code" | "created_by" | "updated_by"
+  | "name"
+  | "description"
+  | "lore_theme"
+  | "start_date"
+  | "end_date"
+  | "max_members"
+  | "invite_code"
+  | "created_by"
+  | "updated_by"
 >;
 
 /** GROUP UPDATE (PATCH) */
@@ -420,7 +428,7 @@ export interface ActivityWithEditorsDTO extends ActivityDTO {
  *  ===================== */
 
 /** Role in LLM conversation */
-export type LlmRole = 'system' | 'user' | 'assistant' | 'tool';
+export type LlmRole = "system" | "user" | "assistant" | "tool";
 
 /** Single message in LLM conversation */
 export interface LlmMessage {
@@ -443,14 +451,14 @@ export interface LlmCompletionResult {
 
 /** LLM API error codes */
 export type LlmErrorCode =
-  | 'LLM_CONFIG_ERROR'
-  | 'LLM_AUTH_ERROR'
-  | 'LLM_RATE_LIMIT'
-  | 'LLM_UPSTREAM_ERROR'
-  | 'LLM_TIMEOUT'
-  | 'LLM_INVALID_RESPONSE'
-  | 'LLM_VALIDATION_ERROR'
-  | 'LLM_PAYLOAD_TOO_LARGE';
+  | "LLM_CONFIG_ERROR"
+  | "LLM_AUTH_ERROR"
+  | "LLM_RATE_LIMIT"
+  | "LLM_UPSTREAM_ERROR"
+  | "LLM_TIMEOUT"
+  | "LLM_INVALID_RESPONSE"
+  | "LLM_VALIDATION_ERROR"
+  | "LLM_PAYLOAD_TOO_LARGE";
 
 /** LLM API error */
 export interface LlmApiError {

@@ -9,21 +9,21 @@ export const POST: APIRoute = async (context) => {
   const supabase = context.locals.supabase;
   const user = context.locals.user;
   if (!supabase) {
-    return new Response(JSON.stringify(errors.internal()), { 
+    return new Response(JSON.stringify(errors.internal()), {
       status: 500,
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
   }
 
   const result = await promoteMemberAdmin(supabase, user?.id, group_id || "", user_id || "");
   if ("error" in result) {
-    return new Response(JSON.stringify(result), { 
+    return new Response(JSON.stringify(result), {
       status: statusForErrorCode(result.error.code),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
   }
-  return new Response(JSON.stringify(result), { 
+  return new Response(JSON.stringify(result), {
     status: 200,
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
   });
 };

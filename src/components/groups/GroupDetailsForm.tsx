@@ -1,6 +1,5 @@
 import * as React from "react";
-import { z } from "zod";
-import type { GroupDTO, GroupUpdateCommand, UUID } from "@/types";
+import type { GroupDTO, GroupUpdateCommand } from "@/types";
 import { groupUpdateSchema } from "@/lib/validation/group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -76,28 +75,55 @@ export function GroupDetailsForm({ initial, canEdit, isSubmitting, onSave, onTog
       <div className="grid grid-cols-1 gap-4">
         <div>
           <Label htmlFor="name">Nazwa</Label>
-          <Input id="name" value={values.name} onChange={(e) => update("name", e.target.value)} disabled={!canEdit || submitting || isSubmitting} />
+          <Input
+            id="name"
+            value={values.name}
+            onChange={(e) => update("name", e.target.value)}
+            disabled={!canEdit || submitting || isSubmitting}
+          />
           {errors.name ? <p className="mt-1 text-xs text-destructive">{errors.name}</p> : null}
         </div>
         <div>
           <Label htmlFor="description">Opis</Label>
-          <Textarea id="description" value={values.description} onChange={(e) => update("description", e.target.value)} disabled={!canEdit || submitting || isSubmitting} />
+          <Textarea
+            id="description"
+            value={values.description}
+            onChange={(e) => update("description", e.target.value)}
+            disabled={!canEdit || submitting || isSubmitting}
+          />
           {errors.description ? <p className="mt-1 text-xs text-destructive">{errors.description}</p> : null}
         </div>
         <div>
           <Label htmlFor="lore_theme">Motyw lore</Label>
-          <Input id="lore_theme" value={values.lore_theme} onChange={(e) => update("lore_theme", e.target.value)} disabled={!canEdit || submitting || isSubmitting} />
+          <Input
+            id="lore_theme"
+            value={values.lore_theme}
+            onChange={(e) => update("lore_theme", e.target.value)}
+            disabled={!canEdit || submitting || isSubmitting}
+          />
           {errors.lore_theme ? <p className="mt-1 text-xs text-destructive">{errors.lore_theme}</p> : null}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <Label htmlFor="start_date">Data startu</Label>
-            <Input id="start_date" type="date" value={values.start_date} onChange={(e) => update("start_date", e.target.value)} disabled={!canEdit || submitting || isSubmitting} />
+            <Input
+              id="start_date"
+              type="date"
+              value={values.start_date}
+              onChange={(e) => update("start_date", e.target.value)}
+              disabled={!canEdit || submitting || isSubmitting}
+            />
             {errors.start_date ? <p className="mt-1 text-xs text-destructive">{errors.start_date}</p> : null}
           </div>
           <div>
             <Label htmlFor="end_date">Data zakończenia</Label>
-            <Input id="end_date" type="date" value={values.end_date} onChange={(e) => update("end_date", e.target.value)} disabled={!canEdit || submitting || isSubmitting} />
+            <Input
+              id="end_date"
+              type="date"
+              value={values.end_date}
+              onChange={(e) => update("end_date", e.target.value)}
+              disabled={!canEdit || submitting || isSubmitting}
+            />
             {errors.end_date ? <p className="mt-1 text-xs text-destructive">{errors.end_date}</p> : null}
           </div>
           <div>
@@ -149,5 +175,3 @@ export function GroupDetailsForm({ initial, canEdit, isSubmitting, onSave, onTog
     </form>
   );
 }
-
-

@@ -24,5 +24,3 @@ export function useConflictDetection<T>() {
 
   return { conflict, open, setOpen, reportConflict, reset } as const;
 }
-
-

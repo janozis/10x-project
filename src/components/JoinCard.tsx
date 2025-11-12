@@ -121,7 +121,10 @@ function JoinForm(props: JoinFormProps) {
     return undefined;
   }, [code]);
 
-  const errorMessage = useMemo(() => mapErrorToMessage(submitError ?? error ?? undefined, code), [submitError, error, code]);
+  const errorMessage = useMemo(
+    () => mapErrorToMessage(submitError ?? error ?? undefined, code),
+    [submitError, error, code]
+  );
 
   return (
     <form onSubmit={onSubmit} noValidate className="grid gap-4" aria-labelledby={alertId}>
@@ -141,7 +144,11 @@ function JoinForm(props: JoinFormProps) {
       )}
 
       {successAnnounce ? (
-        <div role="status" aria-live="polite" className="rounded-md border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-emerald-700 dark:text-emerald-300">
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-md border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-emerald-700 dark:text-emerald-300"
+        >
           {successAnnounce}
         </div>
       ) : null}
@@ -168,7 +175,12 @@ function JoinForm(props: JoinFormProps) {
         ) : null}
       </div>
 
-      <Button ref={submitRef} type="submit" disabled={!isValid || isSubmitting} aria-disabled={!isValid || isSubmitting}>
+      <Button
+        ref={submitRef}
+        type="submit"
+        disabled={!isValid || isSubmitting}
+        aria-disabled={!isValid || isSubmitting}
+      >
         {isSubmitting ? (
           <span className="inline-flex items-center gap-2">
             <Loader2 className="animate-spin" />
@@ -214,7 +226,15 @@ function CodeMaskedInput(props: CodeMaskedInputProps) {
         const k = e.key;
         const meta = e.ctrlKey || e.metaKey || e.altKey;
         if (meta) return;
-        const allowedControl = k === "Backspace" || k === "Delete" || k === "ArrowLeft" || k === "ArrowRight" || k === "Tab" || k === "Home" || k === "End" || k === "Enter";
+        const allowedControl =
+          k === "Backspace" ||
+          k === "Delete" ||
+          k === "ArrowLeft" ||
+          k === "ArrowRight" ||
+          k === "Tab" ||
+          k === "Home" ||
+          k === "End" ||
+          k === "Enter";
         if (allowedControl) return;
         if (k.length === 1 && !INVITE_CODE_ALLOWED_CHAR.test(k)) {
           e.preventDefault();
@@ -241,31 +261,6 @@ function JoinStatus(props: JoinStatusProps) {
   return (
     <div aria-live="polite" className="sr-only">
       {props.message ?? (props.status === "submitting" ? "Wysyłanie..." : undefined)}
-    </div>
-  );
-}
-
-// =====================
-// InlineAlert (generic; used via direct markup in JoinForm for now)
-// =====================
-interface InlineAlertProps {
-  variant: "error" | "info" | "success";
-  title?: string;
-  description?: string;
-}
-
-function InlineAlert(props: InlineAlertProps) {
-  const base = "rounded-md p-3 text-sm";
-  const tone =
-    props.variant === "error"
-      ? "border border-destructive/30 bg-destructive/5 text-destructive"
-      : props.variant === "success"
-      ? "border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300"
-      : "border border-neutral-300/50 bg-neutral-50 dark:bg-neutral-900/20 text-neutral-700 dark:text-neutral-300";
-  return (
-    <div role={props.variant === "error" ? "alert" : "status"} aria-live="polite" className={`${base} ${tone}`}>
-      {props.title ? <div className="font-medium">{props.title}</div> : null}
-      {props.description ? <div>{props.description}</div> : null}
     </div>
   );
 }
@@ -317,7 +312,12 @@ function CopyDeepLink(props: CopyDeepLinkProps) {
         <Button type="button" variant="outline" disabled={!hasValidCode} onClick={() => copyText(link)}>
           Kopiuj link
         </Button>
-        <Button type="button" variant="outline" disabled={!hasValidCode} onClick={() => copyText(sanitizeInviteCodeInput(props.code ?? ""))}>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={!hasValidCode}
+          onClick={() => copyText(sanitizeInviteCodeInput(props.code ?? ""))}
+        >
           Kopiuj kod
         </Button>
       </div>
@@ -351,7 +351,7 @@ function mapErrorToMessage(code: JoinErrorCode | undefined, enteredCode: string)
       const href = `/login?redirect=${encodeURIComponent(`/join?code=${raw}`)}`;
       return (
         <span>
-          Zaloguj się, aby dołączyć do grupy. {" "}
+          Zaloguj się, aby dołączyć do grupy.{" "}
           <a className="text-primary underline" href={href}>
             Przejdź do logowania
           </a>

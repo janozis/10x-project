@@ -1,7 +1,14 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { sanitizeInviteCodeInput, isValidInviteCode } from "@/lib/validation/join";
@@ -13,7 +20,9 @@ export interface JoinGroupDialogProps {
   onJoined?: () => void;
 }
 
-interface FormValues { code: string }
+interface FormValues {
+  code: string;
+}
 
 export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialogProps): JSX.Element {
   const { join, loading, error } = useJoinGroup();
@@ -60,7 +69,11 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" aria-busy={loading}>
           {error ? (
-            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm" data-test-id="groups-join-error-message">
+            <div
+              role="alert"
+              className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm"
+              data-test-id="groups-join-error-message"
+            >
               {serverCode === "RATE_LIMIT_EXCEEDED" ? "Przekroczono limit żądań. Spróbuj ponownie za chwilę." : error}
             </div>
           ) : null}
@@ -79,19 +92,36 @@ export function JoinGroupDialog({ open, onOpenChange, onJoined }: JoinGroupDialo
                 form.setValue("code", sanitized, { shouldValidate: true, shouldDirty: true });
               }}
             />
-            <p id="code-help" className="text-xs text-muted-foreground">Dozwolone litery i cyfry, bez I, O, l, 0. Przykład: ABCD1234</p>
+            <p id="code-help" className="text-xs text-muted-foreground">
+              Dozwolone litery i cyfry, bez I, O, l, 0. Przykład: ABCD1234
+            </p>
             {!isValid && codeValue.length > 0 ? (
-              <p id="code-error" className="text-xs text-destructive">Kod musi mieć dokładnie 8 znaków.</p>
+              <p id="code-error" className="text-xs text-destructive">
+                Kod musi mieć dokładnie 8 znaków.
+              </p>
             ) : null}
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading} data-test-id="groups-join-cancel-button">Anuluj</Button>
-            <Button type="submit" disabled={loading || !isValid} aria-disabled={loading || !isValid} data-test-id="groups-join-submit-button">{loading ? "Dołączanie…" : "Dołącz"}</Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={loading}
+              data-test-id="groups-join-cancel-button"
+            >
+              Anuluj
+            </Button>
+            <Button
+              type="submit"
+              disabled={loading || !isValid}
+              aria-disabled={loading || !isValid}
+              data-test-id="groups-join-submit-button"
+            >
+              {loading ? "Dołączanie…" : "Dołącz"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
   );
 }
-
-

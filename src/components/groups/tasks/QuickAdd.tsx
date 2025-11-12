@@ -87,31 +87,56 @@ export function QuickAdd({ defaultActivityId, canCreate, onCreate }: QuickAddPro
     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-3">
       <div className="text-xs font-medium text-muted-foreground">Szybkie dodanie</div>
       {error ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm">{error}</div>
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm"
+        >
+          {error}
+        </div>
       ) : null}
       <div>
-        <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Tytuł" aria-invalid={!!titleError} />
+        <Input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Tytuł"
+          aria-invalid={!!titleError}
+        />
         {titleError ? <div className="mt-1 text-xs text-destructive">{titleError}</div> : null}
       </div>
       <div>
-        <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Opis" aria-invalid={!!descriptionError} />
+        <Textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Opis"
+          aria-invalid={!!descriptionError}
+        />
         {descriptionError ? <div className="mt-1 text-xs text-destructive">{descriptionError}</div> : null}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <div>
-          <Input value={dueDate} onChange={(e) => setDueDate(e.target.value)} placeholder="Termin (YYYY-MM-DD)" aria-invalid={!!dueDateError} />
+          <Input
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            placeholder="Termin (YYYY-MM-DD)"
+            aria-invalid={!!dueDateError}
+          />
           {dueDateError ? <div className="mt-1 text-xs text-destructive">{dueDateError}</div> : null}
         </div>
         <div>
-          <Input value={activityId} onChange={(e) => setActivityId(e.target.value)} placeholder="UUID aktywności (opcjonalnie)" aria-invalid={!!activityIdError} />
+          <Input
+            value={activityId}
+            onChange={(e) => setActivityId(e.target.value)}
+            placeholder="UUID aktywności (opcjonalnie)"
+            aria-invalid={!!activityIdError}
+          />
           {activityIdError ? <div className="mt-1 text-xs text-destructive">{activityIdError}</div> : null}
         </div>
       </div>
       <div className="flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Dodawanie…" : "Dodaj"}</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Dodawanie…" : "Dodaj"}
+        </Button>
       </div>
     </form>
   );
 }
-
-

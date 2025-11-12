@@ -19,7 +19,7 @@ export const prerender = false;
  */
 export const POST: APIRoute = async (context) => {
   const debugEnabled = import.meta.env.ENABLE_DEBUG_LOGS === "true";
-  
+
   let userId = context.locals.user?.id;
   if (!userId) {
     // Fallback anonimowy – TODO: usunąć po wdrożeniu realnego auth
@@ -80,19 +80,19 @@ export const POST: APIRoute = async (context) => {
 export const GET: APIRoute = async (context) => {
   const supabase = context.locals.supabase;
   const debugEnabled = import.meta.env.ENABLE_DEBUG_LOGS === "true";
-  
+
   if (debugEnabled) {
     console.log("[GET /api/groups] Request received");
     console.log("[GET /api/groups] User:", context.locals.user);
   }
-  
+
   if (!supabase) {
     return new Response(JSON.stringify(errors.internal("Supabase client not available")), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   if (!context.locals.user) {
     if (debugEnabled) {
       console.log("[GET /api/groups] No user in context.locals");
@@ -102,25 +102,25 @@ export const GET: APIRoute = async (context) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   const url = new URL(context.request.url);
   const deletedParam = url.searchParams.get("deleted");
   const limitParam = url.searchParams.get("limit");
   const cursorParam = url.searchParams.get("cursor");
   const deleted = deletedParam === "1" || deletedParam === "true";
   const limit = limitParam ? Math.max(1, Math.min(100, Number(limitParam))) : undefined;
-  
+
   if (debugEnabled) {
     console.log("[GET /api/groups] Calling listGroups with:", { deleted, limit, cursor: cursorParam });
   }
-  
+
   // RLS automatically filters by auth.uid(), so we don't need to pass userId
-  const result = await listGroups(supabase, { 
-    deleted, 
-    limit, 
-    cursor: cursorParam ?? undefined
+  const result = await listGroups(supabase, {
+    deleted,
+    limit,
+    cursor: cursorParam ?? undefined,
   });
-  
+
   if ("error" in result) {
     if (debugEnabled) {
       console.error("[GET /api/groups] Error from listGroups:", result.error);
@@ -128,11 +128,11 @@ export const GET: APIRoute = async (context) => {
     const status = mapErrorCodeToHttpStatus(result.error.code);
     return new Response(JSON.stringify(result), { status, headers: { "Content-Type": "application/json" } });
   }
-  
+
   if (debugEnabled) {
     console.log("[GET /api/groups] Success, returning", result.data?.length, "groups");
   }
-  
+
   return new Response(JSON.stringify(result), { status: 200, headers: { "Content-Type": "application/json" } });
 };
 

@@ -26,19 +26,28 @@ export function useEditors(activityId: UUID) {
     }
   }, [activityId]);
 
-  React.useEffect(() => { void list(); }, [list]);
+  React.useEffect(() => {
+    void list();
+  }, [list]);
 
-  const assign = React.useCallback(async (userId: UUID) => {
-    await fetchJson(`/api/activities/${activityId}/editors`, { method: "POST", body: JSON.stringify({ user_id: userId }) });
-    await list();
-  }, [activityId, list]);
+  const assign = React.useCallback(
+    async (userId: UUID) => {
+      await fetchJson(`/api/activities/${activityId}/editors`, {
+        method: "POST",
+        body: JSON.stringify({ user_id: userId }),
+      });
+      await list();
+    },
+    [activityId, list]
+  );
 
-  const remove = React.useCallback(async (userId: UUID) => {
-    await fetchJson(`/api/activities/${activityId}/editors/${userId}`, { method: "DELETE" });
-    await list();
-  }, [activityId, list]);
+  const remove = React.useCallback(
+    async (userId: UUID) => {
+      await fetchJson(`/api/activities/${activityId}/editors/${userId}`, { method: "DELETE" });
+      await list();
+    },
+    [activityId, list]
+  );
 
   return { items, loading, error, list, assign, remove } as const;
 }
-
-

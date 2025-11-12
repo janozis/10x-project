@@ -99,12 +99,8 @@ export default function RegisterForm() {
         </div>
       ) : null}
 
-      <EmailField
-        register={register("email")}
-        error={errors.email?.message}
-        disabled={loading}
-        autoFocus
-      />
+      {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
+      <EmailField register={register("email")} error={errors.email?.message} disabled={loading} autoFocus />
 
       <PasswordField
         id="password"
@@ -128,7 +124,12 @@ export default function RegisterForm() {
         showToggle={false}
       />
 
-      <Button type="submit" disabled={!isValid || loading} aria-disabled={!isValid || loading} data-test-id="auth-register-submit-button">
+      <Button
+        type="submit"
+        disabled={!isValid || loading}
+        aria-disabled={!isValid || loading}
+        data-test-id="auth-register-submit-button"
+      >
         {loading ? (
           <span className="inline-flex items-center gap-2">
             <Loader2 className="animate-spin" />
@@ -141,4 +142,3 @@ export default function RegisterForm() {
     </form>
   );
 }
-

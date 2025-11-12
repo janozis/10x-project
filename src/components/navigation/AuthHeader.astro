@@ -6,7 +6,9 @@ interface Props {
 const { currentPage } = Astro.props;
 ---
 
-<header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header
+  class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+>
   <div class="container flex h-14 max-w-screen-2xl items-center justify-between px-4 md:px-8">
     <!-- Logo po lewej -->
     <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
@@ -15,32 +17,37 @@ const { currentPage } = Astro.props;
 
     <!-- Nawigacja po prawej -->
     <nav class="flex items-center space-x-2">
-      {currentPage !== "login" && (
-        <a
-          href="/auth/login"
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
-        >
-          Zaloguj się
-        </a>
-      )}
-      {currentPage !== "register" && (
-        <a
-          href="/auth/register"
-          data-test-id="auth-header-register-link"
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
-        >
-          Zarejestruj się
-        </a>
-      )}
-      {(currentPage === "forgot-password" || currentPage === "reset-password") && (
-        <a
-          href="/auth/login"
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
-        >
-          Powrót do logowania
-        </a>
-      )}
+      {
+        currentPage !== "login" && (
+          <a
+            href="/auth/login"
+            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+          >
+            Zaloguj się
+          </a>
+        )
+      }
+      {
+        currentPage !== "register" && (
+          <a
+            href="/auth/register"
+            data-test-id="auth-header-register-link"
+            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
+          >
+            Zarejestruj się
+          </a>
+        )
+      }
+      {
+        (currentPage === "forgot-password" || currentPage === "reset-password") && (
+          <a
+            href="/auth/login"
+            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+          >
+            Powrót do logowania
+          </a>
+        )
+      }
     </nav>
   </div>
 </header>
-

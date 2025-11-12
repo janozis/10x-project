@@ -23,5 +23,3 @@ export function ActivityFeedEmpty({ onClearFilters, filtered = false }: Activity
     </div>
   );
 }
-
-

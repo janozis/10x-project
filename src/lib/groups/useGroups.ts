@@ -20,9 +20,22 @@ export function useGroups(options?: { showDeleted?: boolean }) {
     try {
       const res = await listGroups({ showDeleted: !!options?.showDeleted });
       if ("error" in res) {
-        setState({ loading: false, error: res.error.message, errorCode: res.error.code, errorStatus: undefined, items: [] });
+        setState({
+          loading: false,
+          error: res.error.message,
+          errorCode: res.error.code,
+          errorStatus: undefined,
+          items: [],
+        });
       } else {
-        setState({ loading: false, items: res.data, error: undefined, errorCode: undefined, errorStatus: undefined, nextCursor: (res as any).nextCursor });
+        setState({
+          loading: false,
+          items: res.data,
+          error: undefined,
+          errorCode: undefined,
+          errorStatus: undefined,
+          nextCursor: (res as any).nextCursor,
+        });
       }
     } catch (e: any) {
       const message: string = e?.body?.error?.message || e?.message || "Request failed";
@@ -44,8 +57,7 @@ export function useGroups(options?: { showDeleted?: boolean }) {
     items: state.items,
     hasMore: !!state.nextCursor,
     refresh: fetchList,
-    mutate: (updater: (prev: GroupDTO[]) => GroupDTO[]) =>
-      setState((s) => ({ ...s, items: updater(s.items) })),
+    mutate: (updater: (prev: GroupDTO[]) => GroupDTO[]) => setState((s) => ({ ...s, items: updater(s.items) })),
     loadMore: async () => {
       if (!state.nextCursor || state.loadingMore) return;
       setState((s) => ({ ...s, loadingMore: true }));
@@ -69,5 +81,3 @@ export function useGroups(options?: { showDeleted?: boolean }) {
     },
   } as const;
 }
-
-

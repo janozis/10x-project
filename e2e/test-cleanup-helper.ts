@@ -1,6 +1,6 @@
 /**
  * Helper function for per-test cleanup
- * 
+ *
  * Use this in tests that need to clean up after themselves
  */
 
@@ -23,20 +23,14 @@ export async function cleanupTestData() {
     },
   });
 
-  const testUserIds = [
-    process.env.E2E_USERNAME_ID,
-    process.env.E2E_2_USERNAME_ID,
-  ].filter(Boolean) as string[];
+  const testUserIds = [process.env.E2E_USERNAME_ID, process.env.E2E_2_USERNAME_ID].filter(Boolean) as string[];
 
   if (testUserIds.length === 0) {
     return;
   }
 
   // Find test groups
-  const { data: testGroups } = await supabase
-    .from("groups")
-    .select("id")
-    .in("created_by", testUserIds);
+  const { data: testGroups } = await supabase.from("groups").select("id").in("created_by", testUserIds);
 
   if (!testGroups || testGroups.length === 0) {
     return;
@@ -45,10 +39,7 @@ export async function cleanupTestData() {
   const testGroupIds = testGroups.map((g) => g.id);
 
   // Find related data
-  const { data: testActivities } = await supabase
-    .from("activities")
-    .select("id")
-    .in("group_id", testGroupIds);
+  const { data: testActivities } = await supabase.from("activities").select("id").in("group_id", testGroupIds);
 
   const testActivityIds = testActivities?.map((a) => a.id) || [];
 
@@ -65,4 +56,3 @@ export async function cleanupTestData() {
   await supabase.from("group_memberships").delete().in("group_id", testGroupIds);
   await supabase.from("groups").delete().in("id", testGroupIds);
 }
-

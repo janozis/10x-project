@@ -1,7 +1,12 @@
 import * as React from "react";
 import type { GroupPermissionsDTO, GroupTaskDTO, TaskStatus, UUID } from "@/types";
 import type { GroupTaskCreateInput, GroupTaskUpdateInput } from "@/lib/validation/groupTask";
-import { listGroupTasks as apiList, createGroupTask as apiCreate, patchTask as apiPatch, deleteTask as apiDelete } from "./api.client";
+import {
+  listGroupTasks as apiList,
+  createGroupTask as apiCreate,
+  patchTask as apiPatch,
+  deleteTask as apiDelete,
+} from "./api.client";
 import { useRealtimeTasks, type TaskRow } from "./useRealtimeTasks";
 
 export interface TaskVM {
@@ -129,18 +134,18 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
         cursor: reset ? undefined : nextCursor,
         limit: 20,
       });
-      
+
       // Check if response is undefined or is an error
       if (!result) {
         setError("Nie udało się załadować zadań.");
         return;
       }
-      
+
       if ("error" in result) {
         setError(result.error.message || "Nie udało się załadować zadań.");
         return;
       }
-      
+
       const vms = (result.data ?? []).map((dto) => toVM(dto, canEdit));
       setTasks((prev) => (reset ? vms : [...prev, ...vms]));
       setNextCursor(result.nextCursor);
@@ -273,12 +278,16 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
           created_at: payload.new.created_at,
           updated_at: payload.new.updated_at,
         } as GroupTaskDTO;
-        setTasks((prev) => prev.map((t) => (t.id === dto.id ? toVM(dto, canEdit) : t)).filter((t) => {
-          // Drop if no longer matches filters
-          if (filters.status && t.status !== filters.status) return false;
-          if (filters.activityId && t.activityId !== filters.activityId) return false;
-          return true;
-        }));
+        setTasks((prev) =>
+          prev
+            .map((t) => (t.id === dto.id ? toVM(dto, canEdit) : t))
+            .filter((t) => {
+              // Drop if no longer matches filters
+              if (filters.status && t.status !== filters.status) return false;
+              if (filters.activityId && t.activityId !== filters.activityId) return false;
+              return true;
+            })
+        );
       }
       if (payload.eventType === "DELETE" && payload.old) {
         const id = payload.old.id;
@@ -316,5 +325,3 @@ export function useGroupTasks(groupId: UUID, initialFilters?: TaskFiltersVM): Us
     loadMore,
   };
 }
-
-

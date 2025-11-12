@@ -22,5 +22,3 @@ export interface ActivityFeedFiltersVM {
 export type RealtimeStatus = "live" | "reconnecting" | "off";
 
 export type RecentActivityDTOItem = GroupDashboardDTO["recent_activity"][number];
-
-

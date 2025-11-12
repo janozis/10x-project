@@ -1,6 +1,13 @@
 import * as React from "react";
 import type { GroupDTO, GroupPermissionsDTO, UUID, GroupUpdateCommand, GroupStatus } from "@/types";
-import { getGroupPermissions, getGroup, patchGroup, rotateInvite, deleteGroup, restoreGroup } from "@/lib/groups/api.client";
+import {
+  getGroupPermissions,
+  getGroup,
+  patchGroup,
+  rotateInvite,
+  deleteGroup,
+  restoreGroup,
+} from "@/lib/groups/api.client";
 
 interface GroupSettingsState {
   loading: boolean;
@@ -22,12 +29,9 @@ export function useGroupSettings(groupId: UUID) {
     }
     setState((s) => ({ ...s, loading: true, error: undefined, errorCode: undefined, errorStatus: undefined }));
     try {
-      const [groupRes, permsRes] = await Promise.all([
-        getGroup(groupId),
-        getGroupPermissions(groupId),
-      ]);
+      const [groupRes, permsRes] = await Promise.all([getGroup(groupId), getGroupPermissions(groupId)]);
 
-      let next: GroupSettingsState = { loading: false };
+      const next: GroupSettingsState = { loading: false };
 
       if ("data" in groupRes) {
         next.group = groupRes.data;
@@ -136,5 +140,3 @@ export function useGroupSettings(groupId: UUID) {
     },
   } as const;
 }
-
-

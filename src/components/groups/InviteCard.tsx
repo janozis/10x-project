@@ -11,11 +11,14 @@ interface Props {
   cooldownMs?: number;
 }
 
-export function InviteCard({ groupId, invite, canManage, onRequestRotate, cooldownMs }: Props): JSX.Element | null {
+export function InviteCard({ invite, canManage, onRequestRotate, cooldownMs }: Props): JSX.Element | null {
+  // Hooks must be called before any conditional returns
+  const [show, setShow] = React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setBusy] = React.useState(false);
+
   if (!canManage) return null;
   if (!invite) return null;
-  const [show, setShow] = React.useState(false);
-  const [busy, setBusy] = React.useState(false);
 
   const joinLink = `/join?code=${invite.code}`;
   const masked = show ? invite.code : maskCode(invite.code);
@@ -25,7 +28,9 @@ export function InviteCard({ groupId, invite, canManage, onRequestRotate, cooldo
     <div className="rounded-md border p-4 space-y-3">
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">Zaproszenie do grupy</div>
-        <div className="text-xs text-muted-foreground">{invite.expires_at ? `Wygasa: ${formatDateTime(invite.expires_at)}` : "Bez terminu"}</div>
+        <div className="text-xs text-muted-foreground">
+          {invite.expires_at ? `Wygasa: ${formatDateTime(invite.expires_at)}` : "Bez terminu"}
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
@@ -72,7 +77,9 @@ export function InviteCard({ groupId, invite, canManage, onRequestRotate, cooldo
         </div>
       </div>
 
-      <div className="text-xs text-muted-foreground">Użycia: {invite.current_uses}/{invite.max_uses || "—"}</div>
+      <div className="text-xs text-muted-foreground">
+        Użycia: {invite.current_uses}/{invite.max_uses || "—"}
+      </div>
     </div>
   );
 }
@@ -88,5 +95,3 @@ function formatDateTime(iso: string): string {
   const d = new Date(iso);
   return d.toLocaleString();
 }
-
-

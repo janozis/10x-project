@@ -39,7 +39,7 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
       } else {
         toast.error("Nie udało się załadować profilu");
       }
-    } catch (error) {
+    } catch {
       toast.error("Błąd połączenia");
     } finally {
       setLoading(false);
@@ -48,7 +48,7 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!fullName.trim()) {
       toast.error("Imię i nazwisko nie może być puste");
       return;
@@ -75,7 +75,7 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
         const error = await response.json();
         toast.error(error.error?.message || "Nie udało się zaktualizować profilu");
       }
-    } catch (error) {
+    } catch {
       toast.error("Błąd połączenia");
     } finally {
       setSaving(false);
@@ -114,24 +114,14 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
     <Card>
       <CardHeader>
         <CardTitle>Ustawienia profilu</CardTitle>
-        <CardDescription>
-          Zarządzaj swoimi danymi osobowymi
-        </CardDescription>
+        <CardDescription>Zarządzaj swoimi danymi osobowymi</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={profile.email || userEmail || ""}
-              disabled
-              className="bg-muted"
-            />
-            <p className="text-sm text-muted-foreground">
-              Twój adres email nie może być zmieniony
-            </p>
+            <Input id="email" type="email" value={profile.email || userEmail || ""} disabled className="bg-muted" />
+            <p className="text-sm text-muted-foreground">Twój adres email nie może być zmieniony</p>
           </div>
 
           <div className="space-y-2">
@@ -174,12 +164,7 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleReset}
-            disabled={saving}
-          >
+          <Button type="button" variant="outline" onClick={handleReset} disabled={saving}>
             Resetuj
           </Button>
           <Button type="submit" disabled={saving}>
@@ -190,4 +175,3 @@ export default function ProfileView({ userEmail }: ProfileViewProps) {
     </Card>
   );
 }
-

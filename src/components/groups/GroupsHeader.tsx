@@ -9,7 +9,13 @@ export interface GroupsHeaderProps {
   onTabChange: (tab: "active" | "deleted") => void;
 }
 
-const GroupsHeaderComponent = ({ total, onOpenCreate, onOpenJoin, tab, onTabChange }: GroupsHeaderProps): JSX.Element => {
+const GroupsHeaderComponent = ({
+  total,
+  onOpenCreate,
+  onOpenJoin,
+  tab,
+  onTabChange,
+}: GroupsHeaderProps): JSX.Element => {
   return (
     <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
@@ -39,13 +45,15 @@ const GroupsHeaderComponent = ({ total, onOpenCreate, onOpenJoin, tab, onTabChan
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="outline" onClick={onOpenJoin} data-test-id="groups-header-join-button">Dołącz do grupy</Button>
-        <Button onClick={onOpenCreate} data-test-id="groups-header-create-button">Utwórz grupę</Button>
+        <Button variant="outline" onClick={onOpenJoin} data-test-id="groups-header-join-button">
+          Dołącz do grupy
+        </Button>
+        <Button onClick={onOpenCreate} data-test-id="groups-header-create-button">
+          Utwórz grupę
+        </Button>
       </div>
     </header>
   );
-}
+};
 
 export const GroupsHeader = React.memo(GroupsHeaderComponent);
-
-

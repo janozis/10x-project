@@ -21,9 +21,7 @@ export default function LeaveConfirmDialog({ open, onCancel, onConfirm }: LeaveC
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Opuścić stronę?</DialogTitle>
-          <DialogDescription>
-            Masz niezapisane zmiany. Jeśli opuścisz stronę, mogą zostać utracone.
-          </DialogDescription>
+          <DialogDescription>Masz niezapisane zmiany. Jeśli opuścisz stronę, mogą zostać utracone.</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button type="button" variant="secondary" onClick={onCancel}>
@@ -37,5 +35,3 @@ export default function LeaveConfirmDialog({ open, onCancel, onConfirm }: LeaveC
     </Dialog>
   );
 }
-
-

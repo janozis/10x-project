@@ -69,5 +69,3 @@ export function ActivityTabs({ defaultTab = "form", form, editors, ai, tasks }: 
     </div>
   );
 }
-
-

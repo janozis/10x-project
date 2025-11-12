@@ -7,7 +7,7 @@ interface LoginCardProps {
 export default function LoginCard(props: LoginCardProps) {
   // Remove automatic redirect on mount - only redirect after successful login
   // The LoginForm component will handle the redirect after authentication
-  
+
   return (
     <div
       data-redirect-to={props.redirectTo ?? undefined}
@@ -20,7 +20,11 @@ export default function LoginCard(props: LoginCardProps) {
       <div className="grid gap-6">
         <LoginForm redirectTo={props.redirectTo} />
         <nav aria-label="Pomocnicze linki" className="flex items-center justify-between text-sm">
-          <a className="text-primary hover:underline" href="/auth/forgot-password" data-test-id="auth-login-forgot-password-link">
+          <a
+            className="text-primary hover:underline"
+            href="/auth/forgot-password"
+            data-test-id="auth-login-forgot-password-link"
+          >
             Zapomniałeś hasła?
           </a>
           <a className="text-primary hover:underline" href="/auth/register" data-test-id="auth-login-register-link">

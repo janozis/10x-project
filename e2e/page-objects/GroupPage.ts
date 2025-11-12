@@ -1,8 +1,8 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Individual Group Page
- * 
+ *
  * Encapsulates group detail page interactions following AAA pattern:
  * - Arrange: Initialize page and locators
  * - Act: Perform actions (copy invite, restore, delete)
@@ -17,14 +17,14 @@ export class GroupPage {
 
   constructor(page: Page) {
     this.page = page;
-    
+
     // Use data-test-id attributes for stable selectors
     // Dashboard buttons (when viewing /groups/:id/dashboard)
-    this.copyInviteCodeButton = page.getByTestId('groups-dashboard-copy-code-button');
-    this.copyInviteLinkButton = page.getByTestId('groups-dashboard-copy-link-button');
+    this.copyInviteCodeButton = page.getByTestId("groups-dashboard-copy-code-button");
+    this.copyInviteLinkButton = page.getByTestId("groups-dashboard-copy-link-button");
     // Card button (when on groups list)
-    this.copyInviteButtonOnCard = page.getByTestId('groups-card-copy-invite-button');
-    this.restoreButton = page.getByTestId('groups-card-restore-button');
+    this.copyInviteButtonOnCard = page.getByTestId("groups-card-copy-invite-button");
+    this.restoreButton = page.getByTestId("groups-card-restore-button");
   }
 
   /**
@@ -38,7 +38,7 @@ export class GroupPage {
    * Copy invitation code to clipboard (from dashboard)
    */
   async copyInviteCode() {
-    await this.copyInviteCodeButton.waitFor({ state: 'visible', timeout: 5000 });
+    await this.copyInviteCodeButton.waitFor({ state: "visible", timeout: 5000 });
     await this.copyInviteCodeButton.click();
     // Wait a bit for clipboard operation
     await this.page.waitForTimeout(300);
@@ -48,7 +48,7 @@ export class GroupPage {
    * Copy invitation link to clipboard (from dashboard)
    */
   async copyInviteLink() {
-    await this.copyInviteLinkButton.waitFor({ state: 'visible', timeout: 5000 });
+    await this.copyInviteLinkButton.waitFor({ state: "visible", timeout: 5000 });
     await this.copyInviteLinkButton.click();
     // Wait a bit for clipboard operation
     await this.page.waitForTimeout(300);
@@ -70,8 +70,8 @@ export class GroupPage {
   async getInviteCode(): Promise<string> {
     // Wait for clipboard API or extract from UI
     // This is a placeholder - actual implementation depends on UI structure
-    const codeElement = this.page.locator('[data-invite-code]');
-    return await codeElement.textContent() || '';
+    const codeElement = this.page.locator("[data-invite-code]");
+    return (await codeElement.textContent()) || "";
   }
 
   /**
@@ -88,51 +88,51 @@ export class GroupPage {
   async deleteGroup() {
     // This will need to be implemented based on actual delete UI
     // Likely in a settings dialog or menu
-    await this.page.getByRole('button', { name: /usuń|delete/i }).click();
+    await this.page.getByRole("button", { name: /usuń|delete/i }).click();
     // May need to confirm in a dialog
-    await this.page.getByRole('button', { name: /potwierdź|confirm/i }).click();
+    await this.page.getByRole("button", { name: /potwierdź|confirm/i }).click();
   }
 
   /**
    * Navigate to group members page
    */
   async goToMembers() {
-    await this.page.getByRole('link', { name: /członkowie|members/i }).click();
+    await this.page.getByRole("link", { name: /członkowie|members/i }).click();
   }
 
   /**
    * Navigate to group activities page
    */
   async goToActivities() {
-    await this.page.getByRole('link', { name: /aktywności|activities/i }).click();
+    await this.page.getByRole("link", { name: /aktywności|activities/i }).click();
   }
 
   /**
    * Navigate to group settings page
    */
   async goToSettings() {
-    await this.page.getByRole('link', { name: /ustawienia|settings/i }).click();
+    await this.page.getByRole("link", { name: /ustawienia|settings/i }).click();
   }
 
   /**
    * Navigate to group dashboard/overview
    */
   async goToDashboard() {
-    await this.page.getByRole('link', { name: /dashboard|pulpit/i }).click();
+    await this.page.getByRole("link", { name: /dashboard|pulpit/i }).click();
   }
 
   /**
    * Navigate to camp days page
    */
   async goToCampDays() {
-    await this.page.getByRole('link', { name: /dni obozu|camp days/i }).click();
+    await this.page.getByRole("link", { name: /dni obozu|camp days/i }).click();
   }
 
   /**
    * Navigate to tasks page
    */
   async goToTasks() {
-    await this.page.getByRole('link', { name: /zadania|tasks/i }).click();
+    await this.page.getByRole("link", { name: /zadania|tasks/i }).click();
   }
 
   /**
@@ -155,4 +155,3 @@ export class GroupPage {
     }
   }
 }
-

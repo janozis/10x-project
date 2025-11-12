@@ -11,13 +11,23 @@ export interface MemberActionsProps {
   removeDisabledReason?: string;
 }
 
-export function MemberActions({ canPromote, canRemove, isSelf, onPromote, onRemove, promoteDisabledReason, removeDisabledReason }: MemberActionsProps): JSX.Element {
+export function MemberActions({
+  canPromote,
+  canRemove,
+  isSelf,
+  onPromote,
+  onRemove,
+  promoteDisabledReason,
+  removeDisabledReason,
+}: MemberActionsProps): JSX.Element {
   return (
     <div className="flex items-center gap-2 justify-end">
       <Button
         variant="outline"
         size="sm"
-        onClick={() => { if (canPromote) void onPromote(); }}
+        onClick={() => {
+          if (canPromote) void onPromote();
+        }}
         disabled={!canPromote}
         aria-disabled={!canPromote}
         title={!canPromote ? promoteDisabledReason || "Brak uprawnień (tylko administrator)" : undefined}
@@ -28,7 +38,9 @@ export function MemberActions({ canPromote, canRemove, isSelf, onPromote, onRemo
       <Button
         variant="destructive"
         size="sm"
-        onClick={() => { if (canRemove) void onRemove(); }}
+        onClick={() => {
+          if (canRemove) void onRemove();
+        }}
         disabled={!canRemove}
         aria-disabled={!canRemove}
         title={!canRemove ? removeDisabledReason || "Brak uprawnień" : undefined}
@@ -40,5 +52,3 @@ export function MemberActions({ canPromote, canRemove, isSelf, onPromote, onRemo
     </div>
   );
 }
-
-

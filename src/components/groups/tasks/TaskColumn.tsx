@@ -39,12 +39,7 @@ export function TaskColumn({
       <ul className="flex flex-col gap-2">
         {tasks.map((t) => (
           <li key={t.id}>
-            <TaskItem
-              task={t}
-              canEdit={canEdit}
-              activities={activities}
-              onSelectChange={onSelectChange}
-            />
+            <TaskItem task={t} canEdit={canEdit} activities={activities} onSelectChange={onSelectChange} />
           </li>
         ))}
         {tasks.length === 0 ? <li className="text-xs text-muted-foreground">Brak zadań.</li> : null}
@@ -67,5 +62,3 @@ function labelForStatus(status: TaskStatus): string {
       return status;
   }
 }
-
-

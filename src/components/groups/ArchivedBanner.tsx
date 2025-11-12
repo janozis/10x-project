@@ -19,7 +19,9 @@ export function ArchivedBanner({ status, deletedAt, canManage, onRestore }: Arch
       >
         <span>Ta grupa została usunięta. Dostęp jest ograniczony.</span>
         {canManage ? (
-          <Button type="button" size="sm" onClick={onRestore}>Przywróć</Button>
+          <Button type="button" size="sm" onClick={onRestore}>
+            Przywróć
+          </Button>
         ) : null}
       </div>
     );
@@ -35,5 +37,3 @@ export function ArchivedBanner({ status, deletedAt, canManage, onRestore }: Arch
     </div>
   );
 }
-
-

@@ -11,16 +11,22 @@ export interface UseRealtimeActivitiesOptions {
   onDelete?: (id: UUID) => void;
 }
 
-export function useRealtimeActivities({ groupId, enabled = true, mode = "active", onUpsert, onDelete }: UseRealtimeActivitiesOptions) {
+export function useRealtimeActivities({
+  groupId,
+  enabled = true,
+  mode = "active",
+  onUpsert,
+  onDelete,
+}: UseRealtimeActivitiesOptions) {
   React.useEffect(() => {
     if (!enabled) return;
-    
+
     // Skip realtime if Supabase client is not available
     if (!supabaseClient) {
       console.warn("[useRealtimeActivities] Supabase client not available, skipping realtime subscription");
       return;
     }
-    
+
     const channel = supabaseClient
       .channel(`rt-activities-${groupId}`)
       .on(
@@ -67,36 +73,32 @@ export function useRealtimeActivities({ groupId, enabled = true, mode = "active"
         }
       )
       // Hard delete unlikely; keep handler for completeness
-      .on("postgres_changes", { event: "DELETE", schema: "public", table: "activities", filter: `group_id=eq.${groupId}` }, async (payload) => {
-        const id = (payload.old as any)?.id as UUID | undefined;
-        if (!id) return;
-        onDelete?.(id);
-      })
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "activities", filter: `group_id=eq.${groupId}` },
+        async (payload) => {
+          const id = (payload.old as any)?.id as UUID | undefined;
+          if (!id) return;
+          onDelete?.(id);
+        }
+      )
       // Editors assignment changes – no filter by group_id available; we fetch activity if we already track it
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "activity_editors" },
-        async (payload) => {
-          const activityId = (payload.new as any)?.activity_id as UUID | undefined;
-          if (!activityId) return;
-          if (mode === "active") {
-            const res = await getActivity(activityId);
-            if ("data" in res && res.data && res.data.group_id === groupId) onUpsert?.(res.data);
-          }
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "activity_editors" }, async (payload) => {
+        const activityId = (payload.new as any)?.activity_id as UUID | undefined;
+        if (!activityId) return;
+        if (mode === "active") {
+          const res = await getActivity(activityId);
+          if ("data" in res && res.data && res.data.group_id === groupId) onUpsert?.(res.data);
         }
-      )
-      .on(
-        "postgres_changes",
-        { event: "DELETE", schema: "public", table: "activity_editors" },
-        async (payload) => {
-          const activityId = (payload.old as any)?.activity_id as UUID | undefined;
-          if (!activityId) return;
-          if (mode === "active") {
-            const res = await getActivity(activityId);
-            if ("data" in res && res.data && res.data.group_id === groupId) onUpsert?.(res.data);
-          }
+      })
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "activity_editors" }, async (payload) => {
+        const activityId = (payload.old as any)?.activity_id as UUID | undefined;
+        if (!activityId) return;
+        if (mode === "active") {
+          const res = await getActivity(activityId);
+          if ("data" in res && res.data && res.data.group_id === groupId) onUpsert?.(res.data);
         }
-      )
+      })
       .subscribe();
 
     return () => {
@@ -104,5 +106,3 @@ export function useRealtimeActivities({ groupId, enabled = true, mode = "active"
     };
   }, [groupId, enabled, mode, onUpsert, onDelete]);
 }
-
-

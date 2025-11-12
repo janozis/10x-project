@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import { mapDashboardToTilesVM } from './dashboard-tiles.mapper';
-import type { GroupDashboardDTO, GroupPermissionsDTO } from '@/types';
+import { describe, it, expect } from "vitest";
+import { mapDashboardToTilesVM } from "./dashboard-tiles.mapper";
+import type { GroupDashboardDTO, GroupPermissionsDTO } from "@/types";
 
 // We need to test the clamp01 function indirectly through mapDashboardToTilesVM
 // since it's not exported. We'll test it via pct_evaluated_above_7 values.
 
-describe('dashboard-tiles.mapper', () => {
-  describe('clamp01 (tested indirectly via mapDashboardToTilesVM)', () => {
+describe("dashboard-tiles.mapper", () => {
+  describe("clamp01 (tested indirectly via mapDashboardToTilesVM)", () => {
     const baseMockDTO: GroupDashboardDTO = {
-      group_id: '123e4567-e89b-12d3-a456-426614174000',
+      group_id: "123e4567-e89b-12d3-a456-426614174000",
       total_activities: 10,
       evaluated_activities: 8,
       pct_evaluated_above_7: 0.5,
@@ -16,7 +16,7 @@ describe('dashboard-tiles.mapper', () => {
       recent_activity: [],
     };
 
-    it('should clamp negative values to 0 (0%)', () => {
+    it("should clamp negative values to 0 (0%)", () => {
       // Arrange
       const dto: GroupDashboardDTO = {
         ...baseMockDTO,
@@ -30,7 +30,7 @@ describe('dashboard-tiles.mapper', () => {
       expect(result.pctEvaluatedAbove7).toBe(0); // Clamped to 0, then * 100 = 0%
     });
 
-    it('should clamp values > 1 to 1 (100%)', () => {
+    it("should clamp values > 1 to 1 (100%)", () => {
       // Arrange
       const dto: GroupDashboardDTO = {
         ...baseMockDTO,
@@ -44,7 +44,7 @@ describe('dashboard-tiles.mapper', () => {
       expect(result.pctEvaluatedAbove7).toBe(100); // Clamped to 1, then * 100 = 100%
     });
 
-    it('should preserve values in range [0,1] and convert to percentage', () => {
+    it("should preserve values in range [0,1] and convert to percentage", () => {
       // Arrange
       const testCases = [
         { input: 0, expected: 0 },
@@ -67,7 +67,7 @@ describe('dashboard-tiles.mapper', () => {
       });
     });
 
-    it('should handle NaN values by clamping to 0', () => {
+    it("should handle NaN values by clamping to 0", () => {
       // Arrange
       const dto: GroupDashboardDTO = {
         ...baseMockDTO,
@@ -82,9 +82,9 @@ describe('dashboard-tiles.mapper', () => {
     });
   });
 
-  describe('mapDashboardToTilesVM', () => {
+  describe("mapDashboardToTilesVM", () => {
     const baseMockDTO: GroupDashboardDTO = {
-      group_id: '123e4567-e89b-12d3-a456-426614174000',
+      group_id: "123e4567-e89b-12d3-a456-426614174000",
       total_activities: 10,
       evaluated_activities: 8,
       pct_evaluated_above_7: 0.75,
@@ -92,10 +92,10 @@ describe('dashboard-tiles.mapper', () => {
       recent_activity: [],
     };
 
-    it('should set canCreateTasks to true when user is admin', () => {
+    it("should set canCreateTasks to true when user is admin", () => {
       // Arrange
       const permissions: GroupPermissionsDTO = {
-        role: 'admin',
+        role: "admin",
         can_manage_group: true,
         can_create_activities: true,
         can_manage_tasks: true,
@@ -109,10 +109,10 @@ describe('dashboard-tiles.mapper', () => {
       expect(result.canCreateTasks).toBe(true);
     });
 
-    it('should set canCreateTasks to false when user is not admin', () => {
+    it("should set canCreateTasks to false when user is not admin", () => {
       // Arrange
       const editorPermissions: GroupPermissionsDTO = {
-        role: 'editor',
+        role: "editor",
         can_manage_group: false,
         can_create_activities: true,
         can_manage_tasks: false,
@@ -120,7 +120,7 @@ describe('dashboard-tiles.mapper', () => {
       };
 
       const memberPermissions: GroupPermissionsDTO = {
-        role: 'member',
+        role: "member",
         can_manage_group: false,
         can_create_activities: false,
         can_manage_tasks: false,
@@ -136,7 +136,7 @@ describe('dashboard-tiles.mapper', () => {
       expect(memberResult.canCreateTasks).toBe(false);
     });
 
-    it('should set canCreateTasks to false when permissions are undefined', () => {
+    it("should set canCreateTasks to false when permissions are undefined", () => {
       // Arrange - no permissions provided
 
       // Act
@@ -147,4 +147,3 @@ describe('dashboard-tiles.mapper', () => {
     });
   });
 });
-

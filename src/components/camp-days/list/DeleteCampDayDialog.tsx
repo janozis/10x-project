@@ -41,7 +41,10 @@ export function DeleteCampDayDialog({
         </DialogHeader>
 
         {error ? (
-          <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive" role="alert">
+          <div
+            className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+            role="alert"
+          >
             {error}
           </div>
         ) : null}
@@ -59,5 +62,3 @@ export function DeleteCampDayDialog({
     </Dialog>
   );
 }
-
-

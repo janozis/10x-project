@@ -13,21 +13,20 @@ export interface CampDayCardProps {
   isHighlighted?: boolean;
 }
 
-export function CampDayCard({
-  item,
-  onOpen,
-  isHighlighted = false,
-}: CampDayCardProps): React.ReactElement {
+export function CampDayCard({ item, onOpen, isHighlighted = false }: CampDayCardProps): React.ReactElement {
   const labelId = React.useId();
 
-  const handleCardClick = React.useCallback((e: React.MouseEvent) => {
-    // Prevent navigation if clicking on a button
-    const target = e.target as HTMLElement;
-    if (target.closest('button')) {
-      return;
-    }
-    onOpen();
-  }, [onOpen]);
+  const handleCardClick = React.useCallback(
+    (e: React.MouseEvent) => {
+      // Prevent navigation if clicking on a button
+      const target = e.target as HTMLElement;
+      if (target.closest("button")) {
+        return;
+      }
+      onOpen();
+    },
+    [onOpen]
+  );
 
   return (
     <Card

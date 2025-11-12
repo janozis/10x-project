@@ -11,5 +11,3 @@ export function useDirtyPrompt(active: boolean): void {
     return () => window.removeEventListener("beforeunload", beforeUnload);
   }, [active]);
 }
-
-

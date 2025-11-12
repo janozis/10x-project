@@ -46,7 +46,7 @@ export function useResetPassword(options: UseResetPasswordOptions = {}) {
             return;
           }
         }
-      } catch (e) {
+      } catch {
         // ignore URL parse errors
       }
 
@@ -69,50 +69,54 @@ export function useResetPassword(options: UseResetPasswordOptions = {}) {
     };
   }, []);
 
-  const submit = useCallback(async (values: ResetPasswordSchema) => {
-    // Prevent submission when no active reset session
-    const { sessionReady } = state;
-    if (!sessionReady) {
-      setState((s) => ({ ...s, submitError: "Link wygasł lub jest nieprawidłowy.", submitSuccess: undefined }));
-      return;
-    }
-
-    setState((s) => ({ ...s, loading: true, submitError: undefined, submitSuccess: undefined }));
-
-    const result = await updatePassword(values.password);
-    if (!result.ok) {
-      const msg = result.code === "weak_password"
-        ? "Hasło nie spełnia wymagań."
-        : result.code === "too_many_requests"
-        ? "Zbyt wiele prób. Spróbuj za chwilę."
-        : result.code === "session_missing"
-        ? "Link wygasł lub jest nieprawidłowy."
-        : "Nieoczekiwany błąd. Spróbuj ponownie.";
-
-      setState((s) => ({ ...s, loading: false, submitError: msg }));
-
-      if (result.code === "session_missing") {
-        setState((s) => ({ ...s, sessionReady: false, tokenError: msg }));
+  const submit = useCallback(
+    async (values: ResetPasswordSchema) => {
+      // Prevent submission when no active reset session
+      const { sessionReady } = state;
+      if (!sessionReady) {
+        setState((s) => ({ ...s, submitError: "Link wygasł lub jest nieprawidłowy.", submitSuccess: undefined }));
+        return;
       }
-      return;
-    }
 
-    setState((s) => ({ ...s, loading: false, submitSuccess: "Hasło zostało zmienione." }));
+      setState((s) => ({ ...s, loading: true, submitError: undefined, submitSuccess: undefined }));
 
-    // Ensure old session is closed and redirect back to login
-    try {
-      await supabaseClient.auth.signOut();
-    } catch {
-      // ignore
-    }
-    window.setTimeout(() => {
+      const result = await updatePassword(values.password);
+      if (!result.ok) {
+        const msg =
+          result.code === "weak_password"
+            ? "Hasło nie spełnia wymagań."
+            : result.code === "too_many_requests"
+              ? "Zbyt wiele prób. Spróbuj za chwilę."
+              : result.code === "session_missing"
+                ? "Link wygasł lub jest nieprawidłowy."
+                : "Nieoczekiwany błąd. Spróbuj ponownie.";
+
+        setState((s) => ({ ...s, loading: false, submitError: msg }));
+
+        if (result.code === "session_missing") {
+          setState((s) => ({ ...s, sessionReady: false, tokenError: msg }));
+        }
+        return;
+      }
+
+      setState((s) => ({ ...s, loading: false, submitSuccess: "Hasło zostało zmienione." }));
+
+      // Ensure old session is closed and redirect back to login
       try {
-        window.location.assign(redirectTo);
+        await supabaseClient.auth.signOut();
       } catch {
         // ignore
       }
-    }, redirectAfterMs);
-  }, [redirectAfterMs, redirectTo, state]);
+      window.setTimeout(() => {
+        try {
+          window.location.assign(redirectTo);
+        } catch {
+          // ignore
+        }
+      }, redirectAfterMs);
+    },
+    [redirectAfterMs, redirectTo, state]
+  );
 
   const resetMessages = useCallback(() => {
     setState((s) => ({ ...s, submitError: undefined, submitSuccess: undefined }));
@@ -124,5 +128,3 @@ export function useResetPassword(options: UseResetPasswordOptions = {}) {
     resetMessages,
   };
 }
-
-

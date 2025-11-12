@@ -32,5 +32,3 @@ export function Countdown({ seconds, onTick }: CountdownProps) {
     </span>
   );
 }
-
-

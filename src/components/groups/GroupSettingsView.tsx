@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { GroupDTO, GroupPermissionsDTO, UUID } from "@/types";
+import type { UUID } from "@/types";
 import { useGroupSettings } from "@/lib/useGroupSettings";
 import { ArchivedBanner } from "@/components/groups/ArchivedBanner";
 import { GroupDetailsForm } from "@/components/groups/GroupDetailsForm";
@@ -13,9 +13,23 @@ interface GroupSettingsViewProps {
 }
 
 export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Element {
-  const { loading, error, group, permissions, refresh, saveDetails, toggleArchive, rotateInvite, cooldownUntil, softDelete, restore } = useGroupSettings(groupId);
+  const {
+    loading,
+    error,
+    group,
+    permissions,
+    refresh,
+    saveDetails,
+    toggleArchive,
+    rotateInvite,
+    cooldownUntil,
+    softDelete,
+    restore,
+  } = useGroupSettings(groupId);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
-  const [confirmAction, setConfirmAction] = React.useState<"archive" | "unarchive" | "delete" | "restore" | "rotate" | undefined>(undefined);
+  const [confirmAction, setConfirmAction] = React.useState<
+    "archive" | "unarchive" | "delete" | "restore" | "rotate" | undefined
+  >(undefined);
   const isArchived = group?.status === "archived";
   const [now, setNow] = React.useState(() => Date.now());
 
@@ -24,8 +38,6 @@ export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Elem
     const id = setInterval(() => setNow(Date.now()), 500);
     return () => clearInterval(id);
   }, [cooldownUntil]);
-
-  const canManage = React.useMemo(() => permissions?.role === "admin", [permissions]);
 
   if (loading) {
     return (
@@ -39,7 +51,10 @@ export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Elem
 
   if (error) {
     return (
-      <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">
+      <div
+        role="alert"
+        className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm"
+      >
         {error}
         <div className="mt-2">
           <button
@@ -112,7 +127,7 @@ export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Elem
         <InviteCard
           groupId={group.id}
           invite={group.invite}
-          canManage
+          canManage={permissions?.role === "admin"}
           onRequestRotate={() => {
             setConfirmAction("rotate");
             setConfirmOpen(true);
@@ -157,34 +172,34 @@ export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Elem
           confirmAction === "archive"
             ? "Zarchiwizować grupę?"
             : confirmAction === "unarchive"
-            ? "Odarchiwizować grupę?"
-            : confirmAction === "delete"
-            ? "Usunąć grupę?"
-            : confirmAction === "restore"
-            ? "Przywrócić grupę?"
-            : "Zrotować kod zaproszenia?"
+              ? "Odarchiwizować grupę?"
+              : confirmAction === "delete"
+                ? "Usunąć grupę?"
+                : confirmAction === "restore"
+                  ? "Przywrócić grupę?"
+                  : "Zrotować kod zaproszenia?"
         }
         description={
           confirmAction === "archive"
             ? "Ukryje zaproszenia i ograniczy edycję."
             : confirmAction === "unarchive"
-            ? "Przywróci możliwość zapraszania i edycji."
-            : confirmAction === "delete"
-            ? "To działanie można cofnąć przez przywrócenie."
-            : confirmAction === "restore"
-            ? "Przywróci dostęp do grupy."
-            : "Zmieni kod zaproszenia – poprzedni przestanie działać."
+              ? "Przywróci możliwość zapraszania i edycji."
+              : confirmAction === "delete"
+                ? "To działanie można cofnąć przez przywrócenie."
+                : confirmAction === "restore"
+                  ? "Przywróci dostęp do grupy."
+                  : "Zmieni kod zaproszenia – poprzedni przestanie działać."
         }
         confirmText={
           confirmAction === "archive"
             ? "Archiwizuj"
             : confirmAction === "unarchive"
-            ? "Odarchiwizuj"
-            : confirmAction === "delete"
-            ? "Usuń"
-            : confirmAction === "restore"
-            ? "Przywróć"
-            : "Rotuj"
+              ? "Odarchiwizuj"
+              : confirmAction === "delete"
+                ? "Usuń"
+                : confirmAction === "restore"
+                  ? "Przywróć"
+                  : "Rotuj"
         }
         variant={confirmAction === "delete" ? "destructive" : "default"}
         onConfirm={async () => {
@@ -219,5 +234,3 @@ export function GroupSettingsView({ groupId }: GroupSettingsViewProps): JSX.Elem
     </section>
   );
 }
-
-

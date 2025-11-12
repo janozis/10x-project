@@ -36,19 +36,15 @@ let campDayDto: CampDayDTO | null = null;
 const activityResult = await getActivity(supabase, userId, activityId);
 
 if ("error" in activityResult) {
-  console.log('[edit.astro] Activity service returned error:', activityResult.error);
+  console.log("[edit.astro] Activity service returned error:", activityResult.error);
 } else {
   activityDto = activityResult.data as ActivityDTO;
-  console.log('[edit.astro] Activity DTO loaded, group_id:', activityDto.group_id);
-  
+  console.log("[edit.astro] Activity DTO loaded, group_id:", activityDto.group_id);
+
   // Fetch group details for breadcrumb
   if (activityDto?.group_id) {
-    const { data: groupRow } = await supabase
-      .from("groups")
-      .select("*")
-      .eq("id", activityDto.group_id)
-      .maybeSingle();
-    
+    const { data: groupRow } = await supabase.from("groups").select("*").eq("id", activityDto.group_id).maybeSingle();
+
     if (groupRow) {
       groupDto = {
         id: groupRow.id,
@@ -64,40 +60,40 @@ if ("error" in activityResult) {
         updated_at: groupRow.updated_at,
         deleted_at: groupRow.deleted_at,
       } as GroupDTO;
-      console.log('[edit.astro] Group DTO loaded:', groupDto.name);
+      console.log("[edit.astro] Group DTO loaded:", groupDto.name);
     }
 
     // If coming from camp day, fetch camp day details
     if (fromCampDay && campDayId) {
-      console.log('[edit.astro] Fetching camp day:', campDayId);
+      console.log("[edit.astro] Fetching camp day:", campDayId);
       const campDayResult = await getCampDay(supabase, userId, campDayId);
-      
+
       if ("error" in campDayResult) {
-        console.log('[edit.astro] Camp day service returned error:', campDayResult.error);
+        console.log("[edit.astro] Camp day service returned error:", campDayResult.error);
       } else {
         campDayDto = campDayResult.data;
-        console.log('[edit.astro] Camp day DTO loaded:', campDayDto.day_number, campDayDto.theme);
+        console.log("[edit.astro] Camp day DTO loaded:", campDayDto.day_number, campDayDto.theme);
       }
     }
   }
 }
 
 // Build breadcrumb items dynamically - always show at least "Lista grup"
-const breadcrumbItems = activityDto?.group_id ? [
-  { label: "Lista grup", href: "/groups" },
-  { label: groupDto?.name || "Grupa", href: `/groups/${activityDto.group_id}/dashboard` },
-  ...(fromCampDay && campDayDto ? [
-    { label: "Dni obozu", href: `/groups/${activityDto.group_id}/camp-days` },
-    { 
-      label: campDayDto.theme || `Dzień ${campDayDto.day_number}`, 
-      href: `/groups/${activityDto.group_id}/camp-days/${campDayDto.id}` 
-    }
-  ] : [
-    { label: "Aktywności", href: `/groups/${activityDto.group_id}/activities` }
-  ])
-] : [
-  { label: "Lista grup", href: "/groups" }
-];
+const breadcrumbItems = activityDto?.group_id
+  ? [
+      { label: "Lista grup", href: "/groups" },
+      { label: groupDto?.name || "Grupa", href: `/groups/${activityDto.group_id}/dashboard` },
+      ...(fromCampDay && campDayDto
+        ? [
+            { label: "Dni obozu", href: `/groups/${activityDto.group_id}/camp-days` },
+            {
+              label: campDayDto.theme || `Dzień ${campDayDto.day_number}`,
+              href: `/groups/${activityDto.group_id}/camp-days/${campDayDto.id}`,
+            },
+          ]
+        : [{ label: "Aktywności", href: `/groups/${activityDto.group_id}/activities` }]),
+    ]
+  : [{ label: "Lista grup", href: "/groups" }];
 ---
 
 <Layout title="Edytor aktywności">
@@ -108,7 +104,4 @@ const breadcrumbItems = activityDto?.group_id ? [
     </div>
   </main>
   <Toaster client:load />
-  
 </Layout>
-
-

@@ -16,5 +16,3 @@ export function ActivityRow({ item }: ActivityRowProps): JSX.Element {
     </div>
   );
 }
-
-

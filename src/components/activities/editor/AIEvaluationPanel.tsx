@@ -11,7 +11,13 @@ interface AIEvaluationPanelProps {
   nextPollAfterSec?: number;
 }
 
-export function AIEvaluationPanel({ activityId, canRequest = false, onRequest, requestTrigger, nextPollAfterSec }: AIEvaluationPanelProps): JSX.Element {
+export function AIEvaluationPanel({
+  activityId,
+  canRequest = false,
+  onRequest,
+  requestTrigger,
+  nextPollAfterSec,
+}: AIEvaluationPanelProps): JSX.Element {
   const { items, loading, error, refresh } = useAIEvaluations(activityId);
 
   // Polling after a request trigger
@@ -32,7 +38,10 @@ export function AIEvaluationPanel({ activityId, canRequest = false, onRequest, r
     }
 
     const t = setTimeout(pollOnce, delay);
-    return () => { cancelled = true; clearTimeout(t); };
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestTrigger]);
   return (
@@ -40,7 +49,10 @@ export function AIEvaluationPanel({ activityId, canRequest = false, onRequest, r
       <h2 className="text-lg font-semibold">Oceny AI</h2>
       {loading ? <div className="text-muted-foreground">Ładowanie…</div> : null}
       {error ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm">
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm"
+        >
           {error}
         </div>
       ) : null}
@@ -92,12 +104,17 @@ export function AIEvaluationPanel({ activityId, canRequest = false, onRequest, r
         ))}
       </ul>
       <div className="flex justify-end">
-        <Button type="button" variant="outline" disabled={!canRequest} onClick={() => { void onRequest?.(); }}>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={!canRequest}
+          onClick={() => {
+            void onRequest?.();
+          }}
+        >
           Poproś o nową ocenę
         </Button>
       </div>
     </div>
   );
 }
-
-

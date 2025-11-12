@@ -35,18 +35,14 @@ let campDayDto: CampDayDTO | null = null;
 const activityResult = await getActivity(supabase, userId, activityId);
 
 if ("error" in activityResult) {
-  console.log('[activity_id.astro] Activity service returned error:', activityResult.error);
+  console.log("[activity_id.astro] Activity service returned error:", activityResult.error);
 } else {
   activityDto = activityResult.data as ActivityDTO;
-  
+
   // Fetch group details for breadcrumb
   if (activityDto?.group_id) {
-    const { data: groupRow } = await supabase
-      .from("groups")
-      .select("*")
-      .eq("id", activityDto.group_id)
-      .maybeSingle();
-    
+    const { data: groupRow } = await supabase.from("groups").select("*").eq("id", activityDto.group_id).maybeSingle();
+
     if (groupRow) {
       groupDto = {
         id: groupRow.id,
@@ -67,9 +63,9 @@ if ("error" in activityResult) {
     // If coming from camp day, fetch camp day details
     if (fromCampDay && campDayId) {
       const campDayResult = await getCampDay(supabase, userId, campDayId);
-      
+
       if ("error" in campDayResult) {
-        console.log('[activity_id.astro] Camp day service returned error:', campDayResult.error);
+        console.log("[activity_id.astro] Camp day service returned error:", campDayResult.error);
       } else {
         campDayDto = campDayResult.data;
       }
@@ -78,32 +74,28 @@ if ("error" in activityResult) {
 }
 
 // Build breadcrumb items dynamically
-const breadcrumbItems = activityDto?.group_id ? [
-  { label: "Lista grup", href: "/groups" },
-  { label: groupDto?.name || "Grupa", href: `/groups/${activityDto.group_id}/dashboard` },
-  ...(fromCampDay && campDayDto ? [
-    { label: "Dni obozu", href: `/groups/${activityDto.group_id}/camp-days` },
-    { 
-      label: campDayDto.theme || `Dzień ${campDayDto.day_number}`, 
-      href: `/groups/${activityDto.group_id}/camp-days/${campDayDto.id}` 
-    }
-  ] : [
-    { label: "Aktywności", href: `/groups/${activityDto.group_id}/activities` }
-  ])
-] : [
-  { label: "Lista grup", href: "/groups" }
-];
+const breadcrumbItems = activityDto?.group_id
+  ? [
+      { label: "Lista grup", href: "/groups" },
+      { label: groupDto?.name || "Grupa", href: `/groups/${activityDto.group_id}/dashboard` },
+      ...(fromCampDay && campDayDto
+        ? [
+            { label: "Dni obozu", href: `/groups/${activityDto.group_id}/camp-days` },
+            {
+              label: campDayDto.theme || `Dzień ${campDayDto.day_number}`,
+              href: `/groups/${activityDto.group_id}/camp-days/${campDayDto.id}`,
+            },
+          ]
+        : [{ label: "Aktywności", href: `/groups/${activityDto.group_id}/activities` }]),
+    ]
+  : [{ label: "Lista grup", href: "/groups" }];
 ---
 
 <Layout title="Szczegóły aktywności">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-5xl">
-      {activityDto?.group_id && (
-        <Breadcrumb items={breadcrumbItems} />
-      )}
+      {activityDto?.group_id && <Breadcrumb items={breadcrumbItems} />}
       <ActivityDetailsView client:load activityId={activityId} />
     </div>
   </main>
 </Layout>
-
-

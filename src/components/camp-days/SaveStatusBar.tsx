@@ -8,10 +8,18 @@ export interface SaveStatusBarProps {
 const SaveStatusBarComponent = ({ state, message }: SaveStatusBarProps): JSX.Element | null => {
   if (state === "idle") return null;
   if (state === "saving") {
-    return <div className="text-sm text-muted-foreground" role="status" aria-live="polite">Zapisywanie…</div>;
+    return (
+      <div className="text-sm text-muted-foreground" role="status" aria-live="polite">
+        Zapisywanie…
+      </div>
+    );
   }
   if (state === "saved") {
-    return <div className="text-sm text-muted-foreground" role="status" aria-live="polite">Zapisano</div>;
+    return (
+      <div className="text-sm text-muted-foreground" role="status" aria-live="polite">
+        Zapisano
+      </div>
+    );
   }
   return (
     <div className="text-sm text-destructive" role="status" aria-live="assertive">
@@ -21,5 +29,3 @@ const SaveStatusBarComponent = ({ state, message }: SaveStatusBarProps): JSX.Ele
 };
 
 export const SaveStatusBar = React.memo(SaveStatusBarComponent);
-
-

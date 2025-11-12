@@ -42,7 +42,7 @@ export function mapScheduleToSlotVM(row: ActivityScheduleDTO, canEdit: boolean):
 export function minutesBetween(start: TimeHHMM, end: TimeHHMM): number {
   const [sh, sm] = start.split(":").map((x) => parseInt(x, 10));
   const [eh, em] = end.split(":").map((x) => parseInt(x, 10));
-  return (eh * 60 + em) - (sh * 60 + sm);
+  return eh * 60 + em - (sh * 60 + sm);
 }
 
 export function isValidTimeString(value: string): boolean {
@@ -60,6 +60,3 @@ export function addMinutes(time: TimeHHMM, minutes: number): TimeHHMM {
   const nm = total % 60;
   return `${String(nh).padStart(2, "0")}:${String(nm).padStart(2, "0")}` as TimeHHMM;
 }
-
-
-

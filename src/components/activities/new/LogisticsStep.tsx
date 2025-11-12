@@ -51,5 +51,3 @@ export default function LogisticsStep({ values, errors, onChange, onBack }: Logi
     </div>
   );
 }
-
-

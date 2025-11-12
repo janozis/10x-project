@@ -12,7 +12,15 @@ interface BulkActionsBarProps {
   onEditRequest?: (id: UUID) => void;
 }
 
-export function BulkActionsBar({ selectedIds, mode, permissions, onDeleteRequest, onClear, onRestoreRequest, onEditRequest }: BulkActionsBarProps): JSX.Element | null {
+export function BulkActionsBar({
+  selectedIds,
+  mode,
+  permissions,
+  onDeleteRequest,
+  onClear,
+  onRestoreRequest,
+  onEditRequest,
+}: BulkActionsBarProps): JSX.Element | null {
   const count = selectedIds.size;
   if (count === 0) return null;
   const canDelete = permissions?.role === "admin" && mode === "active";
@@ -32,20 +40,27 @@ export function BulkActionsBar({ selectedIds, mode, permissions, onDeleteRequest
         {mode === "active" ? (
           <>
             {isSingleSelection && canEdit && onEditRequest ? (
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => onEditRequest(Array.from(selectedIds)[0])}
-              >
+              <Button type="button" variant="outline" onClick={() => onEditRequest(Array.from(selectedIds)[0])}>
                 Edytuj
               </Button>
             ) : null}
-            <Button type="button" variant="destructive" onClick={() => onDeleteRequest?.(Array.from(selectedIds))} disabled={!canDelete} aria-disabled={!canDelete}>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => onDeleteRequest?.(Array.from(selectedIds))}
+              disabled={!canDelete}
+              aria-disabled={!canDelete}
+            >
               Usuń {count > 1 ? `(${count})` : ""}
             </Button>
           </>
         ) : (
-          <Button type="button" onClick={() => onRestoreRequest?.(Array.from(selectedIds))} disabled={!canRestore} aria-disabled={!canRestore}>
+          <Button
+            type="button"
+            onClick={() => onRestoreRequest?.(Array.from(selectedIds))}
+            disabled={!canRestore}
+            aria-disabled={!canRestore}
+          >
             Przywróć {count > 1 ? `(${count})` : ""}
           </Button>
         )}
@@ -53,5 +68,3 @@ export function BulkActionsBar({ selectedIds, mode, permissions, onDeleteRequest
     </div>
   );
 }
-
-

@@ -30,7 +30,7 @@ export function GroupDashboardTilesClient({ groupId, initialVm, permissions }: P
         const body: { data: GroupDashboardDTO } = await res.json();
         setVm(mapDashboardToTilesVM(body.data, permissions ?? undefined));
         break;
-      } catch (e) {
+      } catch {
         if (attempt >= 2) break;
         await new Promise((r) => setTimeout(r, delay));
         attempt += 1;
@@ -53,5 +53,3 @@ export function GroupDashboardTilesClient({ groupId, initialVm, permissions }: P
     </div>
   );
 }
-
-

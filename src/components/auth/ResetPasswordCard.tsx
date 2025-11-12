@@ -1,10 +1,6 @@
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 
-interface ResetPasswordCardProps {
-  redirectAfterMs?: number;
-}
-
-export default function ResetPasswordCard(_props: ResetPasswordCardProps) {
+export default function ResetPasswordCard() {
   return (
     <div className="w-full max-w-md rounded-lg border bg-white dark:bg-neutral-950 p-6 shadow-sm md:p-8">
       <header className="mb-6">
@@ -19,7 +15,11 @@ export default function ResetPasswordCard(_props: ResetPasswordCardProps) {
           <a className="text-primary hover:underline" href="/auth/login" data-test-id="auth-reset-login-link">
             Wróć do logowania
           </a>
-          <a className="text-primary hover:underline" href="/auth/forgot-password" data-test-id="auth-reset-forgot-link">
+          <a
+            className="text-primary hover:underline"
+            href="/auth/forgot-password"
+            data-test-id="auth-reset-forgot-link"
+          >
             Nie masz linku? Wyślij ponownie
           </a>
         </nav>
@@ -27,5 +27,3 @@ export default function ResetPasswordCard(_props: ResetPasswordCardProps) {
     </div>
   );
 }
-
-

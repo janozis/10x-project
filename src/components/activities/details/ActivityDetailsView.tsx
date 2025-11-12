@@ -14,20 +14,20 @@ export interface ActivityDetailsViewProps {
 }
 
 export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
-  const { loading, error, errorCode, errorStatus, vm, refresh } = useActivityDetails(activityId);
+  const { loading, error, errorStatus, vm, refresh } = useActivityDetails(activityId);
   const requestHook = useAIEvaluationRequest(activityId, {
     canRequest: vm?.computed.canRequestEvaluation ?? false,
     onRefresh: refresh,
   });
 
   // Check if we came from camp day view to preserve context
-  const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
   const fromCampDay = urlParams?.get("from") === "camp-day";
   const campDayId = urlParams?.get("camp_day_id");
-  
+
   // Build edit href with query params if coming from camp day
-  const editHref = vm?.activity 
-    ? fromCampDay && campDayId 
+  const editHref = vm?.activity
+    ? fromCampDay && campDayId
       ? `/activities/${vm.activity.id}/edit?from=camp-day&camp_day_id=${campDayId}`
       : `/activities/${vm.activity.id}/edit`
     : undefined;
@@ -36,7 +36,10 @@ export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {!loading && error ? (
         <div className="lg:col-span-3">
-          <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm">
+          <div
+            role="alert"
+            className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm"
+          >
             {error}
             {errorStatus === 401 ? (
               <>
@@ -47,16 +50,8 @@ export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
                 .
               </>
             ) : null}
-            {errorStatus === 403 ? (
-              <>
-                {" "}— Brak uprawnień do wyświetlenia tej aktywności.
-              </>
-            ) : null}
-            {errorStatus === 404 ? (
-              <>
-                {" "}— Nie znaleziono aktywności.
-              </>
-            ) : null}
+            {errorStatus === 403 ? <> — Brak uprawnień do wyświetlenia tej aktywności.</> : null}
+            {errorStatus === 404 ? <> — Nie znaleziono aktywności.</> : null}
           </div>
         </div>
       ) : null}
@@ -113,5 +108,3 @@ export function ActivityDetailsView({ activityId }: ActivityDetailsViewProps) {
     </div>
   );
 }
-
-

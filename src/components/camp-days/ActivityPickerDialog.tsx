@@ -49,7 +49,9 @@ export function ActivityPickerDialog({ groupId, open, onOpenChange, onPick }: Ac
                       <div className="text-sm font-medium">{a.title}</div>
                       <div className="text-xs text-muted-foreground">{a.status}</div>
                     </div>
-                    <Button size="sm" onClick={() => onPick(a)}>Wybierz</Button>
+                    <Button size="sm" onClick={() => onPick(a)}>
+                      Wybierz
+                    </Button>
                   </li>
                 ))}
               </ul>
@@ -60,5 +62,3 @@ export function ActivityPickerDialog({ groupId, open, onOpenChange, onPick }: Ac
     </Dialog>
   );
 }
-
-

@@ -35,13 +35,13 @@ export function RelatedTasks({ activityId, groupId }: RelatedTasksProps): JSX.El
       setLoading(true);
       setError(undefined);
       try {
-        const result = await listGroupTasks(groupId, { 
+        const result = await listGroupTasks(groupId, {
           activityId,
-          limit: 100 
+          limit: 100,
         });
-        
+
         if (cancelled) return;
-        
+
         if ("error" in result) {
           setError(result.error.message);
           setTasks([]);
@@ -125,17 +125,9 @@ export function RelatedTasks({ activityId, groupId }: RelatedTasksProps): JSX.El
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 space-y-1">
                   <h3 className="font-medium leading-tight">{task.title}</h3>
-                  {task.description && (
-                    <p className="line-clamp-2 text-sm text-muted-foreground">
-                      {task.description}
-                    </p>
-                  )}
+                  {task.description && <p className="line-clamp-2 text-sm text-muted-foreground">{task.description}</p>}
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    {task.due_date && (
-                      <span>
-                        Termin: {new Date(task.due_date).toLocaleDateString("pl-PL")}
-                      </span>
-                    )}
+                    {task.due_date && <span>Termin: {new Date(task.due_date).toLocaleDateString("pl-PL")}</span>}
                   </div>
                 </div>
                 <Badge variant={STATUS_VARIANTS[task.status] || "outline"}>
@@ -149,4 +141,3 @@ export function RelatedTasks({ activityId, groupId }: RelatedTasksProps): JSX.El
     </Card>
   );
 }
-

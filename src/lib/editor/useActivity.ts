@@ -54,7 +54,13 @@ export function useActivity(activityId: UUID) {
       const res = await getActivity(activityId);
       if ("error" in res) throw new Error(res.error.message);
       const dto = res.data as ActivityWithEditorsDTO;
-      setVm({ id: dto.id, group_id: dto.group_id, status: dto.status, updated_at: dto.updated_at, last_evaluation_requested_at: (dto as any).last_evaluation_requested_at ?? null });
+      setVm({
+        id: dto.id,
+        group_id: dto.group_id,
+        status: dto.status,
+        updated_at: dto.updated_at,
+        last_evaluation_requested_at: (dto as any).last_evaluation_requested_at ?? null,
+      });
       setFormValues(mapToFormValues(dto));
       setEditors(dto.editors || []);
     } catch (e: any) {
@@ -64,9 +70,9 @@ export function useActivity(activityId: UUID) {
     }
   }, [activityId]);
 
-  React.useEffect(() => { void refresh(); }, [refresh]);
+  React.useEffect(() => {
+    void refresh();
+  }, [refresh]);
 
   return { loading, error, vm, formValues, setFormValues, editors, refresh } as const;
 }
-
-

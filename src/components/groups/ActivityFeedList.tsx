@@ -8,7 +8,11 @@ interface ActivityFeedListProps {
 
 export function ActivityFeedList({ items }: ActivityFeedListProps): JSX.Element {
   if (!items || items.length === 0) {
-    return <div className="rounded-md border bg-muted/30 p-4 text-sm text-muted-foreground">Brak aktywności do wyświetlenia.</div>;
+    return (
+      <div className="rounded-md border bg-muted/30 p-4 text-sm text-muted-foreground">
+        Brak aktywności do wyświetlenia.
+      </div>
+    );
   }
   return (
     <ul className="space-y-2">
@@ -18,5 +22,3 @@ export function ActivityFeedList({ items }: ActivityFeedListProps): JSX.Element 
     </ul>
   );
 }
-
-

@@ -8,10 +8,10 @@ import { z } from "zod";
  * - content length limited to prevent excessively large payloads
  */
 export const llmMessageSchema = z.object({
-  role: z.enum(['system', 'user', 'assistant', 'tool'], {
-    errorMap: () => ({ message: 'role must be system, user, assistant, or tool' }),
+  role: z.enum(["system", "user", "assistant", "tool"], {
+    errorMap: () => ({ message: "role must be system, user, assistant, or tool" }),
   }),
-  content: z.string().min(1, 'content cannot be empty').max(50000, 'content too long (max 50000 chars)'),
+  content: z.string().min(1, "content cannot be empty").max(50000, "content too long (max 50000 chars)"),
 });
 
 /**
@@ -19,7 +19,7 @@ export const llmMessageSchema = z.object({
  * Simplified validation - actual schema validation happens at API level
  */
 export const jsonSchemaSchema = z.object({
-  name: z.string().min(1, 'schema name required'),
+  name: z.string().min(1, "schema name required"),
   strict: z.literal(true),
   schema: z.record(z.unknown()),
 });
@@ -28,7 +28,7 @@ export const jsonSchemaSchema = z.object({
  * Zod schema for response_format option
  */
 export const responseFormatSchema = z.object({
-  type: z.literal('json_schema'),
+  type: z.literal("json_schema"),
   json_schema: jsonSchemaSchema,
 });
 
@@ -68,8 +68,8 @@ export const completionOptionsSchema = z.object({
 export const chatRequestSchema = z.object({
   messages: z
     .array(llmMessageSchema)
-    .min(1, 'messages array must contain at least 1 message')
-    .max(100, 'messages array too large (max 100 messages)'),
+    .min(1, "messages array must contain at least 1 message")
+    .max(100, "messages array too large (max 100 messages)"),
   options: completionOptionsSchema.optional(),
 });
 
@@ -77,4 +77,3 @@ export type LlmMessageInput = z.infer<typeof llmMessageSchema>;
 export type CompletionParamsInput = z.infer<typeof completionParamsSchema>;
 export type CompletionOptionsInput = z.infer<typeof completionOptionsSchema>;
 export type ChatRequestInput = z.infer<typeof chatRequestSchema>;
-

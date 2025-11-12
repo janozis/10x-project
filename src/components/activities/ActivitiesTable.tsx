@@ -21,28 +21,62 @@ interface ActivitiesTableProps {
   onRequestRestore?: (id: string) => void;
 }
 
-export function ActivitiesTable({ items, visible, selectable, selectedIds, onToggleSelect, mode = "active", canEdit = false, canDelete = false, canRestore = false, onRequestView, onRequestEdit, onRequestDelete, onRequestRestore }: ActivitiesTableProps): JSX.Element {
+export function ActivitiesTable({
+  items,
+  visible,
+  selectable,
+  selectedIds,
+  onToggleSelect,
+  mode = "active",
+  canEdit = false,
+  canDelete = false,
+  canRestore = false,
+  onRequestView,
+  onRequestEdit,
+  onRequestDelete,
+  onRequestRestore,
+}: ActivitiesTableProps): JSX.Element {
   return (
     <div role="table" className="w-full border rounded-md overflow-hidden" data-test-id="activities-table">
       <div role="row" className="grid grid-cols-12 bg-muted text-xs font-medium px-3 py-2">
-        {visible.title ? <div role="columnheader" className="col-span-5">Tytuł</div> : null}
-        {visible.objective ? <div role="columnheader" className="col-span-3">Cel</div> : null}
-        {visible.ai ? <div role="columnheader" className="col-span-1">AI</div> : null}
-        {visible.editors ? <div role="columnheader" className="col-span-2">Edytorzy</div> : null}
-        {visible.updated_at ? <div role="columnheader" className="col-span-1">Aktualizacja</div> : null}
+        {visible.title ? (
+          <div role="columnheader" className="col-span-5">
+            Tytuł
+          </div>
+        ) : null}
+        {visible.objective ? (
+          <div role="columnheader" className="col-span-3">
+            Cel
+          </div>
+        ) : null}
+        {visible.ai ? (
+          <div role="columnheader" className="col-span-1">
+            AI
+          </div>
+        ) : null}
+        {visible.editors ? (
+          <div role="columnheader" className="col-span-2">
+            Edytorzy
+          </div>
+        ) : null}
+        {visible.updated_at ? (
+          <div role="columnheader" className="col-span-1">
+            Aktualizacja
+          </div>
+        ) : null}
       </div>
 
       <div>
         {items.map((it) => (
-          <div 
-            key={it.id} 
-            role="row" 
+          <div
+            key={it.id}
+            role="row"
             className="grid grid-cols-12 border-t px-3 py-2 text-sm hover:bg-accent/40 group cursor-pointer"
             data-test-id="activities-table-row"
             onClick={(e) => {
               // Prevent row click if clicking on checkbox or action menu
               const target = e.target as HTMLElement;
-              if (target.closest('input[type="checkbox"]') || target.closest('button')) {
+              if (target.closest('input[type="checkbox"]') || target.closest("button")) {
                 return;
               }
               // Click on row opens details view
@@ -61,9 +95,7 @@ export function ActivitiesTable({ items, visible, selectable, selectedIds, onTog
                     data-test-id="activities-row-checkbox"
                   />
                 ) : null}
-                <span className="truncate text-left">
-                  {it.title}
-                </span>
+                <span className="truncate text-left">{it.title}</span>
                 <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                   <RowActionsMenu
                     mode={mode}
@@ -84,9 +116,9 @@ export function ActivitiesTable({ items, visible, selectable, selectedIds, onTog
             ) : null}
             {visible.ai ? (
               <div role="cell" className="col-span-1 text-muted-foreground">
-                <AIChips 
-                  lore={it.latest_ai_evaluation?.lore_score} 
-                  scouting={it.latest_ai_evaluation?.scouting_values_score} 
+                <AIChips
+                  lore={it.latest_ai_evaluation?.lore_score}
+                  scouting={it.latest_ai_evaluation?.scouting_values_score}
                 />
               </div>
             ) : null}
@@ -115,5 +147,3 @@ function formatDate(iso: string): string {
     return "";
   }
 }
-
-

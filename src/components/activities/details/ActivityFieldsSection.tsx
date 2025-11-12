@@ -42,5 +42,3 @@ export function ActivityFieldsSection({ activity, loading }: ActivityFieldsSecti
     </div>
   );
 }
-
-

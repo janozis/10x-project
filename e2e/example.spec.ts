@@ -1,53 +1,52 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
 /**
  * Basic E2E test example
  * This demonstrates fundamental Playwright testing patterns
  */
 
-test.describe('Homepage', () => {
-  test('should load homepage successfully', async ({ page }) => {
+test.describe("Homepage", () => {
+  test("should load homepage successfully", async ({ page }) => {
     // Navigate to the homepage
-    await page.goto('/');
+    await page.goto("/");
 
     // Note: Authenticated users redirect to /groups
     // Verify the page loaded (accepts both homepage and groups page)
     await expect(page).toHaveTitle(/Grupy|10x-project/i);
   });
 
-  test('should have working navigation', async ({ page }) => {
-    await page.goto('/');
+  test("should have working navigation", async ({ page }) => {
+    await page.goto("/");
 
     // Check if main navigation exists
-    const navigation = page.locator('nav');
+    const navigation = page.locator("nav");
     await expect(navigation).toBeVisible();
   });
 
-  test('should be responsive', async ({ page }) => {
+  test("should be responsive", async ({ page }) => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
-    
+    await page.goto("/");
+
     // Page should still be functional on mobile
-    await expect(page.locator('body')).toBeVisible();
+    await expect(page.locator("body")).toBeVisible();
   });
 });
 
 /**
  * Example of API testing with Playwright
  */
-test.describe('API Tests', () => {
-  test('API health check', async ({ request }) => {
+test.describe("API Tests", () => {
+  test("API health check", async ({ request }) => {
     // Skip: No /api/health endpoint implemented yet
     test.skip();
-    
+
     // Example API health check
     // Adjust URL to match your actual API endpoints
-    const response = await request.get('/api/health').catch(() => null);
-    
+    const response = await request.get("/api/health").catch(() => null);
+
     if (response) {
       expect(response.ok()).toBeTruthy();
     }
   });
 });
-

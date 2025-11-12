@@ -7,7 +7,7 @@ type ConflictResolution = "takeServer" | "overwriteServer" | "manualMerge";
 interface ConflictInfo<T = Record<string, unknown>> {
   server: T & { updated_at?: string };
   local: T;
-  fieldsInConflict: Array<keyof T & string>;
+  fieldsInConflict: (keyof T & string)[];
 }
 
 interface ConflictDiffModalProps<T = Record<string, unknown>> {
@@ -17,7 +17,12 @@ interface ConflictDiffModalProps<T = Record<string, unknown>> {
   onResolve: (resolution: ConflictResolution, selectedServerKeys?: string[]) => void;
 }
 
-export function ConflictDiffModal<T = Record<string, unknown>>({ open, conflict, onOpenChange, onResolve }: ConflictDiffModalProps<T>): JSX.Element {
+export function ConflictDiffModal<T = Record<string, unknown>>({
+  open,
+  conflict,
+  onOpenChange,
+  onResolve,
+}: ConflictDiffModalProps<T>): JSX.Element {
   const fields = (conflict?.fieldsInConflict as string[]) || [];
   const [selected, setSelected] = React.useState<Set<string>>(new Set(fields));
 
@@ -40,12 +45,22 @@ export function ConflictDiffModal<T = Record<string, unknown>>({ open, conflict,
           <DialogTitle>Wykryto konflikt zapisu</DialogTitle>
         </DialogHeader>
         <div className="space-y-3 text-sm">
-          <p className="text-muted-foreground">Na serwerze istnieje nowsza wersja aktywności. Wybierz sposób rozwiązania konfliktu.</p>
+          <p className="text-muted-foreground">
+            Na serwerze istnieje nowsza wersja aktywności. Wybierz sposób rozwiązania konfliktu.
+          </p>
           <div className="flex items-center justify-between text-xs">
             <div className="text-muted-foreground">Zaznacz pola do pobrania z serwera</div>
             <div className="flex items-center gap-2">
-              <button type="button" className="underline hover:text-foreground" onClick={() => setSelected(new Set(fields))}>Zaznacz wszystkie</button>
-              <button type="button" className="underline hover:text-foreground" onClick={() => setSelected(new Set())}>Wyczyść</button>
+              <button
+                type="button"
+                className="underline hover:text-foreground"
+                onClick={() => setSelected(new Set(fields))}
+              >
+                Zaznacz wszystkie
+              </button>
+              <button type="button" className="underline hover:text-foreground" onClick={() => setSelected(new Set())}>
+                Wyczyść
+              </button>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -57,11 +72,22 @@ export function ConflictDiffModal<T = Record<string, unknown>>({ open, conflict,
                     <div className="text-xs text-muted-foreground flex items-center justify-between">
                       <span>{k}</span>
                       <label className="inline-flex items-center gap-1 text-[11px]">
-                        <input type="checkbox" className="accent-foreground" checked={selected.has(k)} onChange={() => toggle(k)} />
+                        <input
+                          type="checkbox"
+                          className="accent-foreground"
+                          checked={selected.has(k)}
+                          onChange={() => toggle(k)}
+                        />
                         <span>Weź z serwera</span>
                       </label>
                     </div>
-                    <pre className="overflow-x-auto text-xs whitespace-pre-wrap bg-amber-50/60 p-2 rounded">{renderDiff(String((conflict?.local as any)?.[k] ?? ""), String((conflict?.server as any)?.[k] ?? ""), "local")}</pre>
+                    <pre className="overflow-x-auto text-xs whitespace-pre-wrap bg-amber-50/60 p-2 rounded">
+                      {renderDiff(
+                        String((conflict?.local as any)?.[k] ?? ""),
+                        String((conflict?.server as any)?.[k] ?? ""),
+                        "local"
+                      )}
+                    </pre>
                   </li>
                 ))}
               </ul>
@@ -72,7 +98,13 @@ export function ConflictDiffModal<T = Record<string, unknown>>({ open, conflict,
                 {fields.map((k) => (
                   <li key={`s-${k}`} className="rounded-md border p-2">
                     <div className="text-xs text-muted-foreground">{k}</div>
-                    <pre className="overflow-x-auto text-xs whitespace-pre-wrap bg-emerald-50/60 p-2 rounded">{renderDiff(String((conflict?.server as any)?.[k] ?? ""), String((conflict?.local as any)?.[k] ?? ""), "server")}</pre>
+                    <pre className="overflow-x-auto text-xs whitespace-pre-wrap bg-emerald-50/60 p-2 rounded">
+                      {renderDiff(
+                        String((conflict?.server as any)?.[k] ?? ""),
+                        String((conflict?.local as any)?.[k] ?? ""),
+                        "server"
+                      )}
+                    </pre>
                   </li>
                 ))}
               </ul>
@@ -80,9 +112,15 @@ export function ConflictDiffModal<T = Record<string, unknown>>({ open, conflict,
           </div>
         </div>
         <DialogFooter className="flex gap-2 justify-end">
-          <Button type="button" variant="outline" onClick={() => onResolve("takeServer", fields)}>Załaduj z serwera</Button>
-          <Button type="button" variant="outline" onClick={() => onResolve("manualMerge", Array.from(selected))}>Scal i zapisz</Button>
-          <Button type="button" variant="destructive" onClick={() => onResolve("overwriteServer", [])}>Nadpisz serwer</Button>
+          <Button type="button" variant="outline" onClick={() => onResolve("takeServer", fields)}>
+            Załaduj z serwera
+          </Button>
+          <Button type="button" variant="outline" onClick={() => onResolve("manualMerge", Array.from(selected))}>
+            Scal i zapisz
+          </Button>
+          <Button type="button" variant="destructive" onClick={() => onResolve("overwriteServer", [])}>
+            Nadpisz serwer
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -122,5 +160,3 @@ function commonSuffixLen(a: string, b: string, prefixLen: number): number {
   while (i < max && a.charCodeAt(aLen - 1 - i) === b.charCodeAt(bLen - 1 - i)) i++;
   return i;
 }
-
-

@@ -45,18 +45,18 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
       try {
         const res = await listActivities(groupId, { limit: 100 });
         if (!mounted) return;
-        
+
         // Check if response is undefined or is an error
         if (!res) {
           setActivities([]);
           return;
         }
-        
+
         if ("error" in res) {
           setActivities([]);
           return;
         }
-        
+
         const items = (res.data ?? []).map((a) => ({ id: a.id, title: a.title }));
         setActivities(items);
       } catch {
@@ -133,7 +133,11 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
   return (
     <div className="flex flex-col gap-4" data-test-id="tasks-board">
       {error ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm" data-test-id="tasks-error-message">
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3 text-sm"
+          data-test-id="tasks-error-message"
+        >
           {error}
         </div>
       ) : null}
@@ -141,8 +145,12 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
       <FiltersBar filters={filters} activities={activities} onChange={setFilters} />
 
       {!loading && totalTasks === 0 ? (
-        <div role="note" className="rounded-md border border-muted/60 bg-muted/20 text-muted-foreground p-3 text-sm" data-test-id="tasks-empty-state">
-          Brak zadań spełniających kryteria. 
+        <div
+          role="note"
+          className="rounded-md border border-muted/60 bg-muted/20 text-muted-foreground p-3 text-sm"
+          data-test-id="tasks-empty-state"
+        >
+          Brak zadań spełniających kryteria.
           <button
             type="button"
             className="ml-2 inline-flex h-7 items-center justify-center rounded-md border bg-background px-2 text-xs hover:bg-accent"
@@ -190,11 +198,14 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
       <div ref={sentinelRef} aria-hidden className="h-2 w-full" />
 
       {/* Auto-load more when in view */}
-      {inView && nextCursor && !loading ? (
-        <span className="sr-only">Ładowanie kolejnych zadań…</span>
-      ) : null}
+      {inView && nextCursor && !loading ? <span className="sr-only">Ładowanie kolejnych zadań…</span> : null}
 
-      <BulkActionsBar selectedIds={Array.from(selectedIds)} onBulkStatus={onBulkStatus} onBulkDelete={onBulkDelete} canEdit={canEdit} />
+      <BulkActionsBar
+        selectedIds={Array.from(selectedIds)}
+        onBulkStatus={onBulkStatus}
+        onBulkDelete={onBulkDelete}
+        canEdit={canEdit}
+      />
 
       <ConfirmDialog
         open={!!confirm}
@@ -220,19 +231,18 @@ export default function TasksBoard({ groupId, defaultActivityId }: TasksBoardPro
   );
 }
 
-function labelForStatus(status: TaskStatus): string {
-  switch (status) {
-    case "pending":
-      return "Oczekujące";
-    case "in_progress":
-      return "W toku";
-    case "done":
-      return "Zrobione";
-    case "canceled":
-      return "Anulowane";
-    default:
-      return status;
-  }
-}
-
-
+// Commented out - not currently used
+// function labelForStatus(status: TaskStatus): string {
+//   switch (status) {
+//     case "pending":
+//       return "Oczekujące";
+//     case "in_progress":
+//       return "W toku";
+//     case "done":
+//       return "Zrobione";
+//     case "canceled":
+//       return "Anulowane";
+//     default:
+//       return status;
+//   }
+// }

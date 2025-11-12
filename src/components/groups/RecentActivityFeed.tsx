@@ -75,19 +75,26 @@ export function RecentActivityFeed({ groupId, initialItems, onAnyChange }: Recen
 
   return (
     <section aria-labelledby="recent-activity-title" className="my-6" aria-busy={isUpdating}>
-      <div id="recent-activity-title" className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground">
+      <div
+        id="recent-activity-title"
+        className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground"
+      >
         <span>Ostatnia aktywność</span>
-        <span className={`inline-flex items-center gap-1 text-xs ${isRealtimeConnected ? "text-emerald-600" : "text-muted-foreground"}`}>
-          <span className={`size-2.5 rounded-full ${isRealtimeConnected ? "bg-emerald-500" : "bg-muted-foreground/50"}`} />
+        <span
+          className={`inline-flex items-center gap-1 text-xs ${isRealtimeConnected ? "text-emerald-600" : "text-muted-foreground"}`}
+        >
+          <span
+            className={`size-2.5 rounded-full ${isRealtimeConnected ? "bg-emerald-500" : "bg-muted-foreground/50"}`}
+          />
           {isRealtimeConnected ? "online" : "offline"}
         </span>
       </div>
-      {(isInitializing || isUpdating) ? (
+      {isInitializing || isUpdating ? (
         <div className="mb-2 h-2 w-24 rounded-full bg-muted animate-pulse" aria-hidden />
       ) : null}
       <div aria-live="polite" ref={ariaLiveRef} className="sr-only" />
       {items.length === 0 ? (
-        (isInitializing || isUpdating) ? (
+        isInitializing || isUpdating ? (
           <ul className="space-y-2">
             {Array.from({ length: 3 }).map((_, i) => (
               <li key={i} className="rounded-md border p-3">
@@ -104,19 +111,33 @@ export function RecentActivityFeed({ groupId, initialItems, onAnyChange }: Recen
           {items.map((ev) => {
             const type = ev.type as string;
             const icon =
-              type === "activity_created" ? "📝" :
-              type === "activity_updated" ? "✏️" :
-              type === "task_created" ? "📌" :
-              type === "task_updated" ? "🛠️" :
-              type === "task_done" ? "✅" :
-              type === "ai_evaluated" ? "🤖" : "•";
+              type === "activity_created"
+                ? "📝"
+                : type === "activity_updated"
+                  ? "✏️"
+                  : type === "task_created"
+                    ? "📌"
+                    : type === "task_updated"
+                      ? "🛠️"
+                      : type === "task_done"
+                        ? "✅"
+                        : type === "ai_evaluated"
+                          ? "🤖"
+                          : "•";
             const label =
-              type === "activity_created" ? "Dodano zajęcie" :
-              type === "activity_updated" ? "Zaktualizowano zajęcie" :
-              type === "task_created" ? "Utworzono zadanie" :
-              type === "task_updated" ? "Zaktualizowano zadanie" :
-              type === "task_done" ? "Zamknięto zadanie" :
-              type === "ai_evaluated" ? "Nowa ocena AI" : type;
+              type === "activity_created"
+                ? "Dodano zajęcie"
+                : type === "activity_updated"
+                  ? "Zaktualizowano zajęcie"
+                  : type === "task_created"
+                    ? "Utworzono zadanie"
+                    : type === "task_updated"
+                      ? "Zaktualizowano zadanie"
+                      : type === "task_done"
+                        ? "Zamknięto zadanie"
+                        : type === "ai_evaluated"
+                          ? "Nowa ocena AI"
+                          : type;
             return (
               <li key={`${ev.type}-${ev.id}-${ev.at}`} className="rounded-md border p-3">
                 <div className="flex items-center justify-between text-sm">
@@ -135,7 +156,15 @@ export function RecentActivityFeed({ groupId, initialItems, onAnyChange }: Recen
       )}
       {items.length > 0 && hasMore ? (
         <div className="mt-2 flex justify-center">
-          <Button size="sm" variant="outline" onClick={() => { void loadMore(); }} disabled={loadingMore} aria-disabled={loadingMore}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              void loadMore();
+            }}
+            disabled={loadingMore}
+            aria-disabled={loadingMore}
+          >
             {loadingMore ? "Ładowanie…" : "Załaduj więcej"}
           </Button>
         </div>
@@ -143,5 +172,3 @@ export function RecentActivityFeed({ groupId, initialItems, onAnyChange }: Recen
     </section>
   );
 }
-
-

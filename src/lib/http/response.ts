@@ -14,4 +14,3 @@ export function jsonResponse(body: unknown, init?: ResponseInit): Response {
     },
   });
 }
-

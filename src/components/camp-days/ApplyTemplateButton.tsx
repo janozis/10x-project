@@ -1,11 +1,21 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { addMinutes, type SlotVM } from "@/lib/camp-days/types";
 import type { ActivityDTO, ActivityScheduleDTO, ApiSingle, TimeHHMM } from "@/types";
 import { toast } from "sonner";
 
-interface TemplateBlock { title: string; minutes: number }
+interface TemplateBlock {
+  title: string;
+  minutes: number;
+}
 const DEFAULT_TEMPLATE: TemplateBlock[] = [
   { title: "Pobudka oboźnego", minutes: 10 },
   { title: "Pobudka szczepu", minutes: 5 },
@@ -34,7 +44,13 @@ export interface ApplyTemplateButtonProps {
   onApplied: () => Promise<void> | void;
 }
 
-export function ApplyTemplateButton({ groupId, campDayId, slots, canEdit, onApplied }: ApplyTemplateButtonProps): JSX.Element {
+export function ApplyTemplateButton({
+  groupId,
+  campDayId,
+  slots,
+  canEdit,
+  onApplied,
+}: ApplyTemplateButtonProps): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [processing, setProcessing] = React.useState(false);
 
@@ -95,14 +111,19 @@ export function ApplyTemplateButton({ groupId, campDayId, slots, canEdit, onAppl
         const sres = await fetch(`/api/camp-days/${campDayId}/schedules`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ activity_id: act.id, start_time: block.start, end_time: block.end, order_in_day: order }),
+          body: JSON.stringify({
+            activity_id: act.id,
+            start_time: block.start,
+            end_time: block.end,
+            order_in_day: order,
+          }),
         });
         if (!sres.ok) {
           const msg = `Błąd dodawania slotu dla ${block.title}`;
           toast.error(msg);
         } else {
           // consume body to avoid stream leaks
-          void (await sres.json() as ApiSingle<ActivityScheduleDTO>);
+          void ((await sres.json()) as ApiSingle<ActivityScheduleDTO>);
           order += 1;
         }
       }
@@ -118,9 +139,9 @@ export function ApplyTemplateButton({ groupId, campDayId, slots, canEdit, onAppl
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button 
-        variant="outline" 
-        size="sm" 
+      <Button
+        variant="outline"
+        size="sm"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -128,7 +149,7 @@ export function ApplyTemplateButton({ groupId, campDayId, slots, canEdit, onAppl
           if (canEdit) {
             setOpen(true);
           }
-        }} 
+        }}
         disabled={!canEdit}
       >
         Zastosuj szablon
@@ -136,19 +157,31 @@ export function ApplyTemplateButton({ groupId, campDayId, slots, canEdit, onAppl
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Szablon dnia obozowego</DialogTitle>
-          <DialogDescription>Zastosuj pełny harmonogram dnia od pobudki do ciszy nocnej. Bloki czasowe zostaną dodane jako nowe sloty rozpoczynając od {initialStart}.</DialogDescription>
+          <DialogDescription>
+            Zastosuj pełny harmonogram dnia od pobudki do ciszy nocnej. Bloki czasowe zostaną dodane jako nowe sloty
+            rozpoczynając od {initialStart}.
+          </DialogDescription>
         </DialogHeader>
         <div className="rounded border divide-y">
           {preview.map((p) => (
             <div key={p.idx} className="flex items-center justify-between p-2 text-sm">
               <div className="font-medium">{p.title}</div>
-              <div className="text-muted-foreground">{p.start}–{p.end}</div>
+              <div className="text-muted-foreground">
+                {p.start}–{p.end}
+              </div>
             </div>
           ))}
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={processing}>Anuluj</Button>
-          <Button onClick={() => { void apply(); }} disabled={processing}>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={processing}>
+            Anuluj
+          </Button>
+          <Button
+            onClick={() => {
+              void apply();
+            }}
+            disabled={processing}
+          >
             {processing ? "Przetwarzanie…" : "Zastosuj"}
           </Button>
         </DialogFooter>
@@ -162,5 +195,3 @@ function diffMinutes(a: TimeHHMM, b: TimeHHMM): number {
   const [bh, bm] = b.split(":").map((x) => parseInt(x, 10));
   return bh * 60 + bm - (ah * 60 + am);
 }
-
-

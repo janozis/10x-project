@@ -23,9 +23,9 @@ export function ActivityHeader({ activity, latestEvaluation, loading }: Activity
       <h2 className="text-xl font-semibold leading-none tracking-tight">{activity.title}</h2>
       <Badge variant="outline">{activity.status}</Badge>
       {isStale ? <Badge variant="destructive">nieaktualna</Badge> : null}
-      <span className="text-sm text-muted-foreground">Ostatnio edytowano: {new Date(activity.updated_at).toLocaleString()}</span>
+      <span className="text-sm text-muted-foreground">
+        Ostatnio edytowano: {new Date(activity.updated_at).toLocaleString()}
+      </span>
     </div>
   );
 }
-
-
