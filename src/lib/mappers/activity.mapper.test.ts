@@ -1,44 +1,44 @@
-import { describe, it, expect } from 'vitest';
-import { mapActivityRow } from './activity.mapper';
-import type { Tables } from '@/db/database.types';
+import { describe, it, expect } from "vitest";
+import { mapActivityRow } from "./activity.mapper";
+import type { Tables } from "@/db/database.types";
 
-describe('activity.mapper', () => {
-  describe('mapActivityRow', () => {
+describe("activity.mapper", () => {
+  describe("mapActivityRow", () => {
     // Mock data for testing
-    const mockActivityRow: Tables<'activities'> = {
-      id: '123e4567-e89b-12d3-a456-426614174000',
-      group_id: '223e4567-e89b-12d3-a456-426614174000',
-      title: 'Test Activity',
-      objective: 'Test objective',
-      tasks: 'Task 1\nTask 2',
+    const mockActivityRow: Tables<"activities"> = {
+      id: "123e4567-e89b-12d3-a456-426614174000",
+      group_id: "223e4567-e89b-12d3-a456-426614174000",
+      title: "Test Activity",
+      objective: "Test objective",
+      tasks: "Task 1\nTask 2",
       duration_minutes: 60,
-      location: 'Test location',
-      materials: 'Materials needed',
-      responsible: 'Team leader',
-      knowledge_scope: 'Basic knowledge',
-      participants: 'All team members',
-      flow: 'Activity flow description',
-      summary: 'Activity summary',
-      status: 'draft',
+      location: "Test location",
+      materials: "Materials needed",
+      responsible: "Team leader",
+      knowledge_scope: "Basic knowledge",
+      participants: "All team members",
+      flow: "Activity flow description",
+      summary: "Activity summary",
+      status: "draft",
       last_evaluation_requested_at: null,
       deleted_at: null,
-      created_at: '2024-01-15T10:00:00.000Z',
-      updated_at: '2024-01-15T10:00:00.000Z',
+      created_at: "2024-01-15T10:00:00.000Z",
+      updated_at: "2024-01-15T10:00:00.000Z",
     };
 
-    const mockEditors: Tables<'activity_editors'>[] = [
+    const mockEditors: Tables<"activity_editors">[] = [
       {
-        activity_id: '123e4567-e89b-12d3-a456-426614174000',
-        user_id: '323e4567-e89b-12d3-a456-426614174000',
-        assigned_at: '2024-01-15T11:00:00.000Z',
-        assigned_by_user_id: '423e4567-e89b-12d3-a456-426614174000',
+        activity_id: "123e4567-e89b-12d3-a456-426614174000",
+        user_id: "323e4567-e89b-12d3-a456-426614174000",
+        assigned_at: "2024-01-15T11:00:00.000Z",
+        assigned_by_user_id: "423e4567-e89b-12d3-a456-426614174000",
         deleted_at: null,
       },
       {
-        activity_id: '123e4567-e89b-12d3-a456-426614174000',
-        user_id: '523e4567-e89b-12d3-a456-426614174000',
-        assigned_at: '2024-01-15T12:00:00.000Z',
-        assigned_by_user_id: '423e4567-e89b-12d3-a456-426614174000',
+        activity_id: "123e4567-e89b-12d3-a456-426614174000",
+        user_id: "523e4567-e89b-12d3-a456-426614174000",
+        assigned_at: "2024-01-15T12:00:00.000Z",
+        assigned_by_user_id: "423e4567-e89b-12d3-a456-426614174000",
         deleted_at: null,
       },
     ];
@@ -47,10 +47,10 @@ describe('activity.mapper', () => {
       lore_score: 8,
       scouting_values_score: 7,
       version: 1,
-      created_at: '2024-01-15T14:00:00.000Z',
+      created_at: "2024-01-15T14:00:00.000Z",
     };
 
-    it('should correctly map all activity fields with editors and AI evaluation', () => {
+    it("should correctly map all activity fields with editors and AI evaluation", () => {
       // Arrange
       const row = mockActivityRow;
       const editors = mockEditors;
@@ -94,10 +94,10 @@ describe('activity.mapper', () => {
       expect(result.latest_ai_evaluation?.created_at).toBe(aiEvaluation.created_at);
     });
 
-    it('should handle empty editors array', () => {
+    it("should handle empty editors array", () => {
       // Arrange
       const row = mockActivityRow;
-      const editors: Tables<'activity_editors'>[] = [];
+      const editors: Tables<"activity_editors">[] = [];
 
       // Act
       const result = mapActivityRow(row, editors, null);
@@ -107,7 +107,7 @@ describe('activity.mapper', () => {
       expect(result.editors).toHaveLength(0);
     });
 
-    it('should handle null AI evaluation', () => {
+    it("should handle null AI evaluation", () => {
       // Arrange
       const row = mockActivityRow;
       const editors = mockEditors;
@@ -120,4 +120,3 @@ describe('activity.mapper', () => {
     });
   });
 });
-

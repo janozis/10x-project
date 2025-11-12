@@ -1,8 +1,8 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Dashboard Page
- * 
+ *
  * Represents the main dashboard after login
  */
 export class DashboardPage {
@@ -14,18 +14,18 @@ export class DashboardPage {
 
   constructor(page: Page) {
     this.page = page;
-    
-    this.navigation = page.locator('nav');
-    this.userMenu = page.getByTestId('user-menu');
-    this.groupsLink = page.getByRole('link', { name: /grupy|groups/i });
-    this.activitiesLink = page.getByRole('link', { name: /aktywności|activities/i });
+
+    this.navigation = page.locator("nav");
+    this.userMenu = page.getByTestId("user-menu");
+    this.groupsLink = page.getByRole("link", { name: /grupy|groups/i });
+    this.activitiesLink = page.getByRole("link", { name: /aktywności|activities/i });
   }
 
   /**
    * Navigate to dashboard
    */
   async goto() {
-    await this.page.goto('/');
+    await this.page.goto("/");
   }
 
   /**
@@ -49,4 +49,3 @@ export class DashboardPage {
     await this.activitiesLink.click();
   }
 }
-

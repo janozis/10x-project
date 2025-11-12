@@ -27,7 +27,11 @@ const userDisplayName = user?.displayName || user?.email || "Użytkownik";
     <title>{title}</title>
   </head>
   <body>
-    {!hideTopbar && isAuthenticated && <Topbar client:load currentPath={currentPath} userDisplayName={userDisplayName} />}
+    {
+      !hideTopbar && isAuthenticated && (
+        <Topbar client:load currentPath={currentPath} userDisplayName={userDisplayName} />
+      )
+    }
     <slot />
     <Toaster client:load />
   </body>

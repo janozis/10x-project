@@ -3,7 +3,12 @@ import type { UUID, GroupDashboardDTO, GroupPermissionsDTO } from "@/types";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useDashboardRealtime } from "@/lib/dashboard/useDashboardRealtime";
-import type { ActivityFeedEventType, ActivityFeedEventVM, ActivityFeedFiltersVM, RealtimeStatus } from "@/lib/dashboard/activity-feed.types";
+import type {
+  ActivityFeedEventType,
+  ActivityFeedEventVM,
+  ActivityFeedFiltersVM,
+  RealtimeStatus,
+} from "@/lib/dashboard/activity-feed.types";
 import { ActivityFeedFilters } from "@/components/groups/ActivityFeedFilters";
 import { ActivityFeedList } from "@/components/groups/ActivityFeedList";
 import { LiveIndicator } from "@/components/groups/LiveIndicator";
@@ -25,7 +30,9 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
   const [events, setEvents] = React.useState<ActivityFeedEventVM[]>([]);
   const [realtimeStatus, setRealtimeStatus] = React.useState<RealtimeStatus>("off");
   const [loadingMore, setLoadingMore] = React.useState(false);
-  const [filters, setFilters] = React.useState<ActivityFeedFiltersVM>({ types: ["activity_created", "activity_updated"] });
+  const [filters, setFilters] = React.useState<ActivityFeedFiltersVM>({
+    types: ["activity_created", "activity_updated"],
+  });
 
   // Initial fetch: permissions + dashboard
   React.useEffect(() => {
@@ -52,11 +59,12 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
           const code = permRes.status;
           let message = body?.error?.message as string | undefined;
           if (!message) {
-            message = code === 401
-              ? "Musisz być zalogowany, aby zobaczyć aktywność tej grupy."
-              : code === 404
-              ? "Nie znaleziono grupy lub nie masz do niej dostępu."
-              : "Brak dostępu do grupy.";
+            message =
+              code === 401
+                ? "Musisz być zalogowany, aby zobaczyć aktywność tej grupy."
+                : code === 404
+                  ? "Nie znaleziono grupy lub nie masz do niej dostępu."
+                  : "Brak dostępu do grupy.";
           }
           if (!isMounted) return;
           setErrorStatus(code);
@@ -119,11 +127,12 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
         const code = permRes.status;
         let message = body?.error?.message as string | undefined;
         if (!message) {
-          message = code === 401
-            ? "Musisz być zalogowany, aby zobaczyć aktywność tej grupy."
-            : code === 404
-            ? "Nie znaleziono grupy lub nie masz do niej dostępu."
-            : "Brak dostępu do grupy.";
+          message =
+            code === 401
+              ? "Musisz być zalogowany, aby zobaczyć aktywność tej grupy."
+              : code === 404
+                ? "Nie znaleziono grupy lub nie masz do niej dostępu."
+                : "Brak dostępu do grupy.";
         }
         setErrorStatus(code);
         setStatus("error");
@@ -170,33 +179,52 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
         {status === "loading" ? (
           <LoadingSkeleton rows={4} />
         ) : status === "error" ? (
-          <ErrorState onRetry={() => { void onRetry(); }} message={errorMessage}>
+          <ErrorState
+            onRetry={() => {
+              void onRetry();
+            }}
+            message={errorMessage}
+          >
             {errorStatus === 401 ? (
-              <a href="/auth/login" className="underline">Przejdź do logowania</a>
+              <a href="/auth/login" className="underline">
+                Przejdź do logowania
+              </a>
             ) : errorStatus === 404 ? (
-              <a href="/groups" className="underline">Wróć do listy grup</a>
+              <a href="/groups" className="underline">
+                Wróć do listy grup
+              </a>
             ) : null}
           </ErrorState>
-        ) : (() => {
-          const visible = applyFilters(events, filters);
-          if (visible.length === 0) {
-            const allDisabled = filters.types.length === 0;
-            if (allDisabled) {
-              return (
-                <ActivityFeedEmpty
-                  filtered
-                  onClearFilters={() => setFilters({ types: ["activity_created", "activity_updated"] })}
-                />
-              );
+        ) : (
+          (() => {
+            const visible = applyFilters(events, filters);
+            if (visible.length === 0) {
+              const allDisabled = filters.types.length === 0;
+              if (allDisabled) {
+                return (
+                  <ActivityFeedEmpty
+                    filtered
+                    onClearFilters={() => setFilters({ types: ["activity_created", "activity_updated"] })}
+                  />
+                );
+              }
+              // No results even with some filters: show empty without CTA
+              return <ActivityFeedEmpty filtered />;
             }
-            // No results even with some filters: show empty without CTA
-            return <ActivityFeedEmpty filtered />;
-          }
-          return <ActivityFeedList items={visible} />;
-        })()}
+            return <ActivityFeedList items={visible} />;
+          })()
+        )}
       </CardContent>
       <CardFooter className="flex justify-center">
-        <Button size="sm" variant="outline" disabled onClick={() => { void loadMoreDisabled(); }} aria-disabled>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled
+          onClick={() => {
+            void loadMoreDisabled();
+          }}
+          aria-disabled
+        >
           Załaduj więcej (wkrótce)
         </Button>
       </CardFooter>
@@ -205,9 +233,7 @@ export default function ActivityFeedView({ groupId }: ActivityFeedViewProps): JS
 }
 
 function mapRecentToVM(items: GroupDashboardDTO["recent_activity"], groupId: UUID): ActivityFeedEventVM[] {
-  return items
-    .map((i) => mapOneEvent(i, groupId))
-    .filter(Boolean) as ActivityFeedEventVM[];
+  return items.map((i) => mapOneEvent(i, groupId)).filter(Boolean) as ActivityFeedEventVM[];
 }
 
 function mapOneEvent(i: GroupDashboardDTO["recent_activity"][number], groupId: UUID): ActivityFeedEventVM | null {
@@ -272,7 +298,8 @@ async function safeJson(res: Response): Promise<any | null> {
 }
 
 function LiveIndicator({ status }: { status: RealtimeStatus }): JSX.Element {
-  const color = status === "live" ? "bg-emerald-500" : status === "reconnecting" ? "bg-amber-500" : "bg-muted-foreground/50";
+  const color =
+    status === "live" ? "bg-emerald-500" : status === "reconnecting" ? "bg-amber-500" : "bg-muted-foreground/50";
   const label = status === "live" ? "LIVE" : status === "reconnecting" ? "RECONNECTING" : "OFF";
   return (
     <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
@@ -285,12 +312,10 @@ function LiveIndicator({ status }: { status: RealtimeStatus }): JSX.Element {
 function applyFilters(items: ActivityFeedEventVM[], filters: ActivityFeedFiltersVM): ActivityFeedEventVM[] {
   if (!filters.types || filters.types.length === 0) return [];
   const allowed = new Set<ActivityFeedEventType>(filters.types);
-  return items.filter((i) => i.type === "other" ? false : allowed.has(i.type));
+  return items.filter((i) => (i.type === "other" ? false : allowed.has(i.type)));
 }
 
 function isValidUUID(value: string): boolean {
   // RFC 4122 version-agnostic basic UUID validation
   return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(value);
 }
-
-

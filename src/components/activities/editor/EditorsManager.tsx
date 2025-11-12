@@ -76,10 +76,20 @@ export function EditorsManager({ activityId, groupId, canManage = false }: Edito
       <div className="text-muted-foreground">Edytorzy przypisani do aktywności</div>
       {loading || membersLoading ? <div className="text-muted-foreground">Ładowanie…</div> : null}
       {error ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm">{error}</div>
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm"
+        >
+          {error}
+        </div>
       ) : null}
       {localError ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm">{localError}</div>
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm"
+        >
+          {localError}
+        </div>
       ) : null}
       <ul className="space-y-2">
         {editorsWithEmails.map((e) => (
@@ -89,7 +99,14 @@ export function EditorsManager({ activityId, groupId, canManage = false }: Edito
               <span className="text-xs text-muted-foreground font-mono">{e.user_id}</span>
             </div>
             {canManage ? (
-              <Button type="button" variant="outline" disabled={processing} onClick={() => { void handleRemove(e.user_id as UUID); }}>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={processing}
+                onClick={() => {
+                  void handleRemove(e.user_id as UUID);
+                }}
+              >
                 Usuń
               </Button>
             ) : null}
@@ -107,7 +124,13 @@ export function EditorsManager({ activityId, groupId, canManage = false }: Edito
               placeholder="Wybierz użytkownika..."
             />
           </div>
-          <Button type="button" disabled={processing || !selectedUserId} onClick={() => { void handleAssign(); }}>
+          <Button
+            type="button"
+            disabled={processing || !selectedUserId}
+            onClick={() => {
+              void handleAssign();
+            }}
+          >
             Dodaj
           </Button>
         </div>
@@ -117,4 +140,3 @@ export function EditorsManager({ activityId, groupId, canManage = false }: Edito
     </div>
   );
 }
-

@@ -19,6 +19,7 @@ export default function EmailField({ register, error, disabled, autoFocus }: Ema
         id="email"
         type="email"
         autoComplete="email"
+        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={autoFocus}
         className="h-9 rounded-md border px-3 py-2 text-sm outline-none focus-visible:border-ring"
         aria-invalid={error ? "true" : undefined}
@@ -35,5 +36,3 @@ export default function EmailField({ register, error, disabled, autoFocus }: Ema
     </div>
   );
 }
-
-

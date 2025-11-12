@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
  * Manual Database Cleanup Script
- * 
+ *
  * Use this script to manually clean test data from the database
  * without running the full test suite.
- * 
+ *
  * Usage:
  *   node e2e/manual-cleanup.ts
  *   # or with tsx:
@@ -21,9 +21,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load .env.test
-dotenv.config({ 
+dotenv.config({
   path: path.resolve(__dirname, "..", ".env.test"),
-  override: true 
+  override: true,
 });
 
 /**
@@ -36,8 +36,8 @@ function createSupabaseClient() {
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
       "❌ Missing SUPABASE_URL or SUPABASE_ANON_KEY in .env.test\n" +
-      "   Please configure your .env.test file first.\n" +
-      "   See: e2e/ENV_TEMPLATE.md for instructions."
+        "   Please configure your .env.test file first.\n" +
+        "   See: e2e/ENV_TEMPLATE.md for instructions."
     );
   }
 
@@ -57,10 +57,7 @@ async function cleanupTestData(supabase: ReturnType<typeof createSupabaseClient>
   console.log("║  Manual Database Cleanup for E2E Tests   ║");
   console.log("╚════════════════════════════════════════════╝\n");
 
-  const testUserIds = [
-    process.env.E2E_USERNAME_ID,
-    process.env.E2E_2_USERNAME_ID,
-  ].filter(Boolean) as string[];
+  const testUserIds = [process.env.E2E_USERNAME_ID, process.env.E2E_2_USERNAME_ID].filter(Boolean) as string[];
 
   if (testUserIds.length === 0) {
     console.error("❌ No test user IDs found in .env.test");
@@ -105,17 +102,11 @@ async function cleanupTestData(supabase: ReturnType<typeof createSupabaseClient>
     });
 
     // Step 2: Find related data
-    const { data: testActivities } = await supabase
-      .from("activities")
-      .select("id")
-      .in("group_id", testGroupIds);
+    const { data: testActivities } = await supabase.from("activities").select("id").in("group_id", testGroupIds);
 
     const testActivityIds = testActivities?.map((a) => a.id) || [];
 
-    const { data: testCampDays } = await supabase
-      .from("camp_days")
-      .select("id")
-      .in("group_id", testGroupIds);
+    const { data: testCampDays } = await supabase.from("camp_days").select("id").in("group_id", testGroupIds);
 
     const testCampDayIds = testCampDays?.map((cd) => cd.id) || [];
 
@@ -126,7 +117,7 @@ async function cleanupTestData(supabase: ReturnType<typeof createSupabaseClient>
     // Confirm deletion
     console.log("\n⚠️  WARNING: This will permanently delete all test data!");
     console.log("   Press Ctrl+C to cancel, or wait 3 seconds to continue...\n");
-    
+
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     console.log("🗑️  Starting cleanup...\n");
@@ -166,30 +157,21 @@ async function cleanupTestData(supabase: ReturnType<typeof createSupabaseClient>
 
     // 4. Group tasks
     if (testGroupIds.length > 0) {
-      const { count } = await supabase
-        .from("group_tasks")
-        .delete({ count: "exact" })
-        .in("group_id", testGroupIds);
+      const { count } = await supabase.from("group_tasks").delete({ count: "exact" }).in("group_id", testGroupIds);
       console.log(`   ✓ Deleted ${count || 0} group_tasks`);
       totalDeleted += count || 0;
     }
 
     // 5. Activities
     if (testActivityIds.length > 0) {
-      const { count } = await supabase
-        .from("activities")
-        .delete({ count: "exact" })
-        .in("id", testActivityIds);
+      const { count } = await supabase.from("activities").delete({ count: "exact" }).in("id", testActivityIds);
       console.log(`   ✓ Deleted ${count || 0} activities`);
       totalDeleted += count || 0;
     }
 
     // 6. Camp days
     if (testCampDayIds.length > 0) {
-      const { count } = await supabase
-        .from("camp_days")
-        .delete({ count: "exact" })
-        .in("id", testCampDayIds);
+      const { count } = await supabase.from("camp_days").delete({ count: "exact" }).in("id", testCampDayIds);
       console.log(`   ✓ Deleted ${count || 0} camp_days`);
       totalDeleted += count || 0;
     }
@@ -206,10 +188,7 @@ async function cleanupTestData(supabase: ReturnType<typeof createSupabaseClient>
 
     // 8. Groups
     if (testGroupIds.length > 0) {
-      const { count } = await supabase
-        .from("groups")
-        .delete({ count: "exact" })
-        .in("id", testGroupIds);
+      const { count } = await supabase.from("groups").delete({ count: "exact" }).in("id", testGroupIds);
       console.log(`   ✓ Deleted ${count || 0} groups`);
       totalDeleted += count || 0;
     }
@@ -218,7 +197,6 @@ async function cleanupTestData(supabase: ReturnType<typeof createSupabaseClient>
     console.log(`║  ✅ Cleanup completed successfully!       ║`);
     console.log(`║     Total records deleted: ${String(totalDeleted).padEnd(14)}║`);
     console.log("╚════════════════════════════════════════════╝\n");
-
   } catch (error) {
     console.error("\n❌ Cleanup failed:", error);
     process.exit(1);
@@ -245,4 +223,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 }
 
 export { cleanupTestData, createSupabaseClient };
-

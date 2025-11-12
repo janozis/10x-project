@@ -22,7 +22,13 @@ export function useGroupPermissions(groupId: UUID) {
     try {
       const res = await getGroupPermissions(groupId);
       if ("error" in res) {
-        setState({ loading: false, error: res.error.message, errorCode: res.error.code, errorStatus: undefined, data: undefined });
+        setState({
+          loading: false,
+          error: res.error.message,
+          errorCode: res.error.code,
+          errorStatus: undefined,
+          data: undefined,
+        });
       } else {
         setState({ loading: false, data: res.data, error: undefined, errorCode: undefined, errorStatus: undefined });
       }
@@ -47,5 +53,3 @@ export function useGroupPermissions(groupId: UUID) {
     refresh: fetchPermissions,
   } as const;
 }
-
-

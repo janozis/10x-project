@@ -18,7 +18,16 @@ export interface SlotRowProps {
   groupId?: string;
 }
 
-export const SlotRow = ({ slot, disabled, onLocalChange, onServerApplied, onAnyChangeState, onDelete, onDuplicate, groupId }: SlotRowProps): JSX.Element => {
+export const SlotRow = ({
+  slot,
+  disabled,
+  onLocalChange,
+  onServerApplied,
+  onAnyChangeState,
+  onDelete,
+  onDuplicate,
+  groupId,
+}: SlotRowProps): JSX.Element => {
   const { queue } = useAutosaveSchedule(slot.id, {
     onStateChange: onAnyChangeState,
     onServerApplied: (dto) => {
@@ -48,8 +57,8 @@ export const SlotRow = ({ slot, disabled, onLocalChange, onServerApplied, onAnyC
   };
 
   return (
-    <div 
-      className="flex items-center justify-between gap-3 rounded-md border p-3 hover:bg-accent/50 transition-colors cursor-pointer" 
+    <div
+      className="flex items-center justify-between gap-3 rounded-md border p-3 hover:bg-accent/50 transition-colors cursor-pointer"
       onClick={handleRowClick}
       role="button"
       tabIndex={0}
@@ -63,7 +72,12 @@ export const SlotRow = ({ slot, disabled, onLocalChange, onServerApplied, onAnyC
     >
       <div className="flex items-center gap-3">
         <span className="text-sm text-muted-foreground w-6 text-right">{slot.orderInDay}.</span>
-        <TimeRangeEditor start={slot.startTime} end={slot.endTime} disabled={disabled || !slot.canEdit} onChange={handleTimeChange} />
+        <TimeRangeEditor
+          start={slot.startTime}
+          end={slot.endTime}
+          disabled={disabled || !slot.canEdit}
+          onChange={handleTimeChange}
+        />
         <ActivityBadge title={slot.activity?.title} status={slot.activity?.status} />
       </div>
       <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
@@ -73,7 +87,13 @@ export const SlotRow = ({ slot, disabled, onLocalChange, onServerApplied, onAnyC
           </Button>
         ) : null}
         {onDelete ? (
-          <Button variant="ghost" size="sm" onClick={() => setConfirmOpen(true)} disabled={disabled || !slot.canEdit} aria-label="Usuń slot">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setConfirmOpen(true)}
+            disabled={disabled || !slot.canEdit}
+            aria-label="Usuń slot"
+          >
             Usuń
           </Button>
         ) : null}
@@ -95,5 +115,3 @@ export const SlotRow = ({ slot, disabled, onLocalChange, onServerApplied, onAnyC
     </div>
   );
 };
-
-

@@ -40,11 +40,13 @@ export default function BasicsStep({ values, errors, onChange }: BasicsStepProps
 
       <div className="grid gap-2">
         <Label htmlFor="participants">Uczestnicy</Label>
-        <Input id="participants" value={values.participants} onChange={(e) => onChange("participants", e.target.value)} />
+        <Input
+          id="participants"
+          value={values.participants}
+          onChange={(e) => onChange("participants", e.target.value)}
+        />
         {errors.participants && <p className="text-sm text-red-600">{errors.participants}</p>}
       </div>
     </div>
   );
 }
-
-

@@ -11,7 +11,15 @@ interface RowActionsMenuProps {
   onRestore?: () => void;
 }
 
-export function RowActionsMenu({ mode, canEdit, canDelete, canRestore, onEdit, onDelete, onRestore }: RowActionsMenuProps): JSX.Element {
+export function RowActionsMenu({
+  mode,
+  canEdit,
+  canDelete,
+  canRestore,
+  onEdit,
+  onDelete,
+  onRestore,
+}: RowActionsMenuProps): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement | null>(null);
   React.useEffect(() => {
@@ -27,7 +35,15 @@ export function RowActionsMenu({ mode, canEdit, canDelete, canRestore, onEdit, o
 
   return (
     <div ref={ref} className="relative">
-      <Button type="button" size="icon" variant="ghost" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-haspopup="menu" className="h-7 w-7">
+      <Button
+        type="button"
+        size="icon"
+        variant="ghost"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className="h-7 w-7"
+      >
         ⋯
       </Button>
       {open ? (
@@ -39,7 +55,10 @@ export function RowActionsMenu({ mode, canEdit, canDelete, canRestore, onEdit, o
                   type="button"
                   role="menuitem"
                   className="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent hover:text-accent-foreground"
-                  onClick={() => { onEdit?.(); setOpen(false); }}
+                  onClick={() => {
+                    onEdit?.();
+                    setOpen(false);
+                  }}
                 >
                   Edytuj
                 </button>
@@ -48,7 +67,10 @@ export function RowActionsMenu({ mode, canEdit, canDelete, canRestore, onEdit, o
                 type="button"
                 role="menuitem"
                 className="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
-                onClick={() => { onDelete?.(); setOpen(false); }}
+                onClick={() => {
+                  onDelete?.();
+                  setOpen(false);
+                }}
                 disabled={!canDelete}
                 aria-disabled={!canDelete}
               >
@@ -60,7 +82,10 @@ export function RowActionsMenu({ mode, canEdit, canDelete, canRestore, onEdit, o
               type="button"
               role="menuitem"
               className="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
-              onClick={() => { onRestore?.(); setOpen(false); }}
+              onClick={() => {
+                onRestore?.();
+                setOpen(false);
+              }}
               disabled={!canRestore}
               aria-disabled={!canRestore}
             >
@@ -72,5 +97,3 @@ export function RowActionsMenu({ mode, canEdit, canDelete, canRestore, onEdit, o
     </div>
   );
 }
-
-

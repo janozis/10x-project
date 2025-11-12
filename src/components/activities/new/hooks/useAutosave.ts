@@ -18,7 +18,7 @@ type Snapshot = Omit<ActivityCreateVM, "duration_minutes"> & { duration_minutes:
 
 function toUpdatePayload(current: ActivityCreateVM, snapshot: Snapshot) {
   const payload: Record<string, unknown> = {};
-  const fields: Array<keyof ActivityCreateVM> = [
+  const fields: (keyof ActivityCreateVM)[] = [
     "title",
     "objective",
     "tasks",
@@ -99,5 +99,3 @@ export function useAutosave(activityId: UUID | undefined, values: ActivityCreate
 
   return state as const;
 }
-
-

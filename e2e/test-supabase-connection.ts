@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Test Supabase Connection and RLS Permissions
- * 
+ *
  * This script tests if teardown can actually see the groups
  * created by test users. Helps diagnose RLS policy issues.
  */
@@ -16,9 +16,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load .env.test
-dotenv.config({ 
+dotenv.config({
   path: path.resolve(__dirname, "..", ".env.test"),
-  override: true 
+  override: true,
 });
 
 async function testConnection() {
@@ -46,10 +46,7 @@ async function testConnection() {
     },
   });
 
-  const testUserIds = [
-    process.env.E2E_USERNAME_ID,
-    process.env.E2E_2_USERNAME_ID,
-  ].filter(Boolean) as string[];
+  const testUserIds = [process.env.E2E_USERNAME_ID, process.env.E2E_2_USERNAME_ID].filter(Boolean) as string[];
 
   console.log("👥 Test user IDs:");
   testUserIds.forEach((id, i) => {
@@ -59,9 +56,11 @@ async function testConnection() {
 
   // Test 1: Query ALL groups (no filter)
   console.log("🧪 Test 1: Query ALL groups (no filter)");
-  const { data: allGroups, error: allError, count: allCount } = await supabase
-    .from("groups")
-    .select("id, name, created_by", { count: "exact" });
+  const {
+    data: allGroups,
+    error: allError,
+    count: allCount,
+  } = await supabase.from("groups").select("id, name, created_by", { count: "exact" });
 
   if (allError) {
     console.error("   ❌ Error:", allError.message);
@@ -79,10 +78,11 @@ async function testConnection() {
 
   // Test 2: Query groups by test user IDs
   console.log("🧪 Test 2: Query groups created by test users");
-  const { data: testGroups, error: testError, count: testCount } = await supabase
-    .from("groups")
-    .select("id, name, created_by", { count: "exact" })
-    .in("created_by", testUserIds);
+  const {
+    data: testGroups,
+    error: testError,
+    count: testCount,
+  } = await supabase.from("groups").select("id, name, created_by", { count: "exact" }).in("created_by", testUserIds);
 
   if (testError) {
     console.error("   ❌ Error:", testError.message);
@@ -106,10 +106,11 @@ async function testConnection() {
 
   // Test 3: Query groups with TEARDOWN in name
   console.log("🧪 Test 3: Query groups with 'TEARDOWN' in name");
-  const { data: teardownGroups, error: teardownError, count: teardownCount } = await supabase
-    .from("groups")
-    .select("id, name, created_by", { count: "exact" })
-    .ilike("name", "%TEARDOWN%");
+  const {
+    data: teardownGroups,
+    error: teardownError,
+    count: teardownCount,
+  } = await supabase.from("groups").select("id, name, created_by", { count: "exact" }).ilike("name", "%TEARDOWN%");
 
   if (teardownError) {
     console.error("   ❌ Error:", teardownError.message);
@@ -129,9 +130,8 @@ async function testConnection() {
 
   // Test 4: Check RLS policies
   console.log("🧪 Test 4: Check RLS status");
-  const { data: rlsData, error: rlsError } = await supabase.rpc(
-    "exec",
-    { 
+  const { data: rlsData, error: rlsError } = await supabase
+    .rpc("exec", {
       sql: `
         SELECT 
           schemaname,
@@ -139,9 +139,9 @@ async function testConnection() {
           rowsecurity
         FROM pg_tables
         WHERE schemaname = 'public' AND tablename = 'groups';
-      `
-    }
-  ).single();
+      `,
+    })
+    .single();
 
   if (rlsError) {
     console.log("   ℹ️  Cannot check RLS (requires elevated permissions)");
@@ -181,4 +181,3 @@ async function testConnection() {
 }
 
 testConnection().catch(console.error);
-

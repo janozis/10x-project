@@ -197,11 +197,7 @@ const CampDaysPage = ({ groupId }: CampDaysPageProps): React.ReactElement => {
       {isLoading ? (
         <CampDaysSkeleton rows={6} />
       ) : filteredItems.length > 0 ? (
-        <CampDaysList
-          items={filteredItems}
-          onOpen={handleOpen}
-          highlightId={highlightId}
-        />
+        <CampDaysList items={filteredItems} onOpen={handleOpen} highlightId={highlightId} />
       ) : campDays.length > 0 ? (
         <div
           className={cn(
@@ -213,7 +209,12 @@ const CampDaysPage = ({ groupId }: CampDaysPageProps): React.ReactElement => {
         >
           Brak wyników dla wybranych filtrów.
           <div className="mt-3">
-            <Button size="sm" variant="ghost" onClick={handleResetFilters} data-test-id="camp-days-clear-filters-button">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleResetFilters}
+              data-test-id="camp-days-clear-filters-button"
+            >
               Wyczyść filtry
             </Button>
           </div>

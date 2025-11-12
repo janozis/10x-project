@@ -7,8 +7,7 @@ export interface ActivityBadgeProps {
 }
 
 export function ActivityBadge({ title, status }: ActivityBadgeProps): JSX.Element {
-  const variant = status === "ready" ? "default" : status === "review" ? "secondary" : status === "draft" ? "outline" : "destructive";
+  const variant =
+    status === "ready" ? "default" : status === "review" ? "secondary" : status === "draft" ? "outline" : "destructive";
   return <Badge variant={variant as any}>{title ?? "Aktywność"}</Badge>;
 }
-
-

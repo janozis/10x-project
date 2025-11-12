@@ -8,7 +8,7 @@ import {
   GroupPage,
   GroupMembersPage,
 } from "./page-objects";
-import { generateUniqueEmail, generateGroupData, logoutUser } from "./test-helpers";
+import { generateGroupData, logoutUser } from "./test-helpers";
 
 /**
  * Groups Join E2E Tests
@@ -24,7 +24,7 @@ import { generateUniqueEmail, generateGroupData, logoutUser } from "./test-helpe
  * IMPORTANT: These tests MUST run sequentially with --workers=1
  * Each test is fully isolated with its own login/logout cycle
  */
-test.describe.configure({ mode: 'serial' });
+test.describe.configure({ mode: "serial" });
 
 test.describe("Groups - Join via Invitation Code", () => {
   // Helper to clean up a specific group
@@ -51,19 +51,16 @@ test.describe("Groups - Join via Invitation Code", () => {
     console.log("🔄 Restoring main user session after groups-join tests...");
     const context = await browser.newContext();
     const page = await context.newPage();
-    
+
     try {
       const loginPage = new LoginPage(page);
       await loginPage.goto();
-      await loginPage.login(
-        process.env.E2E_USERNAME!,
-        process.env.E2E_PASSWORD!
-      );
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await loginPage.login(process.env.E2E_USERNAME!, process.env.E2E_PASSWORD!);
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
-      
+
       // Save the session state
-      await page.context().storageState({ path: './e2e/.auth/user.json' });
+      await page.context().storageState({ path: "./e2e/.auth/user.json" });
       console.log("✅ Main user session restored successfully");
     } catch (error) {
       console.error("❌ Failed to restore main user session:", error);
@@ -76,7 +73,7 @@ test.describe("Groups - Join via Invitation Code", () => {
   test("should join group using valid invitation code", async ({ browser, skipCleanup }) => {
     // Skip auto-cleanup for this test (uses multi-user flow with sessions)
     skipCleanup();
-    
+
     let groupId: string | null = null;
 
     // Create a fresh context WITHOUT storageState to avoid polluting the global session
@@ -87,11 +84,8 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 1: Login as User A (fresh login, not using saved session)
       const loginPageA = new LoginPage(page);
       await loginPageA.goto();
-      await loginPageA.login(
-        process.env.E2E_USERNAME!,
-        process.env.E2E_PASSWORD!
-      );
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await loginPageA.login(process.env.E2E_USERNAME!, process.env.E2E_PASSWORD!);
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
 
       // STEP 2: User A creates a group
@@ -107,7 +101,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       // Wait for the group to appear in the list
       await page.waitForTimeout(2000);
       await groupsPage.waitForLoad();
-      
+
       // Get group ID for cleanup
       const response = await page.request.get("/api/groups");
       if (response.ok()) {
@@ -119,14 +113,14 @@ test.describe("Groups - Join via Invitation Code", () => {
           }
         }
       }
-      
+
       // STEP 3: Copy invite code
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-      const copyButton = page.getByRole('button', { name: 'Kopiuj kod' }).first();
-      await copyButton.waitFor({ state: 'visible', timeout: 15000 });
+      const copyButton = page.getByRole("button", { name: "Kopiuj kod" }).first();
+      await copyButton.waitFor({ state: "visible", timeout: 15000 });
       await copyButton.click();
       await page.waitForTimeout(500);
-      
+
       const inviteCode = await page.evaluate(() => navigator.clipboard.readText());
       if (!inviteCode) {
         test.skip();
@@ -137,13 +131,13 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 4: Logout User A
       console.log("🚪 Logging out User A...");
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
 
       // STEP 5: Login as User B
       console.log("👤 Logging in as User B...");
       const loginPageB = new LoginPage(page);
       await loginPageB.loginWithSecondTestUser();
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
 
       // STEP 6: User B joins the group
@@ -153,15 +147,15 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       const joinDialog = new JoinGroupDialog(page);
       await joinDialog.joinGroup(inviteCode);
-      
+
       await page.waitForTimeout(2000);
-      
+
       const hasError = await joinDialog.hasError();
       if (hasError) {
         const errorMsg = await joinDialog.getErrorMessage();
         throw new Error(`Failed to join group: ${errorMsg}`);
       }
-      
+
       await joinDialog.waitForClose();
 
       // STEP 7: Assert - Group appears in User B's list
@@ -170,14 +164,14 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 8: Logout User B
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
       console.log("🚪 User B logged out");
     } finally {
       // Cleanup: Delete test group
       if (groupId) {
         await cleanupGroup(browser, groupId);
       }
-      
+
       // Close the isolated context to avoid polluting global session
       await page.close();
       await context.close();
@@ -196,11 +190,8 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 1: Login as User A (fresh login)
       const loginPageA = new LoginPage(page);
       await loginPageA.goto(); // Use goto() which includes proper waiting
-      await loginPageA.login(
-        process.env.E2E_USERNAME!,
-        process.env.E2E_PASSWORD!
-      );
-      await page.waitForURL('**/groups', { timeout: 15000 });
+      await loginPageA.login(process.env.E2E_USERNAME!, process.env.E2E_PASSWORD!);
+      await page.waitForURL("**/groups", { timeout: 15000 });
       await page.waitForLoadState("networkidle");
       await page.waitForTimeout(1000); // Extra wait for React hydration
 
@@ -217,7 +208,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       // Wait for the group to appear in the list
       await page.waitForTimeout(2000);
       await groupsPage.waitForLoad();
-      
+
       // Get group ID for cleanup
       const response = await page.request.get("/api/groups");
       if (response.ok()) {
@@ -229,15 +220,15 @@ test.describe("Groups - Join via Invitation Code", () => {
           }
         }
       }
-      
+
       // STEP 3: Grant clipboard permissions and copy invite code
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-      
-      const copyButton = page.getByRole('button', { name: 'Kopiuj kod' }).first();
-      await copyButton.waitFor({ state: 'visible', timeout: 15000 });
+
+      const copyButton = page.getByRole("button", { name: "Kopiuj kod" }).first();
+      await copyButton.waitFor({ state: "visible", timeout: 15000 });
       await copyButton.click();
       await page.waitForTimeout(500);
-      
+
       const inviteCode = await page.evaluate(() => navigator.clipboard.readText());
 
       if (!inviteCode) {
@@ -247,12 +238,12 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 4: Logout User A
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
 
       // STEP 5: Login as User B
       const loginPage = new LoginPage(page);
       await loginPage.loginWithSecondTestUser();
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
 
       const groupsPageB = new GroupsListPage(page);
@@ -260,7 +251,10 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 6: Verify group is NOT in User B's list before joining
       await groupsPageB.waitForLoad();
       const countBefore = await groupsPageB.getGroupCount();
-      const hasGroupBefore = await page.getByText(groupData.name).isVisible().catch(() => false);
+      const hasGroupBefore = await page
+        .getByText(groupData.name)
+        .isVisible()
+        .catch(() => false);
       expect(hasGroupBefore).toBe(false);
 
       // STEP 7: Join the group
@@ -280,13 +274,13 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 9: Logout User B
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
     } finally {
       // Cleanup
       if (groupId) {
         await cleanupGroup(browser, groupId);
       }
-      
+
       // Close the isolated context to avoid polluting global session
       await page.close();
       await context.close();
@@ -305,11 +299,8 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 1: Login as User A (fresh login)
       const loginPageA = new LoginPage(page);
       await loginPageA.goto(); // Use goto() which includes proper waiting
-      await loginPageA.login(
-        process.env.E2E_USERNAME!,
-        process.env.E2E_PASSWORD!
-      );
-      await page.waitForURL('**/groups', { timeout: 15000 });
+      await loginPageA.login(process.env.E2E_USERNAME!, process.env.E2E_PASSWORD!);
+      await page.waitForURL("**/groups", { timeout: 15000 });
       await page.waitForLoadState("networkidle");
       await page.waitForTimeout(1000); // Extra wait for React hydration
 
@@ -326,7 +317,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       // Wait for the group to appear in the list
       await page.waitForTimeout(2000);
       await groupsPage.waitForLoad();
-      
+
       // Get group ID for cleanup
       const response = await page.request.get("/api/groups");
       if (response.ok()) {
@@ -338,15 +329,15 @@ test.describe("Groups - Join via Invitation Code", () => {
           }
         }
       }
-      
+
       // STEP 3: Get valid invite code (we won't use it, just to verify it exists)
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-      
-      const copyButton = page.getByRole('button', { name: 'Kopiuj kod' }).first();
-      await copyButton.waitFor({ state: 'visible', timeout: 15000 });
+
+      const copyButton = page.getByRole("button", { name: "Kopiuj kod" }).first();
+      await copyButton.waitFor({ state: "visible", timeout: 15000 });
       await copyButton.click();
       await page.waitForTimeout(500);
-      
+
       const validCode = await page.evaluate(() => navigator.clipboard.readText());
 
       if (!validCode) {
@@ -357,13 +348,13 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 4: Logout User A
       console.log("🚪 Logging out User A...");
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
 
       // STEP 5: Login as User B
       console.log("👤 Logging in as User B...");
       const loginPage = new LoginPage(page);
       await loginPage.loginWithSecondTestUser();
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
 
       // STEP 6: Try to join with INVALID code (different from the valid one)
@@ -382,7 +373,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       const errorMessage = await joinDialog.getErrorMessage();
       expect(errorMessage).toBeTruthy();
       expect(errorMessage.length).toBeGreaterThan(0);
-      
+
       console.log(`✅ Error message displayed correctly: ${errorMessage}`);
 
       // Close the dialog before logging out
@@ -391,13 +382,13 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 8: Logout User B
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
     } finally {
       // Cleanup
       if (groupId) {
         await cleanupGroup(browser, groupId);
       }
-      
+
       // Close the isolated context to avoid polluting global session
       await page.close();
       await context.close();
@@ -416,11 +407,8 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 1: Login as User A (fresh login)
       const loginPageA = new LoginPage(page);
       await loginPageA.goto(); // Use goto() which includes proper waiting
-      await loginPageA.login(
-        process.env.E2E_USERNAME!,
-        process.env.E2E_PASSWORD!
-      );
-      await page.waitForURL('**/groups', { timeout: 15000 });
+      await loginPageA.login(process.env.E2E_USERNAME!, process.env.E2E_PASSWORD!);
+      await page.waitForURL("**/groups", { timeout: 15000 });
       await page.waitForLoadState("networkidle");
       await page.waitForTimeout(1000); // Extra wait for React hydration
 
@@ -437,7 +425,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       // Wait for the group to appear in the list
       await page.waitForTimeout(2000);
       await groupsPage.waitForLoad();
-      
+
       // Get group ID for cleanup
       const response = await page.request.get("/api/groups");
       if (response.ok()) {
@@ -449,15 +437,15 @@ test.describe("Groups - Join via Invitation Code", () => {
           }
         }
       }
-      
+
       // STEP 3: Grant clipboard permissions and copy invite code
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-      
-      const copyButton = page.getByRole('button', { name: 'Kopiuj kod' }).first();
-      await copyButton.waitFor({ state: 'visible', timeout: 15000 });
+
+      const copyButton = page.getByRole("button", { name: "Kopiuj kod" }).first();
+      await copyButton.waitFor({ state: "visible", timeout: 15000 });
       await copyButton.click();
       await page.waitForTimeout(500);
-      
+
       const inviteCode = await page.evaluate(() => navigator.clipboard.readText());
 
       if (!inviteCode) {
@@ -467,11 +455,11 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 4: Logout and login as second user
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
 
       const loginPage = new LoginPage(page);
       await loginPage.loginWithSecondTestUser();
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
 
       // STEP 5: Join the group first time
@@ -505,13 +493,13 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 8: Logout User B
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
     } finally {
       // Cleanup
       if (groupId) {
         await cleanupGroup(browser, groupId);
       }
-      
+
       // Close the isolated context to avoid polluting global session
       await page.close();
       await context.close();
@@ -530,11 +518,8 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 1: Login as User A (fresh login)
       const loginPageA = new LoginPage(page);
       await loginPageA.goto(); // Use goto() which includes proper waiting
-      await loginPageA.login(
-        process.env.E2E_USERNAME!,
-        process.env.E2E_PASSWORD!
-      );
-      await page.waitForURL('**/groups', { timeout: 15000 });
+      await loginPageA.login(process.env.E2E_USERNAME!, process.env.E2E_PASSWORD!);
+      await page.waitForURL("**/groups", { timeout: 15000 });
       await page.waitForLoadState("networkidle");
       await page.waitForTimeout(1000); // Extra wait for React hydration
 
@@ -551,7 +536,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       // Wait for the group to appear in the list
       await page.waitForTimeout(2000);
       await groupsPage.waitForLoad();
-      
+
       // Get group ID for cleanup
       const response = await page.request.get("/api/groups");
       if (response.ok()) {
@@ -563,15 +548,15 @@ test.describe("Groups - Join via Invitation Code", () => {
           }
         }
       }
-      
+
       // STEP 3: Grant clipboard permissions and copy invite code
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-      
-      const copyButton = page.getByRole('button', { name: 'Kopiuj kod' }).first();
-      await copyButton.waitFor({ state: 'visible', timeout: 15000 });
+
+      const copyButton = page.getByRole("button", { name: "Kopiuj kod" }).first();
+      await copyButton.waitFor({ state: "visible", timeout: 15000 });
       await copyButton.click();
       await page.waitForTimeout(500);
-      
+
       const inviteCode = await page.evaluate(() => navigator.clipboard.readText());
 
       if (!inviteCode) {
@@ -581,11 +566,11 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 4: Logout and login as member
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
 
       const loginPage = new LoginPage(page);
       await loginPage.loginWithSecondTestUser();
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
 
       // STEP 5: Join the group
@@ -602,9 +587,9 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       const groupPageMember = new GroupPage(page);
       await groupPageMember.goToMembers();
-      
+
       // Wait for navigation to members page
-      await page.waitForURL('**/members', { timeout: 10000 });
+      await page.waitForURL("**/members", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
       await page.waitForTimeout(1500); // Wait for React hydration
 
@@ -621,13 +606,13 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 8: Logout User B
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
     } finally {
       // Cleanup
       if (groupId) {
         await cleanupGroup(browser, groupId);
       }
-      
+
       // Close the isolated context to avoid polluting global session
       await page.close();
       await context.close();
@@ -646,11 +631,8 @@ test.describe("Groups - Join via Invitation Code", () => {
       // STEP 1: Login as User A (fresh login)
       const loginPageA = new LoginPage(page);
       await loginPageA.goto(); // Use goto() which includes proper waiting
-      await loginPageA.login(
-        process.env.E2E_USERNAME!,
-        process.env.E2E_PASSWORD!
-      );
-      await page.waitForURL('**/groups', { timeout: 15000 });
+      await loginPageA.login(process.env.E2E_USERNAME!, process.env.E2E_PASSWORD!);
+      await page.waitForURL("**/groups", { timeout: 15000 });
       await page.waitForLoadState("networkidle");
       await page.waitForTimeout(1000); // Extra wait for React hydration
 
@@ -667,7 +649,7 @@ test.describe("Groups - Join via Invitation Code", () => {
       // Wait for the group to appear in the list
       await page.waitForTimeout(2000);
       await groupsPage.waitForLoad();
-      
+
       // Get group ID for cleanup
       const response = await page.request.get("/api/groups");
       if (response.ok()) {
@@ -679,15 +661,15 @@ test.describe("Groups - Join via Invitation Code", () => {
           }
         }
       }
-      
+
       // STEP 3: Grant clipboard permissions and copy invite code
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-      
-      const copyButton = page.getByRole('button', { name: 'Kopiuj kod' }).first();
-      await copyButton.waitFor({ state: 'visible', timeout: 15000 });
+
+      const copyButton = page.getByRole("button", { name: "Kopiuj kod" }).first();
+      await copyButton.waitFor({ state: "visible", timeout: 15000 });
       await copyButton.click();
       await page.waitForTimeout(500);
-      
+
       const inviteCode = await page.evaluate(() => navigator.clipboard.readText());
 
       if (!inviteCode) {
@@ -697,11 +679,11 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 4: Member joins
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
 
       const loginPage = new LoginPage(page);
       await loginPage.loginWithSecondTestUser();
-      await page.waitForURL('**/groups', { timeout: 10000 });
+      await page.waitForURL("**/groups", { timeout: 10000 });
       await page.waitForLoadState("networkidle");
 
       const groupsPageMember = new GroupsListPage(page);
@@ -716,13 +698,13 @@ test.describe("Groups - Join via Invitation Code", () => {
 
       // STEP 6: Logout User B
       await logoutUser(page);
-      await page.waitForURL('**/auth/login', { timeout: 10000 });
+      await page.waitForURL("**/auth/login", { timeout: 10000 });
     } finally {
       // Cleanup
       if (groupId) {
         await cleanupGroup(browser, groupId);
       }
-      
+
       // Close the isolated context to avoid polluting global session
       await page.close();
       await context.close();

@@ -35,7 +35,7 @@ export async function getCampDayResource(
   baseUrl?: URL | string
 ): Promise<ResourceResult<CampDayDTO>> {
   const url = baseUrl ? new URL(`/api/camp-days/${campDayId}`, baseUrl) : `/api/camp-days/${campDayId}`;
-  
+
   // Merge init with default headers
   const fetchInit: RequestInit = {
     method: "GET",
@@ -43,7 +43,7 @@ export async function getCampDayResource(
     credentials: "same-origin", // Important for SSR to pass cookies
     ...init,
   };
-  
+
   const response = await fetch(url, fetchInit);
 
   const status = response.status;
@@ -77,5 +77,3 @@ export async function getCampDayResource(
     etag,
   };
 }
-
-

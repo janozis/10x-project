@@ -28,5 +28,3 @@ export function useActivitySummaries() {
 
   return { get, load } as const;
 }
-
-

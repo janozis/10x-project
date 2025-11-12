@@ -97,28 +97,53 @@ export function QuickTaskForm({ groupId, canCreate, onCreated }: QuickTaskFormPr
     <form id="quick-task" onSubmit={handleSubmit} className="my-6 grid grid-cols-1 gap-3 rounded-lg border p-4">
       <div className="text-sm font-medium">Szybkie zadanie</div>
       {error ? (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm">{error}</div>
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-2 text-sm"
+        >
+          {error}
+        </div>
       ) : null}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
           <label className="mb-1 block text-sm">Tytuł*</label>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Np. Przygotować materiały" aria-invalid={!!titleError} />
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Np. Przygotować materiały"
+            aria-invalid={!!titleError}
+          />
           {titleError ? <div className="mt-1 text-xs text-destructive">{titleError}</div> : null}
         </div>
         <div>
           <label className="mb-1 block text-sm">Termin (YYYY-MM-DD)</label>
-          <Input value={dueDate} onChange={(e) => setDueDate(e.target.value)} placeholder="2025-12-31" aria-invalid={!!dueDateError} />
+          <Input
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            placeholder="2025-12-31"
+            aria-invalid={!!dueDateError}
+          />
           {dueDateError ? <div className="mt-1 text-xs text-destructive">{dueDateError}</div> : null}
         </div>
       </div>
       <div>
         <label className="mb-1 block text-sm">Powiązana aktywność (UUID, opcjonalnie)</label>
-        <Input value={activityId} onChange={(e) => setActivityId(e.target.value)} placeholder="UUID aktywności" aria-invalid={!!activityIdError} />
+        <Input
+          value={activityId}
+          onChange={(e) => setActivityId(e.target.value)}
+          placeholder="UUID aktywności"
+          aria-invalid={!!activityIdError}
+        />
         {activityIdError ? <div className="mt-1 text-xs text-destructive">{activityIdError}</div> : null}
       </div>
       <div>
         <label className="mb-1 block text-sm">Opis*</label>
-        <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Szczegóły zadania" aria-invalid={!!descriptionError} />
+        <Textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Szczegóły zadania"
+          aria-invalid={!!descriptionError}
+        />
         {descriptionError ? <div className="mt-1 text-xs text-destructive">{descriptionError}</div> : null}
       </div>
       <div className="flex justify-end">
@@ -129,5 +154,3 @@ export function QuickTaskForm({ groupId, canCreate, onCreated }: QuickTaskFormPr
     </form>
   );
 }
-
-

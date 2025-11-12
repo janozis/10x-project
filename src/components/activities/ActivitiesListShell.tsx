@@ -166,7 +166,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
   const [confirm, setConfirm] = React.useState<{ type: "delete" | "restore"; ids: string[] } | null>(null);
   const [processing, setProcessing] = React.useState(false);
   const [createDialogOpen, setCreateDialogOpen] = React.useState(false);
-  
+
   const requestDelete = React.useCallback((ids: string[]) => {
     if (!ids.length) return;
     setConfirm({ type: "delete", ids });
@@ -179,7 +179,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
   const canRestore = permissions?.role === "admin" && mode === "deleted";
   const canCreate = permissions?.role === "admin" || permissions?.role === "editor";
   const canEdit = permissions?.role === "admin" || permissions?.role === "editor";
-  
+
   const handleCreateActivity = React.useCallback(() => {
     setCreateDialogOpen(true);
   }, []);
@@ -467,7 +467,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
           }
         }}
       />
-      
+
       {/* Create Activity Dialog */}
       <CreateActivityDialog
         open={createDialogOpen}
@@ -475,7 +475,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
         groupId={groupId}
         onSuccess={handleCreateSuccess}
       />
-      
+
       {/* sr-only live region for status updates */}
       <div ref={liveRef} tabIndex={-1} aria-live="polite" className="sr-only">
         {statusMsg || ""}

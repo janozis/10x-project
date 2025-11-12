@@ -36,5 +36,3 @@ export function AIEvaluationTimeline({ evaluations, loading }: AIEvaluationTimel
     </ul>
   );
 }
-
-

@@ -12,7 +12,7 @@ export type LoginResult = { ok: true } | { ok: false; code: AuthErrorCode; messa
 export async function loginWithEmailPassword(values: LoginFormValues): Promise<LoginResult> {
   try {
     const supabase = createSupabaseBrowserInstance();
-    
+
     const { error } = await supabase.auth.signInWithPassword({
       email: values.email,
       password: values.password,
@@ -76,7 +76,7 @@ export type ForgotPasswordResult = { ok: true } | { ok: false; code: ForgotPassw
 
 export async function requestPasswordReset(email: string): Promise<ForgotPasswordResult> {
   const supabase = createSupabaseBrowserInstance();
-  
+
   const origin = typeof window !== "undefined" && window.location?.origin ? window.location.origin : "";
   const redirectTo = origin ? `${origin}/auth/reset-password` : undefined;
   try {
@@ -121,7 +121,7 @@ export type ResetPasswordResult = { ok: true } | { ok: false; code: ResetPasswor
 export async function updatePassword(newPassword: string): Promise<ResetPasswordResult> {
   try {
     const supabase = createSupabaseBrowserInstance();
-    
+
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
       if (import.meta.env.DEV) {
@@ -163,11 +163,11 @@ export interface RegisterFormValues {
   confirmPassword: string;
 }
 
-export type RegisterErrorCode = 
-  | "email_already_exists" 
-  | "weak_password" 
-  | "too_many_requests" 
-  | "network_error" 
+export type RegisterErrorCode =
+  | "email_already_exists"
+  | "weak_password"
+  | "too_many_requests"
+  | "network_error"
   | "unknown_error";
 
 export type RegisterResult = { ok: true } | { ok: false; code: RegisterErrorCode; message: string };
@@ -179,7 +179,7 @@ export type RegisterResult = { ok: true } | { ok: false; code: RegisterErrorCode
 export async function registerWithEmailPassword(values: RegisterFormValues): Promise<RegisterResult> {
   try {
     const supabase = createSupabaseBrowserInstance();
-    
+
     const { error } = await supabase.auth.signUp({
       email: values.email,
       password: values.password,
@@ -219,16 +219,16 @@ function mapRegisterError(error: { message: string; status?: number }): {
   if (error.status === 400 || /already registered/i.test(error.message) || /already exists/i.test(error.message)) {
     return { code: "email_already_exists", message: "Ten email jest już zarejestrowany." };
   }
-  
+
   // Weak password (though frontend validation should catch this)
   if (error.status === 422 || /password/i.test(error.message)) {
     return { code: "weak_password", message: "Hasło nie spełnia wymagań bezpieczeństwa." };
   }
-  
+
   // Rate limiting
   if (error.status === 429) {
     return { code: "too_many_requests", message: "Zbyt wiele prób. Spróbuj za chwilę." };
   }
-  
+
   return { code: "unknown_error", message: "Nieoczekiwany błąd. Spróbuj ponownie." };
 }

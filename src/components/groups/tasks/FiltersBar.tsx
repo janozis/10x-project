@@ -33,6 +33,7 @@ export function FiltersBar({ filters, activities, onChange }: FiltersBarProps): 
           value={filters.status ?? ""}
           onChange={handleStatusChange}
           className="h-9 rounded-md border bg-background px-2 text-sm"
+          data-status-filter="true"
         >
           <option value="">Wszystkie</option>
           <option value="pending">Oczekujące</option>
@@ -48,6 +49,7 @@ export function FiltersBar({ filters, activities, onChange }: FiltersBarProps): 
           value={filters.activityId ?? ""}
           onChange={handleActivityChange}
           className="h-9 rounded-md border bg-background px-2 text-sm"
+          data-activity-filter="true"
         >
           <option value="">Wszystkie</option>
           {activities.map((a) => (
@@ -63,6 +65,7 @@ export function FiltersBar({ filters, activities, onChange }: FiltersBarProps): 
           type="button"
           onClick={handleReset}
           className="inline-flex h-9 items-center justify-center rounded-md border bg-background px-3 text-sm hover:bg-accent"
+          data-test-id="tasks-reset-filters-button"
         >
           Reset
         </button>
@@ -70,5 +73,3 @@ export function FiltersBar({ filters, activities, onChange }: FiltersBarProps): 
     </div>
   );
 }
-
-

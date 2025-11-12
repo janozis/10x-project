@@ -1,8 +1,8 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Group Members Page
- * 
+ *
  * Encapsulates group members page interactions following AAA pattern:
  * - Arrange: Initialize page and locators
  * - Act: Perform actions (search, filter, change roles, remove members)
@@ -10,19 +10,19 @@ import { Page, Locator } from '@playwright/test';
  */
 export class GroupMembersPage {
   readonly page: Page;
-  
+
   // Members table
   readonly membersTable: Locator;
   readonly memberRows: Locator;
   readonly sortButton: Locator;
-  
+
   // Toolbar and filters
   readonly searchInput: Locator;
   readonly roleFilter: Locator;
   readonly sortDropdown: Locator;
   readonly countBadge: Locator;
   readonly clearButton: Locator;
-  
+
   // Member actions
   readonly roleSelects: Locator;
   readonly promoteButtons: Locator;
@@ -30,19 +30,19 @@ export class GroupMembersPage {
 
   constructor(page: Page) {
     this.page = page;
-    
+
     // Use data-test-id attributes for stable selectors
-    this.membersTable = page.getByTestId('members-table');
+    this.membersTable = page.getByTestId("members-table");
     this.memberRows = page.locator('[data-test-id="members-table-row"]');
-    this.sortButton = page.getByTestId('members-table-sort-button');
-    
+    this.sortButton = page.getByTestId("members-table-sort-button");
+
     // Toolbar
-    this.searchInput = page.getByTestId('members-search-input');
-    this.roleFilter = page.getByTestId('members-role-filter');
-    this.sortDropdown = page.getByTestId('members-sort-button');
-    this.countBadge = page.getByTestId('members-count-badge');
-    this.clearButton = page.getByTestId('members-clear-button');
-    
+    this.searchInput = page.getByTestId("members-search-input");
+    this.roleFilter = page.getByTestId("members-role-filter");
+    this.sortDropdown = page.getByTestId("members-sort-button");
+    this.countBadge = page.getByTestId("members-count-badge");
+    this.clearButton = page.getByTestId("members-clear-button");
+
     // Actions
     this.roleSelects = page.locator('[data-test-id="members-role-select"]');
     this.promoteButtons = page.locator('[data-test-id="members-promote-button"]');
@@ -99,14 +99,14 @@ export class GroupMembersPage {
     const count = await this.memberRows.count();
     if (count > 0) return count;
     // Fallback
-    return await this.page.locator('tbody tr').count();
+    return await this.page.locator("tbody tr").count();
   }
 
   /**
    * Get count badge text
    */
   async getCountBadgeText(): Promise<string> {
-    return await this.countBadge.textContent() || '';
+    return (await this.countBadge.textContent()) || "";
   }
 
   /**
@@ -130,7 +130,7 @@ export class GroupMembersPage {
   async removeMember(index: number) {
     await this.removeButtons.nth(index).click();
     // May need to confirm in a dialog
-    const confirmButton = this.page.getByRole('button', { name: /potwierdź|confirm/i });
+    const confirmButton = this.page.getByRole("button", { name: /potwierdź|confirm/i });
     if (await confirmButton.isVisible()) {
       await confirmButton.click();
     }
@@ -141,7 +141,7 @@ export class GroupMembersPage {
    */
   async getMemberName(index: number): Promise<string> {
     const row = this.memberRows.nth(index);
-    return await row.textContent() || '';
+    return (await row.textContent()) || "";
   }
 
   /**
@@ -159,7 +159,11 @@ export class GroupMembersPage {
     const hasTestId = await this.membersTable.isVisible().catch(() => false);
     if (hasTestId) return true;
     // Fallback: check for any table
-    return await this.page.locator('table').first().isVisible().catch(() => false);
+    return await this.page
+      .locator("table")
+      .first()
+      .isVisible()
+      .catch(() => false);
   }
 
   /**
@@ -169,18 +173,18 @@ export class GroupMembersPage {
     // Wait for table - use shorter timeouts since we already waited for hydration
     // Try data-test-id first, fallback to table selector
     try {
-      await this.membersTable.waitFor({ state: 'visible', timeout: 3000 });
+      await this.membersTable.waitFor({ state: "visible", timeout: 3000 });
     } catch {
       // Fallback: wait for any table element
-      await this.page.locator('table').first().waitFor({ state: 'visible', timeout: 3000 });
+      await this.page.locator("table").first().waitFor({ state: "visible", timeout: 3000 });
     }
-    
+
     // Wait for at least one row
     try {
-      await this.memberRows.first().waitFor({ state: 'visible', timeout: 2000 });
+      await this.memberRows.first().waitFor({ state: "visible", timeout: 2000 });
     } catch {
       // Fallback: wait for any table row in tbody
-      await this.page.locator('tbody tr').first().waitFor({ state: 'visible', timeout: 2000 });
+      await this.page.locator("tbody tr").first().waitFor({ state: "visible", timeout: 2000 });
     }
   }
 
@@ -190,7 +194,7 @@ export class GroupMembersPage {
   async getMemberEmails(): Promise<string[]> {
     const rows = await this.memberRows.all();
     const emails: string[] = [];
-    
+
     for (const row of rows) {
       const text = await row.textContent();
       // Extract email using regex or specific selector
@@ -199,7 +203,7 @@ export class GroupMembersPage {
         emails.push(emailMatch[0]);
       }
     }
-    
+
     return emails;
   }
 
@@ -211,4 +215,3 @@ export class GroupMembersPage {
     return await member.isVisible();
   }
 }
-

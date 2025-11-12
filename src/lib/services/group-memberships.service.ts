@@ -73,7 +73,7 @@ export async function listMembers(
   const effectiveUserId = authUserId || DEFAULT_USER_ID;
   console.log("[listMembers] CURRENT_USER_ID:", effectiveUserId);
   console.log("[listMembers] GROUP_ID:", groupId);
-  
+
   if (!isUUID(groupId)) {
     return errors.validation({ group_id: "invalid uuid" }) as ApiListResponse<GroupMemberDTO>;
   }
@@ -111,14 +111,14 @@ export async function listMembers(
     p_group_id: groupId,
   });
 
-  console.log("[listMembers] RPC result:", { 
-    hasData: !!rows, 
-    dataLength: rows?.length, 
+  console.log("[listMembers] RPC result:", {
+    hasData: !!rows,
+    dataLength: rows?.length,
     hasError: !!error,
     errorMessage: error?.message,
     errorCode: error?.code,
     errorDetails: error?.details,
-    errorHint: error?.hint
+    errorHint: error?.hint,
   });
 
   // Log raw data from RPC
@@ -144,7 +144,7 @@ export async function listMembers(
   }
 
   const dtos = (rows ?? []).map((row) => mapMembershipRowToDTO(row as any));
-  console.log("[listMembers] Mapped DTOs:", { count: dtos.length, emails: dtos.map(d => d.user_email) });
+  console.log("[listMembers] Mapped DTOs:", { count: dtos.length, emails: dtos.map((d) => d.user_email) });
   return { data: dtos, count: dtos.length };
 }
 

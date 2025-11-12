@@ -13,7 +13,10 @@ function coerceToCreateInput(values: ActivityCreateVM): ActivityCreateInput {
     title: values.title.trim(),
     objective: values.objective.trim(),
     tasks: values.tasks.trim(),
-    duration_minutes: typeof values.duration_minutes === "number" ? values.duration_minutes : parseInt(values.duration_minutes || "0", 10),
+    duration_minutes:
+      typeof values.duration_minutes === "number"
+        ? values.duration_minutes
+        : parseInt(values.duration_minutes || "0", 10),
     location: values.location.trim(),
     materials: values.materials.trim(),
     responsible: values.responsible.trim(),
@@ -30,10 +33,17 @@ export function useStepValidation(values: ActivityCreateVM) {
       title: values.title,
       objective: values.objective,
       duration_minutes:
-        typeof values.duration_minutes === "number" ? values.duration_minutes : parseInt(values.duration_minutes || "0", 10),
+        typeof values.duration_minutes === "number"
+          ? values.duration_minutes
+          : parseInt(values.duration_minutes || "0", 10),
       participants: values.participants,
     } as const;
-    const schema = activityCreateSchema.pick({ title: true, objective: true, duration_minutes: true, participants: true });
+    const schema = activityCreateSchema.pick({
+      title: true,
+      objective: true,
+      duration_minutes: true,
+      participants: true,
+    });
     const parsed = schema.safeParse(subset);
     if (parsed.success) return {};
     return zodErrorToDetails(parsed.error);
@@ -54,7 +64,12 @@ export function useStepValidation(values: ActivityCreateVM) {
       responsible: values.responsible,
       knowledge_scope: values.knowledge_scope,
     } as const;
-    const schema = activityCreateSchema.pick({ location: true, materials: true, responsible: true, knowledge_scope: true });
+    const schema = activityCreateSchema.pick({
+      location: true,
+      materials: true,
+      responsible: true,
+      knowledge_scope: true,
+    });
     const parsed = schema.safeParse(subset);
     if (parsed.success) return {};
     return zodErrorToDetails(parsed.error);
@@ -69,5 +84,3 @@ export function useStepValidation(values: ActivityCreateVM) {
 
   return { validateBasics, validateContent, validateLogistics, validateAll } as const;
 }
-
-

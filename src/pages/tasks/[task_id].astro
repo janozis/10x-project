@@ -29,12 +29,12 @@ let activityDto: ActivityDTO | null = null;
 if (taskRes.ok) {
   const body = (await taskRes.json()) as ApiSingle<GroupTaskDTO>;
   taskDto = body.data;
-  
+
   // Fetch group details for breadcrumb
   if (taskDto?.group_id) {
     const groupUrl = new URL(`/api/groups/${taskDto.group_id}`, Astro.url);
     const groupRes = await fetch(groupUrl);
-    
+
     if (groupRes.ok) {
       const groupBody = (await groupRes.json()) as ApiSingle<GroupDTO>;
       groupDto = groupBody.data;
@@ -44,7 +44,7 @@ if (taskRes.ok) {
     if (fromSource === "activity" && sourceActivityId) {
       const activityUrl = new URL(`/api/activities/${sourceActivityId}`, Astro.url);
       const activityRes = await fetch(activityUrl);
-      
+
       if (activityRes.ok) {
         const activityBody = (await activityRes.json()) as ApiSingle<ActivityDTO>;
         activityDto = activityBody.data;
@@ -54,28 +54,25 @@ if (taskRes.ok) {
 }
 
 // Build breadcrumb items dynamically based on source
-const breadcrumbItems = taskDto?.group_id ? [
-  { label: "Lista grup", href: "/groups" },
-  { label: groupDto?.name || "Grupa", href: `/groups/${taskDto.group_id}/dashboard` },
-  ...(fromSource === "activity" && activityDto ? [
-    { label: "Aktywności", href: `/groups/${taskDto.group_id}/activities` },
-    { label: activityDto.title, href: `/activities/${activityDto.id}/edit` }
-  ] : [
-    { label: "Zadania", href: `/groups/${taskDto.group_id}/tasks` }
-  ])
-] : [];
+const breadcrumbItems = taskDto?.group_id
+  ? [
+      { label: "Lista grup", href: "/groups" },
+      { label: groupDto?.name || "Grupa", href: `/groups/${taskDto.group_id}/dashboard` },
+      ...(fromSource === "activity" && activityDto
+        ? [
+            { label: "Aktywności", href: `/groups/${taskDto.group_id}/activities` },
+            { label: activityDto.title, href: `/activities/${activityDto.id}/edit` },
+          ]
+        : [{ label: "Zadania", href: `/groups/${taskDto.group_id}/tasks` }]),
+    ]
+  : [];
 ---
 
 <Layout title="Szczegóły zadania">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-3xl">
-      {breadcrumbItems.length > 0 && (
-        <Breadcrumb items={breadcrumbItems} />
-      )}
+      {breadcrumbItems.length > 0 && <Breadcrumb items={breadcrumbItems} />}
       <TaskDetailsView client:load taskId={taskId} />
     </div>
   </main>
 </Layout>
-
-
-

@@ -25,5 +25,3 @@ export function mapPermissionsToActions(permissions: GroupPermissionsDTO | null 
 
   return { canManageDays: permissions.role === "admin" };
 }
-
-

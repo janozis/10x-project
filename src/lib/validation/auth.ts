@@ -7,7 +7,6 @@ export const loginSchema = z.object({
 
 export type LoginSchema = z.infer<typeof loginSchema>;
 
-
 export const registerSchema = z
   .object({
     email: z.string().email("Podaj poprawny adres email"),
@@ -27,13 +26,11 @@ export const registerSchema = z
 
 export type RegisterSchema = z.infer<typeof registerSchema>;
 
-
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Podaj poprawny adres email"),
 });
 
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
-
 
 export const resetPasswordSchema = z
   .object({

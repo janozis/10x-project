@@ -67,7 +67,7 @@ const CampDayViewComponent = ({
         const payload = (await response.json()) as ApiSingle<GroupPermissionsDTO> | ApiError;
         if (!response.ok || isApiError(payload)) {
           const message = isApiError(payload)
-            ? payload.error?.message ?? PERMISSIONS_FALLBACK_MESSAGE
+            ? (payload.error?.message ?? PERMISSIONS_FALLBACK_MESSAGE)
             : PERMISSIONS_FALLBACK_MESSAGE;
           throw new Error(message);
         }
@@ -102,15 +102,21 @@ const CampDayViewComponent = ({
   }, [permissions, loadPermissions, permissionsState]);
 
   const canEdit = Boolean(
-    effectivePermissions &&
-      (effectivePermissions.role === "admin" || effectivePermissions.role === "editor")
+    effectivePermissions && (effectivePermissions.role === "admin" || effectivePermissions.role === "editor")
   );
   const canDelete = effectivePermissions?.role === "admin";
   const headerCampDay = campDay ?? initialCampDay;
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      console.log("[CampDayView] canEdit:", canEdit, "canDelete:", canDelete, "effectivePermissions:", effectivePermissions);
+      console.log(
+        "[CampDayView] canEdit:",
+        canEdit,
+        "canDelete:",
+        canDelete,
+        "effectivePermissions:",
+        effectivePermissions
+      );
     }
   }, [canEdit, canDelete, effectivePermissions]);
 
@@ -244,8 +250,8 @@ const CampDayViewComponent = ({
 
       {permissionsState === "idle" && !canEdit ? (
         <div className="rounded-md border border-border/60 bg-muted/40 p-3 text-sm text-muted-foreground" role="note">
-          Nie masz uprawnień do edycji harmonogramu. Możesz przeglądać dane, ale zmiany wymagają roli administratora
-          lub edytora.
+          Nie masz uprawnień do edycji harmonogramu. Możesz przeglądać dane, ale zmiany wymagają roli administratora lub
+          edytora.
         </div>
       ) : null}
 

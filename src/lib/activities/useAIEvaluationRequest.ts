@@ -34,9 +34,12 @@ export function useAIEvaluationRequest(
       // Do a few refresh attempts in case processing takes longer
       const attempts = [1, 2, 3];
       attempts.forEach((multiplier) => {
-        const id = window.setTimeout(() => {
-          void options.onRefresh();
-        }, nextSec * 1000 * multiplier);
+        const id = window.setTimeout(
+          () => {
+            void options.onRefresh();
+          },
+          nextSec * 1000 * multiplier
+        );
         timeoutsRef.current.push(id);
       });
     } catch (e: any) {
@@ -53,5 +56,3 @@ export function useAIEvaluationRequest(
     request,
   } as const;
 }
-
-

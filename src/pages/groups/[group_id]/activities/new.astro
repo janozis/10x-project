@@ -32,12 +32,8 @@ const { data: membership } = await supabase
   .maybeSingle();
 
 if (membership) {
-  const { data: groupRow } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", group_id)
-    .maybeSingle();
-  
+  const { data: groupRow } = await supabase.from("groups").select("*").eq("id", group_id).maybeSingle();
+
   if (groupRow) {
     groupDto = {
       id: groupRow.id,
@@ -60,15 +56,15 @@ if (membership) {
 <Layout title="Nowa aktywność">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-4xl">
-      <Breadcrumb items={[
-        { label: "Lista grup", href: "/groups" },
-        { label: groupDto?.name || "Grupa", href: `/groups/${group_id}/dashboard` },
-        { label: "Aktywności", href: `/groups/${group_id}/activities` }
-      ]} />
+      <Breadcrumb
+        items={[
+          { label: "Lista grup", href: "/groups" },
+          { label: groupDto?.name || "Grupa", href: `/groups/${group_id}/dashboard` },
+          { label: "Aktywności", href: `/groups/${group_id}/activities` },
+        ]}
+      />
       <NewActivityStepper groupId={group_id} client:load />
     </div>
   </main>
   <Toaster client:load />
 </Layout>
-
-

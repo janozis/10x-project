@@ -49,35 +49,47 @@ export function useColumnPreferences(groupId: UUID | undefined, userId: UUID | u
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId, userId]);
 
-  const persist = React.useCallback((next: ColumnVisibilityState) => {
-    if (!ready) return;
-    try {
-      window.localStorage.setItem(makeStorageKey(groupId!, userId!), JSON.stringify(next));
-    } catch {
-      // Ignore storage quota errors
-    }
-  }, [groupId, userId, ready]);
+  const persist = React.useCallback(
+    (next: ColumnVisibilityState) => {
+      if (!ready) return;
+      try {
+        window.localStorage.setItem(makeStorageKey(groupId!, userId!), JSON.stringify(next));
+      } catch {
+        // Ignore storage quota errors
+      }
+    },
+    [groupId, userId, ready]
+  );
 
-  const update = React.useCallback((updater: (prev: ColumnVisibilityState) => ColumnVisibilityState) => {
-    setState((prev) => {
-      const next = updater(prev);
+  const update = React.useCallback(
+    (updater: (prev: ColumnVisibilityState) => ColumnVisibilityState) => {
+      setState((prev) => {
+        const next = updater(prev);
+        // Enforce invariant
+        if (!next.title) next.title = true;
+        persist(next);
+        return next;
+      });
+    },
+    [persist]
+  );
+
+  const set = React.useCallback(
+    (next: ColumnVisibilityState) => {
       // Enforce invariant
       if (!next.title) next.title = true;
+      setState(next);
       persist(next);
-      return next;
-    });
-  }, [persist]);
+    },
+    [persist]
+  );
 
-  const set = React.useCallback((next: ColumnVisibilityState) => {
-    // Enforce invariant
-    if (!next.title) next.title = true;
-    setState(next);
-    persist(next);
-  }, [persist]);
-
-  const toggle = React.useCallback((column: ColumnId) => {
-    update((prev) => ({ ...prev, [column]: column === "title" ? true : !prev[column] }));
-  }, [update]);
+  const toggle = React.useCallback(
+    (column: ColumnId) => {
+      update((prev) => ({ ...prev, [column]: column === "title" ? true : !prev[column] }));
+    },
+    [update]
+  );
 
   const reset = React.useCallback(() => set({ ...DEFAULTS }), [set]);
 
@@ -88,5 +100,3 @@ export function useColumnPreferences(groupId: UUID | undefined, userId: UUID | u
     reset,
   } as const;
 }
-
-

@@ -16,9 +16,7 @@ export interface ActivityCreateVM {
   summary: string;
 }
 
-export interface FieldErrors {
-  [key: string]: string | undefined;
-}
+export type FieldErrors = Record<string, string | undefined>;
 
 export interface AutosaveState {
   enabled: boolean;
@@ -35,5 +33,3 @@ export interface NewActivityState {
   createdActivityId?: UUID;
   autosave: AutosaveState;
 }
-
-

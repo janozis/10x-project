@@ -77,12 +77,8 @@ const { data: membership } = await supabase
   .maybeSingle();
 
 if (membership) {
-  const { data: groupRow } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("id", groupId)
-    .maybeSingle();
-  
+  const { data: groupRow } = await supabase.from("groups").select("*").eq("id", groupId).maybeSingle();
+
   if (groupRow) {
     groupDto = {
       id: groupRow.id,
@@ -110,11 +106,13 @@ const groupDateRange =
 <Layout title="Edycja dnia obozowego">
   <main class="min-h-screen w-full p-4 md:p-8">
     <div class="mx-auto w-full max-w-3xl space-y-6">
-      <Breadcrumb items={[
-        { label: "Lista grup", href: "/groups" },
-        { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
-        { label: "Dni obozu", href: `/groups/${groupId}/camp-days` }
-      ]} />
+      <Breadcrumb
+        items={[
+          { label: "Lista grup", href: "/groups" },
+          { label: groupDto?.name || "Grupa", href: `/groups/${groupId}/dashboard` },
+          { label: "Dni obozu", href: `/groups/${groupId}/camp-days` },
+        ]}
+      />
       <header class="space-y-1">
         <h1 class="text-2xl font-semibold tracking-tight">Edytuj dzień obozowy</h1>
         <p class="text-sm text-muted-foreground">

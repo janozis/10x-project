@@ -60,5 +60,3 @@ export default function StepIndicator({ current, completed, onStepClick }: StepI
     </div>
   );
 }
-
-

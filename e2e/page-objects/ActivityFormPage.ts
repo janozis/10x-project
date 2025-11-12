@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Data interface for activity form steps
@@ -12,14 +12,14 @@ export interface ActivityStepData {
   odpowiedzialni?: string;
   zakresWiedzy?: string;
   uczestnicy?: string;
-  zadania?: string;  // Added tasks field
+  zadania?: string; // Added tasks field
   przebieg?: string;
   podsumowanie?: string;
 }
 
 /**
  * Page Object Model for Activity Form Page (Multi-step)
- * 
+ *
  * Encapsulates activity creation/editing form interactions following AAA pattern:
  * - Arrange: Initialize page and locators
  * - Act: Perform actions (fill steps, navigate, submit)
@@ -27,7 +27,7 @@ export interface ActivityStepData {
  */
 export class ActivityFormPage {
   readonly page: Page;
-  
+
   // Navigation buttons
   readonly backButton: Locator;
   readonly scheduleButton: Locator;
@@ -35,11 +35,11 @@ export class ActivityFormPage {
 
   constructor(page: Page) {
     this.page = page;
-    
+
     // Use data-test-id attributes for stable selectors
-    this.backButton = page.getByTestId('activity-stepper-back-button');
-    this.scheduleButton = page.getByTestId('activity-stepper-schedule-button');
-    this.nextButton = page.getByTestId('activity-stepper-next-button');
+    this.backButton = page.getByTestId("activity-stepper-back-button");
+    this.scheduleButton = page.getByTestId("activity-stepper-schedule-button");
+    this.nextButton = page.getByTestId("activity-stepper-next-button");
   }
 
   /**
@@ -60,7 +60,7 @@ export class ActivityFormPage {
    * Fill a form field by label (only if visible)
    */
   async fillField(label: string, value: string) {
-    const field = this.page.getByLabel(new RegExp(label, 'i'));
+    const field = this.page.getByLabel(new RegExp(label, "i"));
     // Check if field exists and is visible before trying to fill
     const isVisible = await field.isVisible().catch(() => false);
     if (isVisible) {
@@ -76,42 +76,42 @@ export class ActivityFormPage {
   async fillStep(data: ActivityStepData) {
     // Wait for dialog/form to fully render
     await this.page.waitForTimeout(500);
-    
+
     // Try to fill all fields - only visible ones will be filled
     if (data.temat) {
-      await this.fillField('tytuł', data.temat);
+      await this.fillField("tytuł", data.temat);
     }
     if (data.cel) {
-      await this.fillField('cel', data.cel);
+      await this.fillField("cel", data.cel);
     }
     if (data.czas) {
-      await this.fillField('czas', data.czas);
+      await this.fillField("czas", data.czas);
     }
     if (data.uczestnicy) {
-      await this.fillField('uczestnicy', data.uczestnicy);
+      await this.fillField("uczestnicy", data.uczestnicy);
     }
     if (data.zadania) {
-      await this.fillField('zadania', data.zadania);
+      await this.fillField("zadania", data.zadania);
     }
     if (data.przebieg) {
-      await this.fillField('przebieg', data.przebieg);
+      await this.fillField("przebieg", data.przebieg);
     }
     if (data.podsumowanie) {
-      await this.fillField('podsumowanie', data.podsumowanie);
+      await this.fillField("podsumowanie", data.podsumowanie);
     }
     if (data.miejsce) {
-      await this.fillField('miejsce', data.miejsce);
+      await this.fillField("miejsce", data.miejsce);
     }
     if (data.materialy) {
-      await this.fillField('materiały', data.materialy);
+      await this.fillField("materiały", data.materialy);
     }
     if (data.odpowiedzialni) {
-      await this.fillField('odpowiedzialny', data.odpowiedzialni);  // Changed to singular form
+      await this.fillField("odpowiedzialny", data.odpowiedzialni); // Changed to singular form
     }
     if (data.zakresWiedzy) {
-      await this.fillField('zakres', data.zakresWiedzy);
+      await this.fillField("zakres", data.zakresWiedzy);
     }
-    
+
     // After filling visible fields, click next/submit
     await this.page.waitForTimeout(300);
   }
@@ -179,15 +179,14 @@ export class ActivityFormPage {
    * This helps verify which step we're on
    */
   async getCurrentStep(): Promise<string> {
-    const stepIndicator = this.page.locator('[data-step-indicator]');
-    return await stepIndicator.textContent() || '';
+    const stepIndicator = this.page.locator("[data-step-indicator]");
+    return (await stepIndicator.textContent()) || "";
   }
 
   /**
    * Wait for form to load
    */
   async waitForLoad() {
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
   }
 }
-

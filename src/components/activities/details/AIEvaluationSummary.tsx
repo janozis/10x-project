@@ -15,7 +15,11 @@ function TruncatedText({ text, max = 280 }: { text: string; max?: number }) {
     <div className="space-y-1">
       <p className="whitespace-pre-wrap leading-relaxed text-sm">{shown}</p>
       {isLong ? (
-        <button type="button" className="text-xs underline text-muted-foreground" onClick={() => setExpanded((v) => !v)}>
+        <button
+          type="button"
+          className="text-xs underline text-muted-foreground"
+          onClick={() => setExpanded((v) => !v)}
+        >
           {expanded ? "Pokaż mniej" : "Pokaż więcej"}
         </button>
       ) : null}
@@ -39,8 +43,12 @@ export function AIEvaluationSummary({ latest, loading }: AIEvaluationSummaryProp
   return (
     <div className="space-y-3" data-test-id="ai-evaluation-result">
       <div className="flex items-center gap-2 flex-wrap" data-test-id="ai-evaluation-scores">
-        <Badge variant="secondary" data-test-id="ai-evaluation-lore-score">Lore: {latest.lore_score}</Badge>
-        <Badge variant="secondary" data-test-id="ai-evaluation-scouting-score">Wartości: {latest.scouting_values_score}</Badge>
+        <Badge variant="secondary" data-test-id="ai-evaluation-lore-score">
+          Lore: {latest.lore_score}
+        </Badge>
+        <Badge variant="secondary" data-test-id="ai-evaluation-scouting-score">
+          Wartości: {latest.scouting_values_score}
+        </Badge>
         {typeof latest.tokens === "number" ? <Badge variant="outline">Tokens: {latest.tokens}</Badge> : null}
       </div>
 
@@ -81,12 +89,14 @@ function SuggestionsList({ items }: { items: string[] }) {
         ))}
       </ul>
       {items.length > 3 ? (
-        <button type="button" className="text-xs underline text-muted-foreground" onClick={() => setExpanded((v) => !v)}>
+        <button
+          type="button"
+          className="text-xs underline text-muted-foreground"
+          onClick={() => setExpanded((v) => !v)}
+        >
           {expanded ? "Pokaż mniej" : `Pokaż więcej (${items.length - 3})`}
         </button>
       ) : null}
     </div>
   );
 }
-
-

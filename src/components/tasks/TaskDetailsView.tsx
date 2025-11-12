@@ -179,12 +179,20 @@ export function TaskDetailsView({ taskId }: TaskDetailsViewProps): JSX.Element {
       <TaskHeader title={task.title} status={task.status} />
 
       {success ? (
-        <div role="status" aria-live="polite" className="rounded-md border border-green-600/30 bg-green-50 px-3 py-2 text-sm text-green-700">
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-md border border-green-600/30 bg-green-50 px-3 py-2 text-sm text-green-700"
+        >
           {success}
         </div>
       ) : null}
       {redirectMsg ? (
-        <div role="status" aria-live="polite" className="rounded-md border border-blue-600/30 bg-blue-50 px-3 py-2 text-sm text-blue-700">
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-md border border-blue-600/30 bg-blue-50 px-3 py-2 text-sm text-blue-700"
+        >
           {redirectMsg}
         </div>
       ) : null}
@@ -195,9 +203,12 @@ export function TaskDetailsView({ taskId }: TaskDetailsViewProps): JSX.Element {
         </CardContent>
       </Card>
 
-      <TaskMeta createdAt={task.created_at} updatedAt={task.updated_at} groupId={task.group_id} activityId={task.activity_id} />
+      <TaskMeta
+        createdAt={task.created_at}
+        updatedAt={task.updated_at}
+        groupId={task.group_id}
+        activityId={task.activity_id}
+      />
     </div>
   );
 }
-
-

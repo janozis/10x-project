@@ -31,7 +31,13 @@ function isHHMM(v: string) {
   return /^\d{2}:\d{2}$/.test(v);
 }
 
-export default function AddToScheduleDialog({ open, onClose, groupId, activityId, onCreated }: AddToScheduleDialogProps) {
+export default function AddToScheduleDialog({
+  open,
+  onClose,
+  groupId,
+  activityId,
+  onCreated,
+}: AddToScheduleDialogProps) {
   const [loadingDays, setLoadingDays] = React.useState(false);
   const [days, setDays] = React.useState<CampDayDTO[]>([]);
   const [form, setForm] = React.useState<FormState>({ campDayId: "", start_time: "", end_time: "", order_in_day: "" });
@@ -79,7 +85,8 @@ export default function AddToScheduleDialog({ open, onClose, groupId, activityId
       toast.error("Godzina zakończenia musi być po rozpoczęciu.");
       return;
     }
-    const order = typeof form.order_in_day === "number" ? form.order_in_day : parseInt(String(form.order_in_day || 0), 10);
+    const order =
+      typeof form.order_in_day === "number" ? form.order_in_day : parseInt(String(form.order_in_day || 0), 10);
     if (!Number.isInteger(order) || order < 1) {
       toast.error("Kolejność w dniu musi być liczbą całkowitą >= 1.");
       return;
@@ -87,7 +94,12 @@ export default function AddToScheduleDialog({ open, onClose, groupId, activityId
 
     setSubmitting(true);
     try {
-      const payload = { activity_id: activityId, start_time: form.start_time, end_time: form.end_time, order_in_day: order };
+      const payload = {
+        activity_id: activityId,
+        start_time: form.start_time,
+        end_time: form.end_time,
+        order_in_day: order,
+      };
       const res = await fetch(`/api/camp-days/${form.campDayId}/schedules`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -198,5 +210,3 @@ export default function AddToScheduleDialog({ open, onClose, groupId, activityId
     </Dialog>
   );
 }
-
-

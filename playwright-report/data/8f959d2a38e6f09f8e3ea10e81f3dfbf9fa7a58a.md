@@ -1,0 +1,125 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - link "LoreProgrammer" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "LoreProgrammer" [ref=e7]
+      - generic [ref=e8]:
+        - generic [ref=e10]:
+          - link "🏠 Start" [ref=e11] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e12]: 🏠
+            - text: Start
+          - link "👥 Grupy" [ref=e13] [cursor=pointer]:
+            - /url: /groups
+            - generic [ref=e14]: 👥
+            - text: Grupy
+        - generic [ref=e15]:
+          - link "👤 testowy@jankosmala.pl" [ref=e16] [cursor=pointer]:
+            - /url: /auth/profile
+            - generic [ref=e17]: 👤
+            - generic [ref=e18]: testowy@jankosmala.pl
+          - button "🚪 Wyloguj" [ref=e19] [cursor=pointer]:
+            - generic [ref=e20]: 🚪
+            - generic [ref=e21]: Wyloguj
+  - main [ref=e22]:
+    - generic [ref=e23]:
+      - navigation "Breadcrumb" [ref=e24]:
+        - list [ref=e25]:
+          - listitem [ref=e26]:
+            - link "Lista grup" [ref=e27] [cursor=pointer]:
+              - /url: /groups
+              - img [ref=e28]
+              - generic [ref=e30]: Lista grup
+            - generic [ref=e31]: /
+          - listitem [ref=e32]:
+            - link "Test Group 1762950013787" [ref=e33] [cursor=pointer]:
+              - /url: /groups/ee462615-0156-44d9-b738-b9a156eb4871/dashboard
+              - img [ref=e34]
+              - generic [ref=e36]: Test Group 1762950013787
+      - generic [ref=e38]:
+        - generic [ref=e41]:
+          - heading "Aktywności" [level=1] [ref=e42]
+          - generic [ref=e43]: "3"
+        - tablist "Widoki listy" [ref=e45]:
+          - tab "Aktywne" [selected] [ref=e46]
+          - tab "Ostatnio usunięte" [ref=e47]
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: Szukaj
+            - textbox "Szukaj" [ref=e51]:
+              - /placeholder: Szukaj w tytułach i celach…
+          - generic [ref=e52]:
+            - generic [ref=e53]: Status
+            - combobox "Status" [ref=e54]:
+              - option "Wszystkie" [selected]
+              - option "Szkic"
+              - option "Do przeglądu"
+              - option "Gotowe"
+              - option "Zarchiwizowane"
+          - generic [ref=e55]:
+            - button "Dodaj aktywność" [ref=e56]:
+              - img
+              - text: Dodaj aktywność
+            - button "Kolumny" [ref=e58]
+        - table [ref=e59]:
+          - row "Tytuł Cel AI Edytorzy Aktualizacja" [ref=e60]:
+            - columnheader "Tytuł" [ref=e61]
+            - columnheader "Cel" [ref=e62]
+            - columnheader "AI" [ref=e63]
+            - columnheader "Edytorzy" [ref=e64]
+            - columnheader "Aktualizacja" [ref=e65]
+          - generic [ref=e66]:
+            - row "Zaznacz aktywność Test Activity 1762950018538 ⋯ Cel testowej aktywności Brak oceny 11/12/25" [ref=e67] [cursor=pointer]:
+              - cell "Zaznacz aktywność Test Activity 1762950018538 ⋯" [ref=e68]:
+                - checkbox "Zaznacz aktywność" [ref=e69]
+                - generic [ref=e70]: Test Activity 1762950018538
+                - button "⋯" [ref=e73]
+              - cell "Cel testowej aktywności" [ref=e74]
+              - cell "Brak oceny" [ref=e75]:
+                - generic [ref=e76]: Brak oceny
+              - cell [ref=e77]
+              - cell "11/12/25" [ref=e78]
+            - row "Zaznacz aktywność Test Activity 1762950018538 ⋯ Cel testowej aktywności Brak oceny 11/12/25" [ref=e79] [cursor=pointer]:
+              - cell "Zaznacz aktywność Test Activity 1762950018538 ⋯" [ref=e80]:
+                - checkbox "Zaznacz aktywność" [ref=e81]
+                - generic [ref=e82]: Test Activity 1762950018538
+                - button "⋯" [ref=e85]
+              - cell "Cel testowej aktywności" [ref=e86]
+              - cell "Brak oceny" [ref=e87]:
+                - generic [ref=e88]: Brak oceny
+              - cell [ref=e89]
+              - cell "11/12/25" [ref=e90]
+            - row "Zaznacz aktywność Test Activity 1762950018538 ⋯ Cel testowej aktywności Brak oceny a04ccb88-15f1-49a8-b3c0-f07b7bb226e5 11/12/25" [ref=e91] [cursor=pointer]:
+              - cell "Zaznacz aktywność Test Activity 1762950018538 ⋯" [ref=e92]:
+                - checkbox "Zaznacz aktywność" [ref=e93]
+                - generic [ref=e94]: Test Activity 1762950018538
+                - button "⋯" [ref=e97]
+              - cell "Cel testowej aktywności" [ref=e98]
+              - cell "Brak oceny" [ref=e99]:
+                - generic [ref=e100]: Brak oceny
+              - cell "a04ccb88-15f1-49a8-b3c0-f07b7bb226e5" [ref=e101]:
+                - generic "a04ccb88-15f1-49a8-b3c0-f07b7bb226e5" [ref=e103]: A0
+              - cell "11/12/25" [ref=e104]
+        - button "Załaduj więcej" [ref=e106]
+  - generic:
+    - region "Notifications alt+T"
+  - generic [ref=e111]:
+    - button "Menu" [ref=e112]:
+      - img [ref=e114]
+      - generic: Menu
+    - button "Inspect" [ref=e118]:
+      - img [ref=e120]
+      - generic: Inspect
+    - button "Audit" [ref=e122]:
+      - generic [ref=e123]:
+        - img [ref=e124]
+        - img [ref=e127]
+      - generic: Audit
+    - button "Settings" [ref=e130]:
+      - img [ref=e132]
+      - generic: Settings
+```

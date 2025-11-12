@@ -57,25 +57,31 @@ export function useAutosaveDrafts(activityId: UUID) {
     }
   }
 
-  const saveDraft = React.useCallback((values: ActivityFormValues, etag?: string) => {
-    const draft: AutosaveDraft = {
-      id: new Date().toISOString(),
-      activityId,
-      values,
-      updatedAt: Date.now(),
-      etag,
-    };
-    const next = [draft, ...drafts].slice(0, MAX_DRAFTS);
-    setDrafts(next);
-    persist(next);
-  }, [activityId, drafts]);
+  const saveDraft = React.useCallback(
+    (values: ActivityFormValues, etag?: string) => {
+      const draft: AutosaveDraft = {
+        id: new Date().toISOString(),
+        activityId,
+        values,
+        updatedAt: Date.now(),
+        etag,
+      };
+      const next = [draft, ...drafts].slice(0, MAX_DRAFTS);
+      setDrafts(next);
+      persist(next);
+    },
+    [activityId, drafts]
+  );
 
   const listDrafts = React.useCallback(() => drafts, [drafts]);
 
-  const restoreDraft = React.useCallback((id: string): AutosaveDraft | null => {
-    const found = drafts.find((d) => d.id === id) || null;
-    return found || null;
-  }, [drafts]);
+  const restoreDraft = React.useCallback(
+    (id: string): AutosaveDraft | null => {
+      const found = drafts.find((d) => d.id === id) || null;
+      return found || null;
+    },
+    [drafts]
+  );
 
   const clearOld = React.useCallback(() => {
     const next = drafts.slice(0, MAX_DRAFTS);
@@ -85,5 +91,3 @@ export function useAutosaveDrafts(activityId: UUID) {
 
   return { drafts, error, saveDraft, listDrafts, restoreDraft, clearOld } as const;
 }
-
-

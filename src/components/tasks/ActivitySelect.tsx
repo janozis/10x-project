@@ -11,7 +11,7 @@ export interface ActivitySelectProps {
 }
 
 export function ActivitySelect({ groupId, value, onChange, disabled }: ActivitySelectProps): JSX.Element {
-  const [activities, setActivities] = React.useState<Array<{ id: UUID; title: string }>>([]);
+  const [activities, setActivities] = React.useState<{ id: UUID; title: string }[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | undefined>();
 
@@ -24,12 +24,12 @@ export function ActivitySelect({ groupId, value, onChange, disabled }: ActivityS
       try {
         const result = await listActivities(groupId, { limit: 100 });
         if (cancelled) return;
-        
+
         if ("error" in result) {
           setError(result.error.message);
           setActivities([]);
         } else {
-          setActivities(result.data.map(a => ({ id: a.id, title: a.title })));
+          setActivities(result.data.map((a) => ({ id: a.id, title: a.title })));
         }
       } catch (err) {
         if (cancelled) return;
@@ -92,4 +92,3 @@ export function ActivitySelect({ groupId, value, onChange, disabled }: ActivityS
     </div>
   );
 }
-

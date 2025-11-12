@@ -48,6 +48,15 @@ export default function ResetPasswordForm() {
     [submit]
   );
 
+  // Success ref must be declared before any conditional returns (hooks rules)
+  const successRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (submitSuccess && successRef.current) {
+      successRef.current.focus();
+    }
+  }, [submitSuccess]);
+
   // When no valid reset session, show message instead of form
   if (!sessionReady) {
     return (
@@ -64,8 +73,7 @@ export default function ResetPasswordForm() {
           {tokenError ?? "Link wygasł lub jest nieprawidłowy."}
         </div>
         <div className="text-sm">
-          Kontynuuj do
-          {" "}
+          Kontynuuj do{" "}
           <a className="text-primary hover:underline" href="/auth/forgot-password">
             ponownego resetu hasła
           </a>
@@ -74,14 +82,6 @@ export default function ResetPasswordForm() {
       </div>
     );
   }
-
-  const successRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (submitSuccess && successRef.current) {
-      successRef.current.focus();
-    }
-  }, [submitSuccess]);
 
   return (
     <form
@@ -134,6 +134,7 @@ export default function ResetPasswordForm() {
         register={register("password")}
         error={errors.password?.message}
         disabled={loading}
+        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         additionalDescribedByIds={[strengthId]}
       />
@@ -150,7 +151,12 @@ export default function ResetPasswordForm() {
         showToggle={false}
       />
 
-      <Button type="submit" disabled={!isValid || loading} aria-disabled={!isValid || loading} data-test-id="auth-reset-submit-button">
+      <Button
+        type="submit"
+        disabled={!isValid || loading}
+        aria-disabled={!isValid || loading}
+        data-test-id="auth-reset-submit-button"
+      >
         {loading ? (
           <span className="inline-flex items-center gap-2">
             <Loader2 className="animate-spin" />
@@ -163,5 +169,3 @@ export default function ResetPasswordForm() {
     </form>
   );
 }
-
-

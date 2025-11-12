@@ -10,7 +10,9 @@ export function AutosaveIndicator({ lastSavedAt, draftsCount = 0, error }: Autos
       {error ? (
         <span className="text-destructive">Błąd szkicu: {error}</span>
       ) : lastSavedAt ? (
-        <span>Zapisano szkic {formatRelative(lastSavedAt)} • szkice: {draftsCount}</span>
+        <span>
+          Zapisano szkic {formatRelative(lastSavedAt)} • szkice: {draftsCount}
+        </span>
       ) : (
         <span>Szkice: {draftsCount}</span>
       )}
@@ -26,5 +28,3 @@ function formatRelative(date: Date): string {
   const h = Math.floor(m / 60);
   return `${h}h temu`;
 }
-
-

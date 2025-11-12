@@ -1,5 +1,13 @@
 import * as React from "react";
-import type { ActivityDTO, ActivityEditorDTO, AIEvaluationDTO, GroupPermissionsDTO, UUID, ApiList, ApiSingle } from "@/types";
+import type {
+  ActivityDTO,
+  ActivityEditorDTO,
+  AIEvaluationDTO,
+  GroupPermissionsDTO,
+  UUID,
+  ApiList,
+  ApiSingle,
+} from "@/types";
 import { supabaseClient } from "@/db/supabase.client";
 import { getActivity, listActivityEditors, listActivityAIEvaluations } from "./api.client";
 import { getGroupPermissions } from "@/lib/groups/api.client";
@@ -71,16 +79,23 @@ export function useActivityDetails(activityId: UUID) {
       if ("data" in permsRes) permissions = (permsRes as ApiSingle<GroupPermissionsDTO>).data;
 
       const latestEvaluation = evaluations[0] ?? null;
-      const isEvaluationStale = latestEvaluation ? new Date(latestEvaluation.created_at) < new Date(activity.updated_at) : false;
+      const isEvaluationStale = latestEvaluation
+        ? new Date(latestEvaluation.created_at) < new Date(activity.updated_at)
+        : false;
       const currentUserId = currentUser?.id || undefined;
       const isAssigned = currentUserId ? editors.some((e) => e.user_id === currentUserId) : false;
-      const canEdit = !!permissions && (
-        permissions.role === "admin" || permissions.can_edit_all || (permissions.can_edit_assigned_only && isAssigned)
-      );
+      const canEdit =
+        !!permissions &&
+        (permissions.role === "admin" ||
+          permissions.can_edit_all ||
+          (permissions.can_edit_assigned_only && isAssigned));
       const canRequestEvaluation = canEdit;
 
       const cooldownRemainingSecDirect = activity.last_evaluation_requested_at
-        ? Math.max(0, Math.ceil((new Date(activity.last_evaluation_requested_at).getTime() + 300000 - Date.now()) / 1000))
+        ? Math.max(
+            0,
+            Math.ceil((new Date(activity.last_evaluation_requested_at).getTime() + 300000 - Date.now()) / 1000)
+          )
         : 0;
 
       const vm: ActivityDetailsViewModel = {
@@ -89,7 +104,13 @@ export function useActivityDetails(activityId: UUID) {
         evaluations,
         latestEvaluation,
         permissions:
-          permissions ?? ({ group_id: groupId, role: "member", can_edit_all: false, can_edit_assigned_only: false } as GroupPermissionsDTO),
+          permissions ??
+          ({
+            group_id: groupId,
+            role: "member",
+            can_edit_all: false,
+            can_edit_assigned_only: false,
+          } as GroupPermissionsDTO),
         computed: { canEdit, canRequestEvaluation },
         cooldownRemainingSec: cooldownRemainingSecDirect,
         isEvaluationStale,
@@ -124,5 +145,3 @@ export function useActivityDetails(activityId: UUID) {
     refresh,
   } as const;
 }
-
-

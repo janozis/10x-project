@@ -1,8 +1,8 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Activities List Page
- * 
+ *
  * Encapsulates activities list page interactions following AAA pattern:
  * - Arrange: Initialize page and locators
  * - Act: Perform actions (search, filter, create)
@@ -10,12 +10,12 @@ import { Page, Locator } from '@playwright/test';
  */
 export class ActivitiesListPage {
   readonly page: Page;
-  
+
   // Table and rows
   readonly activitiesTable: Locator;
   readonly activityRows: Locator;
   readonly rowCheckboxes: Locator;
-  
+
   // Toolbar and filters
   readonly searchInput: Locator;
   readonly statusFilter: Locator;
@@ -24,17 +24,17 @@ export class ActivitiesListPage {
 
   constructor(page: Page) {
     this.page = page;
-    
+
     // Use data-test-id attributes for stable selectors
-    this.activitiesTable = page.getByTestId('activities-table');
+    this.activitiesTable = page.getByTestId("activities-table");
     this.activityRows = page.locator('[data-test-id="activities-table-row"]');
     this.rowCheckboxes = page.locator('[data-test-id="activities-row-checkbox"]');
-    
+
     // Toolbar
-    this.searchInput = page.getByTestId('activities-search-input');
-    this.statusFilter = page.getByTestId('activities-status-filter');
-    this.assignedCheckbox = page.getByTestId('activities-assigned-checkbox');
-    this.createButton = page.getByTestId('activities-create-button');
+    this.searchInput = page.getByTestId("activities-search-input");
+    this.statusFilter = page.getByTestId("activities-status-filter");
+    this.assignedCheckbox = page.getByTestId("activities-assigned-checkbox");
+    this.createButton = page.getByTestId("activities-create-button");
   }
 
   /**
@@ -42,8 +42,8 @@ export class ActivitiesListPage {
    */
   async goto(groupId: string) {
     await this.page.goto(`/groups/${groupId}/activities`);
-    await this.page.waitForLoadState('networkidle');
-    
+    await this.page.waitForLoadState("networkidle");
+
     // CRITICAL: Wait for React hydration and permissions loading
     // The create button appears after permissions are loaded
     await this.page.waitForTimeout(500);
@@ -90,11 +90,11 @@ export class ActivitiesListPage {
    */
   async createActivity() {
     // Wait for the create button to appear (permissions need to load first)
-    await this.createButton.waitFor({ state: 'visible', timeout: 10000 });
-    
+    await this.createButton.waitFor({ state: "visible", timeout: 10000 });
+
     // Give extra time for event handlers to attach after hydration
     await this.page.waitForTimeout(200);
-    
+
     await this.createButton.click();
   }
 
@@ -116,7 +116,7 @@ export class ActivitiesListPage {
    * Click on an activity by its name/title
    */
   async clickActivityByName(name: string) {
-    await this.page.getByRole('link', { name }).click();
+    await this.page.getByRole("link", { name }).click();
   }
 
   /**
@@ -148,13 +148,12 @@ export class ActivitiesListPage {
    */
   async waitForLoad() {
     // Wait for either table or empty state message
-    await this.page.waitForSelector(
-      '[data-test-id="activities-table"], text=Brak aktywności',
-      { timeout: 10000 }
-    ).catch(() => {
-      // If neither appears, that's okay - might be in loading state
-    });
-    
+    await this.page
+      .waitForSelector('[data-test-id="activities-table"], text=Brak aktywności', { timeout: 10000 })
+      .catch(() => {
+        // If neither appears, that's okay - might be in loading state
+      });
+
     // Additional wait for React hydration
     await this.page.waitForTimeout(500);
   }
@@ -165,15 +164,14 @@ export class ActivitiesListPage {
   async getActivityNames(): Promise<string[]> {
     const rows = await this.activityRows.all();
     const names: string[] = [];
-    
+
     for (const row of rows) {
       const text = await row.textContent();
       if (text) {
         names.push(text.trim());
       }
     }
-    
+
     return names;
   }
 }
-

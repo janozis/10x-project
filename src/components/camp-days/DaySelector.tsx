@@ -61,5 +61,3 @@ const DaySelectorComponent = ({ groupId, activeCampDayId }: DaySelectorProps): J
 };
 
 export const DaySelector = React.memo(DaySelectorComponent);
-
-

@@ -1,8 +1,8 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Join Group Dialog
- * 
+ *
  * Encapsulates join group dialog interactions following AAA pattern:
  * - Arrange: Initialize dialog and locators
  * - Act: Perform actions (enter code, submit)
@@ -18,24 +18,24 @@ export class JoinGroupDialog {
 
   constructor(page: Page) {
     this.page = page;
-    
+
     // Use accessible selectors for better reliability
-    this.dialog = page.getByRole('dialog', { name: 'Dołącz do grupy' });
-    this.codeInput = page.getByLabel('Kod zaproszenia');
-    this.errorMessage = page.getByRole('alert');
-    this.cancelButton = page.getByRole('button', { name: 'Anuluj' });
-    this.submitButton = page.getByRole('button', { name: 'Dołącz' });
+    this.dialog = page.getByRole("dialog", { name: "Dołącz do grupy" });
+    this.codeInput = page.getByLabel("Kod zaproszenia");
+    this.errorMessage = page.getByRole("alert");
+    this.cancelButton = page.getByRole("button", { name: "Anuluj" });
+    this.submitButton = page.getByRole("button", { name: "Dołącz" });
   }
 
   /**
    * Wait for dialog to be visible
    */
   async waitForDialog() {
-    await this.dialog.waitFor({ state: 'visible', timeout: 10000 });
+    await this.dialog.waitFor({ state: "visible", timeout: 10000 });
     // Add delay for React hydration
     await this.page.waitForTimeout(2000);
     // Also ensure the input is ready
-    await this.codeInput.waitFor({ state: 'visible', timeout: 10000 });
+    await this.codeInput.waitFor({ state: "visible", timeout: 10000 });
   }
 
   /**
@@ -43,7 +43,7 @@ export class JoinGroupDialog {
    */
   async enterCode(code: string) {
     // Ensure input is ready before filling
-    await this.codeInput.waitFor({ state: 'visible', timeout: 10000 });
+    await this.codeInput.waitFor({ state: "visible", timeout: 10000 });
     // Click to focus
     await this.codeInput.click();
     await this.page.waitForTimeout(300);
@@ -81,7 +81,7 @@ export class JoinGroupDialog {
    * Get error message text
    */
   async getErrorMessage(): Promise<string> {
-    return await this.errorMessage.textContent() || '';
+    return (await this.errorMessage.textContent()) || "";
   }
 
   /**
@@ -102,7 +102,6 @@ export class JoinGroupDialog {
    * Wait for dialog to close
    */
   async waitForClose() {
-    await this.dialog.waitFor({ state: 'hidden' });
+    await this.dialog.waitFor({ state: "hidden" });
   }
 }
-

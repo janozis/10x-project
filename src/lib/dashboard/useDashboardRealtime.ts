@@ -95,14 +95,10 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
     );
 
     // ai_evaluations INSERT -> invalidate only (optionally push event)
-    channel.on(
-      "postgres_changes",
-      { event: "INSERT", schema: "public", table: "ai_evaluations" },
-      () => {
-        // Without ability to filter by group (no direct group_id), we only invalidate
-        triggerInvalidate();
-      }
-    );
+    channel.on("postgres_changes", { event: "INSERT", schema: "public", table: "ai_evaluations" }, () => {
+      // Without ability to filter by group (no direct group_id), we only invalidate
+      triggerInvalidate();
+    });
 
     const subscription = channel.subscribe((status) => {
       const isLive = status === "SUBSCRIBED";
@@ -131,5 +127,3 @@ export function useDashboardRealtime(groupId: UUID, options: Options = {}) {
 
   return { isRealtimeConnected, connectionStatus } as const;
 }
-
-

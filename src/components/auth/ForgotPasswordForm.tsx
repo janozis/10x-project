@@ -73,19 +73,25 @@ export default function ForgotPasswordForm() {
       )}
 
       {sent || successAnnounce ? (
-        <div role="status" aria-live="polite" className="rounded-md border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-emerald-700 dark:text-emerald-300" data-test-id="auth-forgot-success-message">
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-md border border-emerald-300/50 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-emerald-700 dark:text-emerald-300"
+          data-test-id="auth-forgot-success-message"
+        >
           {successAnnounce ?? "Jeśli konto istnieje, wysłaliśmy instrukcje resetu na podany adres."}
         </div>
       ) : null}
 
-      <EmailField
-        register={register("email")}
-        error={errors.email?.message}
-        disabled={loading}
-        autoFocus
-      />
+      {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
+      <EmailField register={register("email")} error={errors.email?.message} disabled={loading} autoFocus />
 
-      <Button type="submit" disabled={!isValid || loading} aria-disabled={!isValid || loading} data-test-id="auth-forgot-submit-button">
+      <Button
+        type="submit"
+        disabled={!isValid || loading}
+        aria-disabled={!isValid || loading}
+        data-test-id="auth-forgot-submit-button"
+      >
         {loading ? (
           <span className="inline-flex items-center gap-2">
             <Loader2 className="animate-spin" />
@@ -98,5 +104,3 @@ export default function ForgotPasswordForm() {
     </form>
   );
 }
-
-

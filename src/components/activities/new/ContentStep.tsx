@@ -40,5 +40,3 @@ export default function ContentStep({ values, errors, onChange, onBack }: Conten
     </div>
   );
 }
-
-

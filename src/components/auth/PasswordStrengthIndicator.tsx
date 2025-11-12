@@ -22,7 +22,12 @@ export default function PasswordStrengthIndicator({ password, id }: PasswordStre
   const details = useMemo(() => evaluate(password), [password]);
 
   const levelText = details.level === "weak" ? "Słabe" : details.level === "medium" ? "Średnie" : "Silne";
-  const levelColor = details.level === "weak" ? "text-red-600 dark:text-red-400" : details.level === "medium" ? "text-amber-600 dark:text-amber-400" : "text-emerald-700 dark:text-emerald-300";
+  const levelColor =
+    details.level === "weak"
+      ? "text-red-600 dark:text-red-400"
+      : details.level === "medium"
+        ? "text-amber-600 dark:text-amber-400"
+        : "text-emerald-700 dark:text-emerald-300";
 
   return (
     <div id={id} className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -41,10 +46,12 @@ export default function PasswordStrengthIndicator({ password, id }: PasswordStre
 function Rule({ ok, label }: { ok: boolean; label: string }) {
   return (
     <li className="flex items-center gap-2">
-      {ok ? <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" /> : <X className="h-3.5 w-3.5 text-neutral-400" />}
+      {ok ? (
+        <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+      ) : (
+        <X className="h-3.5 w-3.5 text-neutral-400" />
+      )}
       <span className={ok ? "text-neutral-700 dark:text-neutral-300" : ""}>{label}</span>
     </li>
   );
 }
-
-

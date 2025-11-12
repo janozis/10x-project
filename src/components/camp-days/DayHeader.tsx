@@ -11,7 +11,10 @@ const DayHeaderComponent = ({ campDay, totalMinutes }: DayHeaderProps): JSX.Elem
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h2 className="text-xl font-semibold tracking-tight">Dzień {campDay.day_number}</h2>
-        <p className="text-sm text-muted-foreground">Data: {campDay.date}{campDay.theme ? ` • Motyw: ${campDay.theme}` : ""}</p>
+        <p className="text-sm text-muted-foreground">
+          Data: {campDay.date}
+          {campDay.theme ? ` • Motyw: ${campDay.theme}` : ""}
+        </p>
       </div>
       <div className="text-sm text-muted-foreground">Suma czasu: {totalMinutes} min</div>
     </div>
@@ -19,5 +22,3 @@ const DayHeaderComponent = ({ campDay, totalMinutes }: DayHeaderProps): JSX.Elem
 };
 
 export const DayHeader = React.memo(DayHeaderComponent);
-
-

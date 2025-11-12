@@ -20,5 +20,3 @@ export function useForgotPassword() {
 
   return { loading, sent, submit };
 }
-
-

@@ -21,7 +21,13 @@ export interface MembersToolbarProps {
   onChangeSort: (patch: Partial<MembersSort>) => void;
 }
 
-export function MembersToolbar({ filters, sort, count, onChangeFilters, onChangeSort }: MembersToolbarProps): JSX.Element {
+export function MembersToolbar({
+  filters,
+  sort,
+  count,
+  onChangeFilters,
+  onChangeSort,
+}: MembersToolbarProps): JSX.Element {
   function toggleSort(): void {
     const next = sort.direction === "asc" ? "desc" : "asc";
     onChangeSort({ direction: next });
@@ -54,11 +60,17 @@ export function MembersToolbar({ filters, sort, count, onChangeFilters, onChange
         </Button>
       </div>
       <div className="flex items-center gap-2">
-        <Badge variant="secondary" data-test-id="members-count-badge">{count} wyników</Badge>
-        <Button variant="ghost" onClick={() => onChangeFilters({ q: "", role: "all" })} data-test-id="members-clear-button">Wyczyść</Button>
+        <Badge variant="secondary" data-test-id="members-count-badge">
+          {count} wyników
+        </Badge>
+        <Button
+          variant="ghost"
+          onClick={() => onChangeFilters({ q: "", role: "all" })}
+          data-test-id="members-clear-button"
+        >
+          Wyczyść
+        </Button>
       </div>
     </div>
   );
 }
-
-

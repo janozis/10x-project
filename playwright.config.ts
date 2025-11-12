@@ -3,20 +3,20 @@ import dotenv from "dotenv";
 import path from "path";
 
 // Load test environment variables - override any existing env vars from .env
-dotenv.config({ 
+dotenv.config({
   path: path.resolve(process.cwd(), ".env.test"),
-  override: true 
+  override: true,
 });
 
 // Debug: Log which environment is being used
-console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-console.log('🧪 PLAYWRIGHT ENVIRONMENT CHECK');
-console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-console.log('E2E_USERNAME:', process.env.E2E_USERNAME);
-console.log('SUPABASE_URL:', process.env.SUPABASE_URL?.substring(0, 30) + '...');
-console.log('BASE_URL:', process.env.BASE_URL);
-console.log('WebServer command:', 'npm run dev:test');
-console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+console.log("🧪 PLAYWRIGHT ENVIRONMENT CHECK");
+console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+console.log("E2E_USERNAME:", process.env.E2E_USERNAME);
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL?.substring(0, 30) + "...");
+console.log("BASE_URL:", process.env.BASE_URL);
+console.log("WebServer command:", "npm run dev:test");
+console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
 /**
  * Playwright Configuration for E2E Testing
@@ -34,11 +34,11 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
 
-  /* 
+  /*
    * Workers configuration:
    * - CI: Always use 1 worker to avoid race conditions
    * - Local: 1 worker for stability (multi-user tests need isolation)
-   * 
+   *
    * Note: groups-join.spec.ts requires workers=1 due to User A/B login flows
    */
   workers: 1,
@@ -73,10 +73,10 @@ export default defineConfig({
     },
     {
       name: "chromium",
-      use: { 
+      use: {
         ...devices["Desktop Chrome"],
         /* Use authenticated state from setup */
-        storageState: './e2e/.auth/user.json'
+        storageState: "./e2e/.auth/user.json",
       },
       dependencies: ["setup"],
       teardown: "cleanup",

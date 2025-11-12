@@ -2,19 +2,24 @@ import * as React from "react";
 import type { ApiListResponse, ApiResponse, GroupMemberDTO, GroupPermissionsDTO, GroupRole, UUID } from "@/types";
 import { supabaseClient, DEFAULT_USER_ID } from "@/db/supabase.client";
 import { getGroupPermissions } from "./api.client";
-import { listMembers as apiList, changeMemberRole as apiChangeRole, promoteMember as apiPromote, removeMember as apiRemove } from "./members/api.client";
+import {
+  listMembers as apiList,
+  changeMemberRole as apiChangeRole,
+  promoteMember as apiPromote,
+  removeMember as apiRemove,
+} from "./members/api.client";
 
-export type MembersFiltersVM = {
+export interface MembersFiltersVM {
   q: string;
   role?: GroupRole | "all";
-};
+}
 
-export type MembersSort = {
+export interface MembersSort {
   by: "joined_at";
   direction: "asc" | "desc";
-};
+}
 
-export type MemberRowVM = {
+export interface MemberRowVM {
   userId: UUID;
   role: GroupRole;
   joinedAt: string; // TimestampISO
@@ -23,7 +28,7 @@ export type MemberRowVM = {
   canEditRole: boolean;
   canPromote: boolean;
   canRemove: boolean;
-};
+}
 
 interface UseGroupMembersState {
   loading: boolean;
@@ -36,10 +41,10 @@ interface UseGroupMembersState {
 async function resolveCurrentUserId(): Promise<UUID> {
   try {
     const { data, error } = await supabaseClient.auth.getUser();
-    if (error || !data?.user?.id) return (DEFAULT_USER_ID as UUID);
+    if (error || !data?.user?.id) return DEFAULT_USER_ID as UUID;
     return data.user.id as UUID;
   } catch {
-    return (DEFAULT_USER_ID as UUID);
+    return DEFAULT_USER_ID as UUID;
   }
 }
 
@@ -89,11 +94,11 @@ export function useGroupMembers(groupId: UUID) {
   const refresh = React.useCallback(async () => {
     setState((s) => ({ ...s, loading: true, error: null }));
     try {
-      const [userId, permsRes, membersRes] = await Promise.all<UUID, ApiResponse<GroupPermissionsDTO>, ApiListResponse<GroupMemberDTO>>([
-        resolveCurrentUserId(),
-        getGroupPermissions(groupId),
-        apiList(groupId),
-      ]);
+      const [userId, permsRes, membersRes] = await Promise.all<
+        UUID,
+        ApiResponse<GroupPermissionsDTO>,
+        ApiListResponse<GroupMemberDTO>
+      >([resolveCurrentUserId(), getGroupPermissions(groupId), apiList(groupId)]);
 
       const perms = (permsRes as any)?.data as GroupPermissionsDTO | undefined;
       const members = (membersRes as any)?.data ?? [];
@@ -122,7 +127,11 @@ export function useGroupMembers(groupId: UUID) {
         setState((s) => ({ ...s, members: s.members.map((m) => (m.user_id === userId ? dto : m)) }));
       }
     } catch (e: any) {
-      setState((s) => ({ ...s, members: prevMembers, error: e?.body?.error?.message || e?.message || "Zmiana roli nie powiodła się" }));
+      setState((s) => ({
+        ...s,
+        members: prevMembers,
+        error: e?.body?.error?.message || e?.message || "Zmiana roli nie powiodła się",
+      }));
       throw e;
     }
   }
@@ -139,7 +148,11 @@ export function useGroupMembers(groupId: UUID) {
         setState((s) => ({ ...s, members: s.members.map((m) => (m.user_id === userId ? dto : m)) }));
       }
     } catch (e: any) {
-      setState((s) => ({ ...s, members: prevMembers, error: e?.body?.error?.message || e?.message || "Promocja nie powiodła się" }));
+      setState((s) => ({
+        ...s,
+        members: prevMembers,
+        error: e?.body?.error?.message || e?.message || "Promocja nie powiodła się",
+      }));
       throw e;
     }
   }
@@ -151,7 +164,11 @@ export function useGroupMembers(groupId: UUID) {
     try {
       await apiRemove(groupId, userId);
     } catch (e: any) {
-      setState((s) => ({ ...s, members: prevMembers, error: e?.body?.error?.message || e?.message || "Usunięcie nie powiodło się" }));
+      setState((s) => ({
+        ...s,
+        members: prevMembers,
+        error: e?.body?.error?.message || e?.message || "Usunięcie nie powiodło się",
+      }));
       throw e;
     }
   }
@@ -181,5 +198,3 @@ export function useGroupMembers(groupId: UUID) {
     remove,
   } as const;
 }
-
-

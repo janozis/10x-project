@@ -8,9 +8,7 @@ import { registerWithEmailPassword, type RegisterFormValues, type RegisterResult
 export function useRegister() {
   const [loading, setLoading] = useState(false);
 
-  const submit = useCallback(async (
-    values: RegisterFormValues
-  ): Promise<RegisterResult> => {
+  const submit = useCallback(async (values: RegisterFormValues): Promise<RegisterResult> => {
     setLoading(true);
     try {
       const result = await registerWithEmailPassword(values);
@@ -22,4 +20,3 @@ export function useRegister() {
 
   return { loading, submit };
 }
-

@@ -37,5 +37,3 @@ function statusLabel(status: TaskStatus): string {
       return "Anulowane";
   }
 }
-
-

@@ -12,7 +12,7 @@ export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: To
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
-    
+
     setIsLoggingOut(true);
     try {
       const response = await fetch("/api/auth/logout", {
@@ -74,18 +74,16 @@ export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: To
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <div className="flex items-center space-x-1">
               {navItems.map((item) => {
-                const active = item.exact 
-                  ? (currentPath === "/" || currentPath === "")
+                const active = item.exact
+                  ? currentPath === "/" || currentPath === ""
                   : currentPath.startsWith(item.href) && item.href !== "/";
-                
+
                 return (
                   <a
                     key={item.href}
                     href={item.href}
                     className={`inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background h-9 px-4 py-2 ${
-                      active
-                        ? "bg-accent text-accent-foreground"
-                        : "hover:bg-accent hover:text-accent-foreground"
+                      active ? "bg-accent text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground"
                     }`}
                   >
                     <span className="mr-2">{item.icon}</span>
@@ -97,12 +95,7 @@ export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: To
           </div>
 
           <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-sm"
-              asChild
-            >
+            <Button variant="ghost" size="sm" className="text-sm" asChild>
               <a href="/auth/profile">
                 <span className="mr-2">👤</span>
                 <span className="hidden sm:inline">{userDisplayName}</span>
@@ -125,4 +118,3 @@ export function Topbar({ currentPath = "", userDisplayName = "Użytkownik" }: To
     </nav>
   );
 }
-

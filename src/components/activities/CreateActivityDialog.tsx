@@ -1,12 +1,6 @@
 import * as React from "react";
 import type { UUID } from "@/types";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import NewActivityStepper from "@/components/activities/new/NewActivityStepper";
 
 interface CreateActivityDialogProps {
@@ -27,13 +21,10 @@ export function CreateActivityDialog({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nowa aktywność</DialogTitle>
-          <DialogDescription>
-            Utwórz nową aktywność dla grupy. Uzupełnij wszystkie pola formularza.
-          </DialogDescription>
+          <DialogDescription>Utwórz nową aktywność dla grupy. Uzupełnij wszystkie pola formularza.</DialogDescription>
         </DialogHeader>
         <NewActivityStepper groupId={groupId} />
       </DialogContent>
     </Dialog>
   );
 }
-

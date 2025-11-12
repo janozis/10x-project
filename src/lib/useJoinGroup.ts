@@ -30,7 +30,11 @@ export function useJoinGroup() {
 
       const isJson = res.headers.get("content-type")?.includes("application/json");
       if (!isJson) {
-        const fallback: JoinFailure = { ok: false, code: "INTERNAL_ERROR", message: "Unexpected response" } as JoinFailure;
+        const fallback: JoinFailure = {
+          ok: false,
+          code: "INTERNAL_ERROR",
+          message: "Unexpected response",
+        } as JoinFailure;
         setError(fallback.code);
         return fallback;
       }

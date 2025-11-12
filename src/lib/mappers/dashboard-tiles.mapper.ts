@@ -14,10 +14,7 @@ function clamp01(value: number): number {
  * - Propagates task counts
  * - Derives canCreateTasks from permissions (admin only for MVP)
  */
-export function mapDashboardToTilesVM(
-  dto: GroupDashboardDTO,
-  permissions?: GroupPermissionsDTO
-): DashboardTilesVM {
+export function mapDashboardToTilesVM(dto: GroupDashboardDTO, permissions?: GroupPermissionsDTO): DashboardTilesVM {
   const percentage = Math.round(clamp01(dto.pct_evaluated_above_7 ?? 0) * 100);
   const canCreateTasks = permissions?.role === "admin";
   return {
@@ -30,5 +27,3 @@ export function mapDashboardToTilesVM(
     canCreateTasks: Boolean(canCreateTasks),
   };
 }
-
-
