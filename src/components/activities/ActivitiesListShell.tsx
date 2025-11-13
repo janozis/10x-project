@@ -438,10 +438,35 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
             const ids = confirm.ids;
             if (confirm.type === "delete") {
               if (!canDelete) return;
-              await Promise.all(ids.map((id) => deleteActivity(id)));
-              mutate((prev) => prev.filter((p) => !ids.includes(p.id)));
+              const results = await Promise.all(ids.map(async (id) => deleteActivity(id)));
+              const deletedIds = new Set(
+                results
+                  .filter((r): r is { data: { id: UUID; deleted_at: string } } => "data" in r && !!r.data)
+                  .map((r) => r.data.id)
+              );
+
+              // Check for errors
+              const errors = results.filter((r) => "error" in r);
+              if (errors.length > 0 && deletedIds.size === 0) {
+                // All deletions failed
+                const firstError = errors[0] as { error: { message?: string } };
+                toast.error(firstError.error.message || "Nie udało się usunąć aktywności.");
+                return;
+              }
+
+              // Remove deleted items from list
+              mutate((prev) => prev.filter((p) => !deletedIds.has(p.id)));
               setSelectedIds(new Set());
-              toast.success("Aktywności zostały usunięte.");
+
+              if (errors.length > 0) {
+                // Some deletions failed
+                toast.warning(
+                  `Usunięto ${deletedIds.size} z ${ids.length} aktywności. Sprawdź uprawnienia dla pozostałych.`
+                );
+              } else {
+                // All deletions succeeded
+                toast.success(deletedIds.size === 1 ? "Aktywność została usunięta." : "Aktywności zostały usunięte.");
+              }
               setStatusMsg("Aktywności zostały usunięte.");
               await refresh();
             } else {

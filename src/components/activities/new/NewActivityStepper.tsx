@@ -19,6 +19,7 @@ import { useAutosave } from "./hooks/useAutosave";
 
 export interface NewActivityStepperProps {
   groupId: UUID;
+  onSuccess?: () => void;
 }
 
 const INITIAL_VALUES: ActivityCreateVM = {
@@ -37,7 +38,7 @@ const INITIAL_VALUES: ActivityCreateVM = {
 
 const STEP_ORDER: StepId[] = ["basics", "content", "logistics", "summary"];
 
-export default function NewActivityStepper({ groupId }: NewActivityStepperProps) {
+export default function NewActivityStepper({ groupId, onSuccess }: NewActivityStepperProps) {
   const [state, setState] = React.useState<NewActivityState>({
     step: "basics",
     values: INITIAL_VALUES,
@@ -170,6 +171,9 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
         setPermissionsWarning(assignRes.errorMessage || "Nie masz uprawnień do edycji tej aktywności.");
         toast.warning("Nie udało się przypisać jako edytor. Skontaktuj się z adminem.");
       }
+
+      // Call onSuccess callback to notify parent (e.g., close dialog)
+      onSuccess?.();
     } finally {
       setSubmitting(false);
     }
@@ -184,6 +188,7 @@ export default function NewActivityStepper({ groupId }: NewActivityStepperProps)
     create,
     assign,
     state.values,
+    onSuccess,
   ]);
 
   // Guard against accidental navigation when there are unsaved changes before the first save
