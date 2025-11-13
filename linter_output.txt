@@ -30,21 +30,12 @@
   28:110  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
   35:110  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
 
-/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/ActivitiesListShell.tsx
-  447:1   error  Delete `··············`                                                                                                                                                                                                                             prettier/prettier
-  456:1   error  Delete `··············`                                                                                                                                                                                                                             prettier/prettier
-  460:1   error  Delete `··············`                                                                                                                                                                                                                             prettier/prettier
-  463:31  error  Replace ``Usunięto·${deletedIds.size}·z·${ids.length}·aktywności.·Sprawdź·uprawnienia·dla·pozostałych.`` with `⏎··················`Usunięto·${deletedIds.size}·z·${ids.length}·aktywności.·Sprawdź·uprawnienia·dla·pozostałych.`⏎················`  prettier/prettier
-
 /Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/ActivitiesTable.tsx
   71:11  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
   71:11  warning  Elements with the 'row' interactive role must be focusable                                      jsx-a11y/interactive-supports-focus
 
 /Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/ActivitiesToolbar.tsx
   41:5  warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
-
-/Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/CreateActivityDialog.tsx
-  13:39  error  Replace `·open,·onOpenChange,·groupId,·onSuccess·` with `⏎··open,⏎··onOpenChange,⏎··groupId,⏎··onSuccess,⏎`  prettier/prettier
 
 /Users/jkosmala/Documents/git-repos/private/10x-project/src/components/activities/editor/AIEvaluationPanel.tsx
   45:5  warning  React Compiler has skipped optimizing this component because one or more React ESLint rules were disabled. React Compiler only works when your components follow all the rules of React, disabling them may result in unexpected or incorrect behavior  react-compiler/react-compiler
@@ -518,6 +509,5 @@
   44:15  warning  Unexpected empty method 'unobserve'       @typescript-eslint/no-empty-function
   45:6   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
 
-✖ 313 problems (5 errors, 308 warnings)
-  5 errors and 0 warnings potentially fixable with the `--fix` option.
+✖ 308 problems (0 errors, 308 warnings)
 
