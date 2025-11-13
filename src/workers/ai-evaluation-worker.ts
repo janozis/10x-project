@@ -74,24 +74,36 @@ const WORKER_CONFIG = {
 /**
  * Initialize Supabase client for worker
  * Uses process.env for Node.js runtime compatibility
+ * 
+ * IMPORTANT: Worker must use SERVICE_ROLE_KEY to bypass RLS policies
+ * The ai_evaluation_requests table has RLS enabled with policies requiring auth.uid(),
+ * but workers run as system processes without user context.
+ * Service role key has full database access and bypasses all RLS.
  */
 const supabaseUrl = process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-const supabaseKey = process.env.PUBLIC_SUPABASE_KEY || process.env.SUPABASE_KEY;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
 
 let supabaseClient: ReturnType<typeof createClient<Database>> | null = null;
 
-if (supabaseUrl && supabaseKey) {
+if (supabaseUrl && supabaseServiceRoleKey) {
   try {
-    supabaseClient = createClient<Database>(supabaseUrl, supabaseKey);
-    console.log("[AI Eval Worker] ✅ Supabase client initialized");
+    supabaseClient = createClient<Database>(supabaseUrl, supabaseServiceRoleKey);
+    console.log("[AI Eval Worker] ✅ Supabase client initialized with service_role key");
+    console.log("[AI Eval Worker] 🔑 Key info:", {
+      url: supabaseUrl,
+      keyPrefix: supabaseServiceRoleKey.substring(0, 20) + "...",
+      keyLength: supabaseServiceRoleKey.length,
+    });
   } catch (error) {
     console.error("[AI Eval Worker] ❌ Failed to create Supabase client:", error);
   }
 } else {
-  console.error("[AI Eval Worker] ❌ Missing environment variables:", {
+  console.error("[AI Eval Worker] ❌ Missing required environment variables:", {
     supabaseUrl: !!supabaseUrl,
-    supabaseKey: !!supabaseKey,
+    supabaseServiceRoleKey: !!supabaseServiceRoleKey,
   });
+  console.error("[AI Eval Worker] ❌ SUPABASE_SERVICE_ROLE_KEY is required for worker to bypass RLS policies");
+  console.error("[AI Eval Worker] ❌ Get it from: Supabase Dashboard → Settings → API → service_role key (secret)");
 }
 
 /**
@@ -536,15 +548,25 @@ async function runWorker(): Promise<void> {
         .limit(WORKER_CONFIG.batchSize);
 
       if (fetchError) {
-        console.error("[AI Eval Worker] Failed to fetch pending requests:", fetchError);
-      } else if (requests && requests.length > 0) {
-        console.log(`[AI Eval Worker] Found ${requests.length} pending request(s)`);
+        console.error("[AI Eval Worker] ❌ Failed to fetch pending requests:", {
+          code: fetchError.code,
+          message: fetchError.message,
+          details: fetchError.details,
+        });
+      } else {
+        // Always log the query result, even if 0 requests
+        const count = requests?.length || 0;
+        console.log(`[AI Eval Worker] 🔍 Query result: ${count} request(s) with status='queued'`);
+        
+        if (requests && requests.length > 0) {
+          console.log(`[AI Eval Worker] 📦 Processing ${requests.length} pending request(s)...`);
 
-        // Process all requests in parallel
-        await Promise.all(requests.map((req: { id: UUID }) => processAIEvaluationRequest(req.id)));
+          // Process all requests in parallel
+          await Promise.all(requests.map((req: { id: UUID }) => processAIEvaluationRequest(req.id)));
+        }
       }
     } catch (error) {
-      console.error("[AI Eval Worker] Error in main loop:", error);
+      console.error("[AI Eval Worker] ❌ Error in main loop:", error);
     }
 
     // Wait before next poll

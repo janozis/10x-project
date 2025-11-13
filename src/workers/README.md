@@ -14,12 +14,26 @@ Dodaj do pliku `.env`:
 # OpenRouter API Key (WYMAGANE)
 OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-# Supabase (jeśli nie są już ustawione)
+# Supabase URL (jeśli nie jest już ustawiony)
 PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-PUBLIC_SUPABASE_KEY=your-anon-key-here
+
+# Supabase Service Role Key (WYMAGANE dla workera)
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-Klucz API możesz uzyskać z: https://openrouter.ai/keys
+**WAŻNE - Service Role Key**:
+- Worker MUSI używać `SUPABASE_SERVICE_ROLE_KEY` (nie anon key!)
+- Tabela `ai_evaluation_requests` ma włączone RLS (Row Level Security) z politykami wymagającymi `auth.uid()`
+- Worker działa jako proces systemowy bez kontekstu użytkownika, więc anon key jest blokowany przez RLS
+- Service role key ma pełne uprawnienia do bazy danych i omija wszystkie RLS policies
+- Znajdziesz go w: **Supabase Dashboard → Settings → API → service_role key (secret)**
+- **NIGDY nie commituj service_role key do repozytorium!**
+- **NIE używaj service_role key w kodzie frontend/browser!**
+- Na produkcji: przechowuj jako zmienną środowiskową / secret w systemie CI/CD
+
+**Gdzie uzyskać klucze**:
+- OpenRouter API: https://openrouter.ai/keys
+- Supabase service_role: Dashboard → Project Settings → API
 
 ### Instalacja zależności
 
@@ -199,15 +213,22 @@ expect(validateEvaluation(eval).lore_score).toBe(10); // clamped
 **Problem**: `OPENROUTER_API_KEY is required`
 **Rozwiązanie**: Dodaj klucz do `.env`
 
-**Problem**: `Supabase client not available`
-**Rozwiązanie**: Sprawdź `PUBLIC_SUPABASE_URL` i `PUBLIC_SUPABASE_KEY` w `.env`
+**Problem**: `Supabase client not available` lub `Missing required environment variables`
+**Rozwiązanie**: 
+1. Sprawdź `PUBLIC_SUPABASE_URL` w `.env`
+2. Sprawdź `SUPABASE_SERVICE_ROLE_KEY` w `.env` (NIE `PUBLIC_SUPABASE_KEY`!)
+3. Service role key znajdziesz w Supabase Dashboard → Settings → API → service_role key (secret)
 
 ### Żądania nie są przetwarzane
 
-**Problem**: Worker nie widzi żądań w kolejce
+**Problem**: Worker nie widzi żądań w kolejce (logi workera są czyste, brak "Found X pending request(s)")
 **Rozwiązanie**: 
-1. Sprawdź status w bazie: `SELECT * FROM ai_evaluation_requests WHERE status = 'queued'`
-2. Upewnij się, że worker ma dostęp do tej samej bazy danych
+1. **Najprawdopodobniej używasz `PUBLIC_SUPABASE_KEY` zamiast `SUPABASE_SERVICE_ROLE_KEY`**
+   - Tabela `ai_evaluation_requests` ma włączone RLS
+   - Anon key jest blokowany przez polityki RLS wymagające `auth.uid()`
+   - Worker musi używać service_role key, który omija RLS
+2. Sprawdź status w bazie: `SELECT * FROM ai_evaluation_requests WHERE status = 'queued'`
+3. Upewnij się, że worker ma dostęp do tej samej bazy danych
 
 **Problem**: Request blokowany przez cooldown
 **Rozwiązanie**: Odczekaj 5 minut od ostatniego żądania lub ręcznie zresetuj `last_evaluation_requested_at` w tabeli `activities`
