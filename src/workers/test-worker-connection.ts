@@ -1,12 +1,12 @@
 /**
  * Test Worker Connection Script
- * 
+ *
  * Diagnostic tool to verify:
  * - Environment variables are set correctly
  * - Service role key is configured (not anon key)
  * - Supabase connection works
  * - Can query ai_evaluation_requests table
- * 
+ *
  * Usage: npx tsx --env-file=.env src/workers/test-worker-connection.ts
  */
 
@@ -16,7 +16,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Database } from "../db/database.types";
 
 console.log("🔍 Worker Connection Diagnostic Tool\n");
-console.log("=" .repeat(60));
+console.log("=".repeat(60));
 
 // Step 1: Check environment variables
 console.log("\n📋 Step 1: Checking environment variables...\n");
@@ -86,7 +86,7 @@ console.log("\n📋 Step 4: Testing database access...\n");
 try {
   // Test connection with a simple query
   const { data, error } = await client.from("groups").select("id").limit(1);
-  
+
   if (error) {
     console.error("❌ Failed to query database:", error);
   } else {
@@ -121,11 +121,13 @@ try {
   } else {
     console.log("✅ Successfully queried ai_evaluation_requests table");
     console.log(`  → Total records: ${allRequests?.length || 0}`);
-    
+
     if (allRequests && allRequests.length > 0) {
       console.log("\n  Recent requests:");
       allRequests.forEach((req, idx) => {
-        console.log(`  ${idx + 1}. ID: ${req.id.substring(0, 8)}... | Status: ${req.status} | Created: ${req.created_at}`);
+        console.log(
+          `  ${idx + 1}. ID: ${req.id.substring(0, 8)}... | Status: ${req.status} | Created: ${req.created_at}`
+        );
       });
     }
   }
@@ -155,13 +157,13 @@ try {
   } else {
     console.log("✅ Successfully queried QUEUED requests");
     console.log(`  → Found ${queuedRequests?.length || 0} queued request(s)`);
-    
+
     if (queuedRequests && queuedRequests.length > 0) {
       console.log("\n  Queued request IDs:");
       queuedRequests.forEach((req, idx) => {
         console.log(`  ${idx + 1}. ${req.id}`);
       });
-      
+
       console.log("\n✅ SUCCESS! Worker should be able to process these requests.");
     } else {
       console.log("\n⚠️  No queued requests found.");
@@ -204,4 +206,3 @@ if (!serviceRoleKey) {
 }
 
 console.log("\n" + "=".repeat(60) + "\n");
-

@@ -74,7 +74,7 @@ const WORKER_CONFIG = {
 /**
  * Initialize Supabase client for worker
  * Uses process.env for Node.js runtime compatibility
- * 
+ *
  * IMPORTANT: Worker must use SERVICE_ROLE_KEY to bypass RLS policies
  * The ai_evaluation_requests table has RLS enabled with policies requiring auth.uid(),
  * but workers run as system processes without user context.
@@ -557,7 +557,7 @@ async function runWorker(): Promise<void> {
         // Always log the query result, even if 0 requests
         const count = requests?.length || 0;
         console.log(`[AI Eval Worker] 🔍 Query result: ${count} request(s) with status='queued'`);
-        
+
         if (requests && requests.length > 0) {
           console.log(`[AI Eval Worker] 📦 Processing ${requests.length} pending request(s)...`);
 
