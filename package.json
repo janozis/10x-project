@@ -93,6 +93,7 @@
     "lint-staged": "15.5.0",
     "prettier-plugin-astro": "0.14.1",
     "supertest": "^7.1.4",
+    "tsx": "^4.20.6",
     "typescript-eslint": "8.28.0",
     "vitest": "^4.0.6"
   },
