@@ -444,7 +444,7 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
                   .filter((r): r is { data: { id: UUID; deleted_at: string } } => "data" in r && !!r.data)
                   .map((r) => r.data.id)
               );
-              
+
               // Check for errors
               const errors = results.filter((r) => "error" in r);
               if (errors.length > 0 && deletedIds.size === 0) {
@@ -453,14 +453,16 @@ export default function ActivitiesListShell({ groupId }: ActivitiesListShellProp
                 toast.error(firstError.error.message || "Nie udało się usunąć aktywności.");
                 return;
               }
-              
+
               // Remove deleted items from list
               mutate((prev) => prev.filter((p) => !deletedIds.has(p.id)));
               setSelectedIds(new Set());
-              
+
               if (errors.length > 0) {
                 // Some deletions failed
-                toast.warning(`Usunięto ${deletedIds.size} z ${ids.length} aktywności. Sprawdź uprawnienia dla pozostałych.`);
+                toast.warning(
+                  `Usunięto ${deletedIds.size} z ${ids.length} aktywności. Sprawdź uprawnienia dla pozostałych.`
+                );
               } else {
                 // All deletions succeeded
                 toast.success(deletedIds.size === 1 ? "Aktywność została usunięta." : "Aktywności zostały usunięte.");
